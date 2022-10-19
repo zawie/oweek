@@ -1,18 +1,18 @@
 export type ID = number | string;
 
-export type Student = {
+export type StudentRecord = {
     id: ID
     name: string
-    imageSrc?: string
     college?: string
+    imageSrc?: string
 };
 
 export type StudentFamily = {
-    focus: Student
+    focus: StudentRecord
 
-    parents: Student[]                       //  Parents of this family
-    siblings: Student[]    //  Your siblings and their children
-    kids: Student[]    //  Your siblings and their children
+    parents: StudentRecord[]                       //  Parents of this family
+    siblings: StudentRecord[]    //  Your siblings and their children
+    kids: StudentRecord[]    //  Your siblings and their children
 }
 
 export const demoFamily: StudentFamily = {
