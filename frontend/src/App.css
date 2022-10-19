@@ -3,5 +3,6 @@
 .App {
   text-align: center;
   background-color: whitesmoke;
-  min-height: 101vh;
+  padding: 100px;
+  overflow-x: auto;
 }
