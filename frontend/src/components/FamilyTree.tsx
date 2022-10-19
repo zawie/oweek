@@ -4,11 +4,14 @@ import { StudentCardGroup } from './StudentCardGroup'
 import { StudentFamily, Student} from "../model/types";
 
 export function FamilyTree(family: StudentFamily) {
-    return <Tree label={StudentCardGroup(family.parents, "Advisors")}>
-        {family.siblings.map(([sibling, nieces]: [Student, Student[]]) =>
-            <TreeNode label={StudentCardGroup([sibling])}>
-                {nieces.map(niece => <TreeNode label={StudentCardGroup([niece])}/>)}
+    return <Tree label={StudentCardGroup(family.parents, false, "Advisors")}>
+            <TreeNode label={StudentCardGroup([family.focus], true)}>
+                {family.kids.map(kid =>
+                <TreeNode label={StudentCardGroup([kid])}/>
+                )}
             </TreeNode>
-        )}
-    </Tree>
+            {family.siblings.map(sibling =>
+                <TreeNode label={StudentCardGroup([sibling])}/>
+            )}
+        </Tree>
 }
