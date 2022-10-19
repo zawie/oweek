@@ -9,7 +9,7 @@ const { Meta } = Card;
 function StudentCard(netId: String) {
     return  <Card
         hoverable
-        style={{width: 128, margin: 5}}
+        style={{width: 100, margin: 5}}
         size="small"
         cover={<img
             src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
@@ -20,21 +20,29 @@ function StudentCard(netId: String) {
     </Card>
 }
 
-function CardGroup(netIds: String[]) {
-    return <div style = {{display: "flex", justifyContent: "center", alignContent:"space-around"}}>
-        {netIds.map((id: String) => StudentCard(id))}
-    </div>
+function CardGroup(netIds: String[], name?: String) {
+    return <>
+        {name && <Text type="secondary"> {name} </Text>}
+        <div style = {{display: "flex", justifyContent: "center", alignContent:"space-around"}}>
+            {netIds.map((id: String) => StudentCard(id))}
+        </div>
+    </>;
+
 }
 
 function App() {
   return (
     <div className="App">
         <Title> Brown Family Tree </Title>
-        <Tree label={CardGroup(["Zawie","Daansih S", "John Smith"])}>
+        <Tree label={CardGroup(["Zawie","Daansih S", "John Smith", "Co-Advisor"], "Advisors")}>
             <TreeNode label={CardGroup(["Anya Gu"])}/>
+            {["a","b","c"].map(s => <TreeNode label={CardGroup([s])}/> )}
             <TreeNode label={CardGroup(["Bob Smith"])}>
-                <TreeNode label={CardGroup(["Angela Lee"])}/>
-                <TreeNode label={CardGroup(["Adrienne Zhang"])} />
+                {["a","b","c","a","b","c","a","b","c","a","b","c","a","b","c","a","b","c"].map(s => <TreeNode label={CardGroup([s])}/> )}
+            </TreeNode>
+            {["d","e","f", "g"].map(s => <TreeNode label={CardGroup([s])}/> )}
+            <TreeNode label={CardGroup(["Bob Smith"])}>
+
             </TreeNode>
         </Tree>
     </div>
