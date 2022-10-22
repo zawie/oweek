@@ -19,7 +19,7 @@ export function StudentCard(student: StudentRecord, focus: boolean = false) {
         cover={<img
             src={student.imageSrc || DEFAULT}
         />}>
-        <Text strong > {student.name} </Text>
+        <Text strong > {student.name || "Unknown"} </Text>
         <br/>
         {student.college && <Text type="secondary"> {student.college} </Text>}
     </Card>

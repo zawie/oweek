@@ -2,10 +2,17 @@ export type ID = number | string;
 
 export type StudentRecord = {
     id: ID
-    name: string
+    name?: string
     college?: string
     imageSrc?: string
 };
+
+export type RelationRecord = {
+    id: ID,
+    parents: ID[],
+    siblings: ID[],
+    kids: ID[],
+}
 
 export type StudentFamily = {
     focus: StudentRecord
