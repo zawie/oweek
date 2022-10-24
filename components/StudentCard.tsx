@@ -30,7 +30,7 @@ export function StudentCard(student: string, doSearch: any, focus: boolean = fal
     return  <Card
         hoverable
         style={{
-            width: 164,
+            width: 128,
             margin: 5,
             borderWidth: focus ? 7 : 0,
             borderColor: "gold"
@@ -40,8 +40,8 @@ export function StudentCard(student: string, doSearch: any, focus: boolean = fal
         cover={<Image
             src={owls[hash(student) % owls.length]}
             alt="Owl (Woo! Woo!)"
-            height="164"
-            width="164"
+            height="128"
+            width="128"
         />}>
         <Text strong > {student} </Text>
     </Card>
