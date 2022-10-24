@@ -1,8 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import type { StudentFamily} from "../model/types";
-
 import { google } from "googleapis";
 
 const SHEET_ID = "1MGXOWXowIdSEXNqsdb2iAU1Lla56SrJr8GmyvzXoFgU"
@@ -53,11 +51,12 @@ async function getRows(): Promise<Array<any>> {
             auth: auth,
         });
         console.log("Fetching sheets to get row data.")
+        // @ts-ignore
         const rowData: Array<any> = sheetsResponse.data.sheets[0].data[0].rowData as Array<any>;
         rowData.shift();
         lastUpdate = t;
         cachedRows = rowData.map(r => {
-            const values: Array<string> = r.values.map(v => v.formattedValue) as Array<string>;
+            const values: Array<string> = r.values.map((v: {formattedValue: string}) => v.formattedValue) as Array<string>;
             return {
                 name: values[2],
                 year: values[3],
@@ -83,7 +82,8 @@ async function getFamilies(): Promise<Family[]> {
     })
 }
 
-const levenshtein = function (s1, s2) {
+//@ts-ignore
+const levenshtein = function (s1, s2): number {
     //       discuss at: http://phpjs.org/functions/levenshtein/
     //      original by: Carlos R. L. Rodrigues (http://www.jsfromhell.com)
     //      bugfixed by: Onno Marsman

@@ -1,5 +1,4 @@
 import { StudentCard } from "./StudentCard";
-import { StudentRecord } from "../model/types";
 
 import { Typography} from 'antd';
 const { Text } = Typography;

@@ -2,12 +2,11 @@ import 'antd/dist/antd.css';
 import '../styles/globals.css'
 
 import type { AppProps } from 'next/app'
-import { Typography, Button, Input } from 'antd'
-import { UserAddOutlined, UserOutlined} from "@ant-design/icons";
+import { Typography, Button } from 'antd'
+import { UserAddOutlined } from "@ant-design/icons";
 
 
 const { Title } = Typography;
-const { Search } = Input;
 
 function MyApp({ Component, pageProps }: AppProps) {
     return <div style={{backgroundColor: "whitesmoke", minHeight:"100vh"}}>
