@@ -12,7 +12,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     return <div style={{backgroundColor: "whitesmoke", minHeight:"100vh"}}>
         <div style={{
             backgroundColor: "white",
-            position: "absolute",
             width: "100vw",
             paddingLeft: 16,
             display:"flex",
@@ -37,14 +36,8 @@ function MyApp({ Component, pageProps }: AppProps) {
                 }}> <UserAddOutlined/> Add a Family </Button>
             </div>
         </div>
-        <div style={{
-            backgroundColor:"whitesmoke",
-            minHeight:"100vh",
-            paddingTop: 128
-        }}>
-            <br/>
-            <Component {...pageProps}/>
-        </div>
+        <br/>
+        <Component {...pageProps}/>
   </div>
 }
 
