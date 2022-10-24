@@ -5,18 +5,19 @@ import { Scope, StudentRecord} from "../model/types";
 
 type FamilyTreeProps = {
     scope: Scope
+    doSearch: any
 }
 
 function FamilyTree(props: FamilyTreeProps) {
-    const scope = props.scope;
-    return <Tree label={StudentCardGroup(scope.parents, false, "Advisors")}>
-        <TreeNode label={StudentCardGroup([scope.focus], true)}>
+    const { scope, doSearch} = props;
+    return <Tree label={StudentCardGroup(scope.parents, doSearch, false, "Advisors")}>
+        <TreeNode label={StudentCardGroup([scope.focus], doSearch, true)}>
             {scope.kids.map(kid =>
-            <TreeNode label={StudentCardGroup([kid])}/>
+            <TreeNode label={StudentCardGroup([kid], doSearch, false)}/>
             )}
         </TreeNode>
         {scope.siblings.map(sibling =>
-        <TreeNode key={sibling.id} label={StudentCardGroup([sibling])}/>
+        <TreeNode key={sibling} label={StudentCardGroup([sibling], doSearch, false)}/>
         )}
     </Tree>;
 }
