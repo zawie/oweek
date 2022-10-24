@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         }}>
             <div style={{paddingTop:10 }}>
                 <Title style={{
-                    fontSize: 48,
+                    fontSize: 32,
                 }}> 🌳 O-Week Genealogy </Title>
             </div>
             <div style={{
@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     href="https://forms.gle/hUfXkadg8Z8L5Bt98"
                     size="large"
                     style={{
-                        fontSize: 28,
+                        fontSize: 16,
                         minWidth: 128,
                 }}> <UserAddOutlined/> Add a Family </Button>
             </div>
