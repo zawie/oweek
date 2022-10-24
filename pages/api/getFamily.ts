@@ -12,7 +12,7 @@ type ErrorResponse = {
 }
 
 export type SearchResult = {
-    name: string,
+    focusName: string,
     homeFamilies: Family[],
     advisingFamilies:Family[]
 }
@@ -20,14 +20,16 @@ export type Family = {
     name: string,
     parents: string[],
     kids: string[],
-    year: string
+    year: string,
+    college: string
 }
 
 type Row = {
     name: string,
     parents: string,
     kids: string,
-    year: string
+    year: string,
+    college: string
 }
 
 let cachedRows: Row[]
@@ -62,6 +64,7 @@ async function getRows(): Promise<Array<any>> {
                 year: values[3],
                 parents: values[4],
                 kids: values[5],
+                college: values[6],
             };
         });
     } else {
@@ -77,7 +80,8 @@ async function getFamilies(): Promise<Family[]> {
             name: r.name,
             year: r.year,
             parents: r.parents.split(/,+/).map(s=> s.trim()),
-            kids: r.kids.split(/,+/).map(s=> s.trim())
+            kids: r.kids.split(/,+/).map(s=> s.trim()),
+            college: r.college,
         };
     })
 }
@@ -201,7 +205,7 @@ export default async function handler(
     const advisingFamilies = families.filter(f => f.parents.includes(name));
 
     res.status(200).json({
-        name, advisingFamilies, homeFamilies
+        focusName: name, advisingFamilies, homeFamilies
     })
 }
 
