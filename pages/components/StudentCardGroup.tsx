@@ -5,7 +5,7 @@ import { Typography} from 'antd';
 const { Text } = Typography;
 
 
-export function StudentCardGroup(students: StudentRecord[], focus: boolean = false, sectionName?: String) {
+export function StudentCardGroup(students: string[], focus: boolean = false, sectionName?: String) {
     return <>
     {sectionName && <Text type="secondary"> {sectionName} </Text>}
     <div style = {{display: "flex", justifyContent: "center", alignContent:"space-around"}} >
