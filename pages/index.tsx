@@ -17,9 +17,9 @@ const Home: NextPage = () => {
 
     const [searchResult, setSearchResult] = useState<SearchResult | undefined>(undefined);
 
-    const FamilyTree = dynamic(
-        () => import("./components/FamilyTree"),
-        { loading: () => <div>Loading...</div>, ssr: false}
+    const FamTree = dynamic(
+        () => import("../components/FamilyTree"),
+        { ssr: false }
     );
 
     const doSearch = async (query: string) => {
@@ -103,7 +103,7 @@ const Home: NextPage = () => {
         {getTop()}
 
         <div className="App">
-            <FamilyTree scope={scope} doSearch={doSearch}/>
+            <FamTree scope={scope} doSearch={doSearch}/>
         </div>
     </div>;
 }
