@@ -29,7 +29,7 @@ const Home: NextPage = () => {
         }
         try {
             const res = await fetch(
-                `http://localhost:3000/api/getFamily?query=${query}`
+                `/api/getFamily?query=${query}`
                 );
             const data = await res.json() as SearchResult;
             setSearchResult(() => data);
