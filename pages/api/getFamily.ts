@@ -32,22 +32,33 @@ type Row = {
     year: string
 }
 
+let rowData: Array<any>
+let lastUpdate: number = 0
+const timeToLive = 60*1000 //1 minute
+
 async function getFamilies(): Promise<Family[]> {
-    const auth = new google.auth.JWT({
-        email: SERVICE_ACCOUNT_EMAIL,
-        key: SERVICE_ACCOUNT_PRIVATE_KEY,
-        scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"]
-    })
-    const sheet = google.sheets("v4")
-    const sheetsResponse = await sheet.spreadsheets.get({
-        spreadsheetId: SHEET_ID,
-        ranges: ["Responses!A:H"],
-        includeGridData: true,
-        auth: auth,
-    });
-    const rowData: Array<any> = sheetsResponse.data.sheets[0].data[0].rowData
-    rowData.shift() // Removes headers
-    const rows: Row[] = rowData.map(r => {
+    const t = new Date().getTime();
+    if (lastUpdate + timeToLive < t ) {
+        //Query google
+        const auth = new google.auth.JWT({
+            email: SERVICE_ACCOUNT_EMAIL,
+            key: SERVICE_ACCOUNT_PRIVATE_KEY,
+            scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"]
+        })
+        const sheet = google.sheets("v4")
+        const sheetsResponse = await sheet.spreadsheets.get({
+            spreadsheetId: SHEET_ID,
+            ranges: ["Responses!A:H"],
+            includeGridData: true,
+            auth: auth,
+        });
+        console.log("Fetching sheets to get row data")
+        rowData = sheetsResponse.data.sheets[0].data[0].rowData as Array<any>;
+        lastUpdate = t;
+    } else {
+        console.log("Using cache to get row data")
+    }
+    const rows: Row[] = rowData.slice(1).map(r => {
         const values: Array<string> = r.values.map(v => v.formattedValue) as Array<string>;
         return {
             name: values[2],
