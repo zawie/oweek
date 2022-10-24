@@ -81,7 +81,7 @@ const Home: NextPage = () => {
     let kids: string[] = [];
 
     searchResult.homeFamilies.forEach((family: Family) => {
-        siblings = siblings.concat(family.kids).filter(s=> s != searchResult.query);
+        siblings = siblings.concat(family.kids).filter(s=> s != searchResult.name);
         parents = parents.concat(family.parents);
     })
 
@@ -94,7 +94,7 @@ const Home: NextPage = () => {
         kids: kids,
         siblings:siblings,
         parents: parents,
-        focus: searchResult.query,
+        focus: searchResult.name,
     } as Scope;
 
     console.log("Scope", scope);
