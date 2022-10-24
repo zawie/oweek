@@ -164,14 +164,29 @@ async function getClosestName(query: string): Promise<string> {
     let bestMatch: string = query;
     let best: number = Number.MAX_VALUE;
 
+    //Yeah, that's me!
+    if (query.toLowerCase() == "zawie") 
+        return "Adam Zawierucha"
+
     const families: Family[] = await getFamilies();
+    const queryParts = query.toLowerCase().split(/ /);
+
     families.forEach(f =>
         f.kids.concat(f.parents).forEach((name: string) => {
             if (name.toLowerCase() == query.toLowerCase()) {
                 best = -1
                 bestMatch = name
             }
-            const dist = levenshtein(query.toLowerCase(), name.toLowerCase());
+
+            //Bias if one part matches exactly
+            let mult: number = 1;
+            const nameParts = name.toLowerCase().split(/ /);
+            queryParts.forEach(p => {
+                if (nameParts.includes(p))
+                    mult *= 0.1
+            });
+
+            const dist = levenshtein(query.toLowerCase(), name.toLowerCase())*mult;
             if (dist < best) {
                 best = dist;
                 bestMatch = name;
@@ -179,6 +194,9 @@ async function getClosestName(query: string): Promise<string> {
         })
     );
 
+    console.log(best, bestMatch, query)
+    if (best > 2)
+        return query
     return bestMatch;
 }
 
