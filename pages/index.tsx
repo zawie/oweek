@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 
 import dynamic from "next/dynamic";
-import { Scope } from "./model/types";
+import { Scope } from "../components/FamilyTree"
 
 import  { Input, Typography } from 'antd';
 import { UserOutlined} from "@ant-design/icons";
