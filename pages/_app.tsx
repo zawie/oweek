@@ -40,7 +40,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </div>
         <div style={{
             backgroundColor:"whitesmoke",
-            minHeight:"100%",
+            minHeight:"100vh",
             paddingTop: 128
         }}>
             <br/>
