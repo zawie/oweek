@@ -41,7 +41,7 @@ const Home: NextPage = () => {
     
      useEffect(()=> {
          doSearch("Adam Zawierucha")
-     })
+     }, [])
      const input = <> <div style={{
          position: "absolute",
          width: "100vw",
