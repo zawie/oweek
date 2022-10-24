@@ -5,17 +5,15 @@ import type { StudentFamily} from "../model/types";
 
 import { google } from "googleapis";
 
-//Keys where here lol
-type ErrorResponse = {
   error: string
 }
 
-type FamilySearchResponse = {
+export type SearchResult = {
     query: string,
     homeFamilies: Family[],
     advisingFamilies:Family[]
 }
-type Family = {
+export type Family = {
     name: string,
     parents: string[],
     kids: string[],
@@ -29,7 +27,7 @@ type Row = {
     year: string
 }
 
-async function getFamilies(): Family[] {
+async function getFamilies(): Promise<Family[]> {
     const auth = new google.auth.JWT({
         email: SERVICE_ACCOUNT_EMAIL,
         key: SERVICE_ACCOUNT_PRIVATE_KEY,
@@ -65,7 +63,7 @@ async function getFamilies(): Family[] {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<FamilySearchResponse | ErrorResponse>
+  res: NextApiResponse<SearchResult | ErrorResponse>
 ) {
 
     const {query}: {query? : string} = req.query
