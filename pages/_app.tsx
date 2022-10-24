@@ -14,7 +14,6 @@ function MyApp({ Component, pageProps }: AppProps) {
             backgroundColor: "white",
             position: "absolute",
             width: "100vw",
-            minHeight: 128,
             paddingLeft: 16,
             display:"flex",
             alignItems: "center",
