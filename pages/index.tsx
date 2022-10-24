@@ -1,10 +1,9 @@
 import type { NextPage } from 'next'
-import Head  from "next"
 
 import dynamic from "next/dynamic";
 import { Scope } from "./model/types";
 
-import  { Input, Button, Typography } from 'antd';
+import  { Input, Typography } from 'antd';
 import { UserOutlined} from "@ant-design/icons";
 import { useState, useEffect} from "react";
 
