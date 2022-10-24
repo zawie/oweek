@@ -1,8 +1,1 @@
 @import '~antd/dist/antd.css';
-
-.index {
-  text-align: center;
-  background-color: whitesmoke;
-  padding: 100px;
-  overflow-x: auto;
-}

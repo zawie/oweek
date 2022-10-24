@@ -1,13 +1,18 @@
 import type { NextPage } from 'next'
-import dynamic from "next/dynamic";
+import Head  from "next"
 
+import dynamic from "next/dynamic";
 import { Scope } from "./model/types";
 
-import  { PageHeader, Button } from 'antd';
-import { UserAddOutlined} from "@ant-design/icons";
-import { useState} from "react";
+import  { Input, Button, Typography } from 'antd';
+import { UserOutlined} from "@ant-design/icons";
+import { useState, useEffect} from "react";
+
+const { Text } = Typography;
 
 import { Family, SearchResult } from './api/getFamily'
+
+const { Search } = Input
 
 const Home: NextPage = () => {
 
@@ -18,8 +23,11 @@ const Home: NextPage = () => {
         { loading: () => <div>Loading...</div>, ssr: false}
     );
 
-    const query = "Bob Smith"
-    const callAPI = async () => {
+     const doSearch = async (query: string) => {
+        if (query == undefined) {
+            console.log("empty query");
+            return;
+        }
         try {
             const res = await fetch(
                 `http://localhost:3000/api/getFamily?query=${query}`
@@ -31,13 +39,39 @@ const Home: NextPage = () => {
         }
     };
     
+     useEffect(()=> {
+         doSearch("Adam Zawierucha")
+     })
+     const input = <> <div style={{
+         position: "absolute",
+         width: "100vw",
+         minHeight: 32,
+         padding: 10,
+         paddingLeft: 20,
+         display: "flex",
+         flexDirection: "column"
+     }}>
+         <Search
+            size="large"
+            placeholder="Student Name..."
+            onSearch={(s)=> doSearch(s)}
+            style ={{
+                width:      "100%",
+                fontSize:   32
+        }}
+            prefix={<UserOutlined />}
+        />
+         <Text strong style={{fontSize: 48}}>
+         </Text>
+         <Text style={{fontSize: 32}}>
+         </Text>
+     </div>
+     <div style={{ height: 90, minWidth:"100vw"}}/>
+     </>
+
     if (searchResult == undefined)
-        return <div>Loading...
-
-            <Button onClick={() => callAPI()}>
-                Call API
-            </Button>
-
+        return <div>
+            {input}
         </div>;
 
     console.log("Search result", searchResult);
@@ -47,8 +81,8 @@ const Home: NextPage = () => {
     let kids: string[] = [];
 
     searchResult.homeFamilies.forEach((family: Family) => {
-        siblings = siblings.concat(family.kids)
-        parents = parents.concat(family.parents)
+        siblings = siblings.concat(family.kids).filter(s=> s != searchResult.query);
+        parents = parents.concat(family.parents);
     })
 
     //TODO: Prompt if conflict, merging families for now...
@@ -60,28 +94,18 @@ const Home: NextPage = () => {
         kids: kids,
         siblings:siblings,
         parents: parents,
-        focus:query
+        focus: searchResult.query,
     } as Scope;
 
     console.log("Scope", scope);
 
-    return <>
-        <PageHeader
-            title="O-Week Family Tree"
-            extra={[
-                <Button key="1" type="primary">
-                    <UserAddOutlined /> Add Yourself!
-                </Button>
-            ]}
-        />
-        <Button onClick={() => callAPI()}>
-            Call API
-        </Button>
+    return <div>
+        {input}
 
         <div className="App">
-            <FamilyTree scope={scope}/>
+            <FamilyTree scope={scope} doSearch={doSearch}/>
         </div>
-    </>;
+    </div>;
 }
 
 export default Home
