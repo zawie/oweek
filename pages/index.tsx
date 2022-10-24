@@ -22,7 +22,7 @@ const Home: NextPage = () => {
         { loading: () => <div>Loading...</div>, ssr: false}
     );
 
-     const doSearch = async (query: string) => {
+    const doSearch = async (query: string) => {
         if (query == undefined) {
             console.log("empty query");
             return;
@@ -41,7 +41,8 @@ const Home: NextPage = () => {
      useEffect(()=> {
          doSearch("Adam Zawierucha")
      }, [])
-     const input = <> <div style={{
+
+    const getTop = () => <> <div style={{
          position: "absolute",
          width: "100vw",
          minHeight: 32,
@@ -60,27 +61,29 @@ const Home: NextPage = () => {
         }}
             prefix={<UserOutlined />}
         />
-         <Text strong style={{fontSize: 48}}>
-         </Text>
-         <Text style={{fontSize: 32}}>
-         </Text>
+        {<>
+             <Text strong style={{fontSize: 48}}>
+                 {(searchResult == undefined || searchResult.homeFamilies.length == 0)? "Unknown Family" : searchResult.homeFamilies.map(f => f.name).join(", ")}
+             </Text>
+             <Text style={{fontSize: 24}}>
+                 {searchResult != undefined && searchResult.homeFamilies.map(f => [f.college, "College", f.year].join(" ")).join(", ")}
+             </Text>
+         </>}
      </div>
      <div style={{ height: 90, minWidth:"100vw"}}/>
      </>
 
     if (searchResult == undefined)
         return <div>
-            {input}
+            {getTop()}
         </div>;
-
-    console.log("Search result", searchResult);
 
     let siblings: string[] = [];
     let parents: string[] = [];
     let kids: string[] = [];
 
     searchResult.homeFamilies.forEach((family: Family) => {
-        siblings = siblings.concat(family.kids).filter(s=> s != searchResult.name);
+        siblings = siblings.concat(family.kids).filter(s=> s != searchResult.focusName);
         parents = parents.concat(family.parents);
     })
 
@@ -93,13 +96,11 @@ const Home: NextPage = () => {
         kids: kids,
         siblings:siblings,
         parents: parents,
-        focus: searchResult.name,
+        focus: searchResult.focusName,
     } as Scope;
 
-    console.log("Scope", scope);
-
     return <div>
-        {input}
+        {getTop()}
 
         <div className="App">
             <FamilyTree scope={scope} doSearch={doSearch}/>
