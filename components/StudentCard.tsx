@@ -40,6 +40,8 @@ export function StudentCard(student: string, doSearch: any, focus: boolean = fal
         cover={<Image
             src={owls[hash(student) % owls.length]}
             alt="Owl (Woo! Woo!)"
+            height="164"
+            width="164"
         />}>
         <Text strong > {student} </Text>
     </Card>
