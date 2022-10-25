@@ -40,14 +40,15 @@ const timeToLive = 3*60*1000 // 3 minutes
 async function getRows(): Promise<Array<any>> {
     const t = new Date().getTime();
     if (lastUpdate + timeToLive < t ) {
+        console.log("Fetching and processing row data from google sheets...")
         //Query google
-        console.log("Getting Google auth...")
+        // console.log("Getting Google auth...")
         const auth = new google.auth.JWT({
             email: SERVICE_ACCOUNT_EMAIL,
             key: SERVICE_ACCOUNT_PRIVATE_KEY,
             scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"]
         })
-        console.log("Make Google Sheets API reqeust...")
+        // console.log("Make Google Sheets API reqeust...")
         const sheet = google.sheets("v4")
         const sheetsResponse = await sheet.spreadsheets.get({
             spreadsheetId: SHEET_ID,
@@ -55,7 +56,7 @@ async function getRows(): Promise<Array<any>> {
             includeGridData: true,
             auth: auth,
         });
-        console.log("Processing Google sheets data...")
+        // console.log("Processing Google sheets data...")
         // @ts-ignore
         const rowData: Array<any> = sheetsResponse.data.sheets[0].data[0].rowData as Array<any>;
         rowData.shift();
@@ -97,10 +98,11 @@ async function getRows(): Promise<Array<any>> {
         // console.log(usedNames)
         // console.log(rows.map(r => r.name))
 
-        console.log("Rows processed!")
+        // console.log("Rows processed!")
+        console.log("Fresh rows processed and cached!")
         cachedRows = rows;
     } else {
-        console.log("Using cache to get rows!")
+        console.log("Using cached rows data.")
     }
     return cachedRows
 }
@@ -250,7 +252,6 @@ export default async function handler(
 
     //Get all families from sheets
     const families: Family[] = await getFamilies();
-    console.log("Families", families)
     const homeFamilies = families.filter(f => f.kids.includes(name));
     const advisingFamilies = families.filter(f => f.parents.includes(name));
 
