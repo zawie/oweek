@@ -33,11 +33,11 @@ type Row = {
     college: string
 }
 
-let cachedRows: Row[]
+let cachedFamilies: Family[]
 let lastUpdate: number = 0
 const timeToLive = 3*60*1000 // 3 minutes
 
-async function getRows(): Promise<Array<any>> {
+async function getFamilies(): Promise<Array<Family>> {
     const t = new Date().getTime();
     if (lastUpdate + timeToLive < t ) {
         console.log("Fetching and processing row data from google sheets...")
@@ -95,30 +95,20 @@ async function getRows(): Promise<Array<any>> {
             return !isUsed;
         })
 
-        // console.log(usedNames)
-        // console.log(rows.map(r => r.name))
+        cachedFamilies = rows.map(r => {
+            return {
+                name: r.name,
+                year: r.year,
+                parents: r.parents.split(/,+/).map(s=> s.trim()).filter(s => s.length > 0),
+                kids: r.kids.split(/,+/).map(s=> s.trim()).filter(s => s.length > 0),
+                college: r.college,
+            };
+        })
 
-        // console.log("Rows processed!")
-        console.log("Fresh rows processed and cached!")
-        cachedRows = rows;
     } else {
         console.log("Using cached rows data.")
     }
-    return cachedRows
-}
-
-async function getFamilies(): Promise<Family[]> {
-    const rows: Row[] = await getRows();
-
-    return rows.map(r => {
-        return {
-            name: r.name,
-            year: r.year,
-            parents: r.parents.split(/,+/).map(s=> s.trim()).filter(s => s.length > 0),
-            kids: r.kids.split(/,+/).map(s=> s.trim()).filter(s => s.length > 0),
-            college: r.college,
-        };
-    })
+    return cachedFamilies
 }
 
 //@ts-ignore
