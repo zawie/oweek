@@ -4,6 +4,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { Typography, Button} from 'antd'
 import { UserAddOutlined } from "@ant-design/icons";
+import { Analytics } from '@vercel/analytics/react';
 
 const { Title, Text } = Typography;
 
@@ -47,6 +48,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         }}>
             <Text> Made with love by the best college, <a href="https://www.browncollege.org">Brown College</a>. BSWB! {"🚀"} </Text>
         </div>
+        <Analytics />
   </div>
 }
 
