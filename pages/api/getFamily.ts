@@ -77,11 +77,27 @@ async function getRows(): Promise<Array<any>> {
         const usedNames: Set<string> = new Set<string>();
         rows = rows.reverse().filter((row: Row) => {
             const name = row.name.toLowerCase();
-            const isUsed: boolean = usedNames.has(name);
+            let isUsed: boolean = usedNames.has(name);
+            console.log(name, isUsed)
+            if (!isUsed) {
+                for (const u of usedNames.values()) {
+                    const dist = levenshtein(u, name); 
+                    // console.log("Distance of", u,name,dist)
+                    //Consider very similar oweek group names as the same
+                    if (dist < 5) {
+                        isUsed = true;
+                        break;
+                    }
+                }
+            }
             usedNames.add(name);
             return !isUsed;
         })
 
+        // console.log(usedNames)
+        // console.log(rows.map(r => r.name))
+
+        console.log("Rows processed!")
         cachedRows = rows;
     } else {
         console.log("Using cache to get rows!")
