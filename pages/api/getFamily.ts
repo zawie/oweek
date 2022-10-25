@@ -80,6 +80,7 @@ async function getRows(): Promise<Array<any>> {
             let isUsed: boolean = usedNames.has(name);
             console.log(name, isUsed)
             if (!isUsed) {
+                //@ts-ignore
                 for (const u of usedNames.values()) {
                     const dist = levenshtein(u, name); 
                     // console.log("Distance of", u,name,dist)
