@@ -13,18 +13,34 @@ import owl9 from "../assets/owl9.png"
 import owl10 from "../assets/owl10.png"
 import owl11 from "../assets/owl11.png"
 import owl12 from "../assets/owl12.png"
+import owl13 from "../assets/owl13.png"
+import owl14 from "../assets/owl14.png"
+import owl15 from "../assets/owl15.png"
+import owl16 from "../assets/owl16.png"
+import owl17 from "../assets/owl17.png"
+import owl18 from "../assets/owl18.png"
+import owl19 from "../assets/owl19.png"
+import owl20 from "../assets/owl20.png"
+import owl21 from "../assets/owl21.png"
+import owl22 from "../assets/owl22.png"
+import owl23 from "../assets/owl23.png"
 
 const { Text } = Typography;
 
-const owls = [owl1, owl2, owl3, owl4, owl5, owl6, owl7, owl8, owl9, owl10, owl11, owl12 ];
+const owls = [owl1, owl2, owl3, owl4, owl5, owl6, owl7, owl8, owl9, owl10, owl11, owl12, owl13, owl14, owl15, owl16, owl17, owl18, owl19, owl20, owl21, owl22, owl23];
 
-const hash =  (s: string):number  => {
-    let h = 33;
-    for (let i = 0; i < s.length; i++) {
-        h ^= s.charAt(i).charCodeAt(0);
+const hash = function(str: string): number {
+    let hash: number = 0;
+    let i, chr;
+    if (str.length === 0) return hash;
+    for (i = 0; i < str.length; i++) {
+      chr = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + chr;
+      hash |= 0; // Convert to 32bit integer
     }
-    return h;
-};
+    return hash < 0 ? -hash : hash;
+  }
+
 
 export function StudentCard(student: string, doSearch: any, focus: boolean = false) {
     return  <Card
