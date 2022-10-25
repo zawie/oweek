@@ -3,13 +3,17 @@ import type { NextPage } from 'next'
 import dynamic from "next/dynamic";
 import { Scope } from "../components/FamilyTree"
 
+import { Family, SearchResult } from './api/getFamily'
+
 import  { Input, Typography } from 'antd';
 import { UserOutlined} from "@ant-design/icons";
 import { useState, useEffect} from "react";
+import { LoadingOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
+import React from 'react';
 
+const antIcon = <LoadingOutlined style={{ fontSize: 64 }} spin />;
 const { Text } = Typography;
-
-import { Family, SearchResult } from './api/getFamily'
 
 const { Search } = Input
 
@@ -23,6 +27,7 @@ const Home: NextPage = () => {
     );
 
     const doSearch = async (query: string) => {
+        setSearchResult(undefined)
         if (query == undefined) {
             console.log("empty query");
             return;
@@ -75,7 +80,11 @@ const Home: NextPage = () => {
 
     if (searchResult == undefined)
         return <div>
-            {getTop()}
+            <div style={{height:"90vh", width:"100vw", justifyContent:"center", alignItems:"center", display:"flex", flexDirection:"column"}}>
+                <Text type="secondary" > Loading... </Text>
+                <br/>
+                <Spin indicator={antIcon} size="large" />
+            </div>
         </div>;
 
     let siblings: string[] = [];
