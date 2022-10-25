@@ -48,7 +48,7 @@ export function StudentCard(student: string, doSearch: any, focus: boolean = fal
         hoverable
         type="inner"
         style={{
-            width: focus ? 120 : 85,
+            width: focus ? 120 : 100,
             margin: 5,
             padding: 1,
             borderWidth: focus ? 3 : 0,
