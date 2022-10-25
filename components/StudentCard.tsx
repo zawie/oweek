@@ -26,6 +26,7 @@ import owl22 from "../assets/owl22.png"
 import owl23 from "../assets/owl23.png"
 
 const { Text } = Typography;
+const { Meta } = Card;
 
 const owls = [owl1, owl2, owl3, owl4, owl5, owl6, owl7, owl8, owl9, owl10, owl11, owl12, owl13, owl14, owl15, owl16, owl17, owl18, owl19, owl20, owl21, owl22, owl23];
 
@@ -45,20 +46,28 @@ const hash = function(str: string): number {
 export function StudentCard(student: string, doSearch: any, focus: boolean = false) {
     return  <Card
         hoverable
+        type="inner"
         style={{
-            width: 128,
+            width: 90,
             margin: 5,
+            padding: 1,
             borderWidth: focus ? 7 : 0,
             borderColor: "gold"
+        }}
+        bodyStyle={{
+            padding: 0,
+            paddingBottom: 10
         }}
         onClick={()=>doSearch(student)}
         size="small"
         cover={<Image
             src={owls[hash(student) % owls.length]}
             alt="Owl (Woo! Woo!)"
-            height="128"
-            width="128"
+            height="100"
+            width="100"
         />}>
-        <Text strong > {student} </Text>
+        <Text
+            style={{fontSize: 10}}
+        > {student} </Text>
     </Card>
 }
