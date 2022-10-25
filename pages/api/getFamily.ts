@@ -25,6 +25,7 @@ export type Family = {
 }
 
 type Row = {
+    timestamp: Date,
     name: string,
     parents: string,
     kids: string,
@@ -34,17 +35,19 @@ type Row = {
 
 let cachedRows: Row[]
 let lastUpdate: number = 0
-const timeToLive = 3*60*1000 //1 minute
+const timeToLive = 3*60*1000 // 3 minutes
 
 async function getRows(): Promise<Array<any>> {
     const t = new Date().getTime();
     if (lastUpdate + timeToLive < t ) {
         //Query google
+        console.log("Getting Google auth...")
         const auth = new google.auth.JWT({
             email: SERVICE_ACCOUNT_EMAIL,
             key: SERVICE_ACCOUNT_PRIVATE_KEY,
             scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"]
         })
+        console.log("Make Google Sheets API reqeust...")
         const sheet = google.sheets("v4")
         const sheetsResponse = await sheet.spreadsheets.get({
             spreadsheetId: SHEET_ID,
@@ -52,29 +55,43 @@ async function getRows(): Promise<Array<any>> {
             includeGridData: true,
             auth: auth,
         });
-        console.log("Fetching sheets to get row data.")
+        console.log("Processing Google sheets data...")
         // @ts-ignore
         const rowData: Array<any> = sheetsResponse.data.sheets[0].data[0].rowData as Array<any>;
         rowData.shift();
         lastUpdate = t;
-        cachedRows = rowData.map(r => {
+    
+        let rows: Row[] = rowData.map(r => {
             const values: Array<string> = r.values.map((v: {formattedValue: string}) => v.formattedValue) as Array<string>;
             return {
-                name: values[2],
-                year: values[3],
-                parents: values[4],
-                kids: values[5],
-                college: values[6],
+                timestamp: new Date(values[0]) || "",
+                name: values[2] || "",
+                year: values[3] || "",
+                parents: values[4] || "",
+                kids: values[5] || "",
+                college: values[6] || "",
             };
         });
+
+        // Filter out duplicate names (keep first instance)
+        const usedNames: Set<string> = new Set<string>();
+        rows = rows.reverse().filter((row: Row) => {
+            const name = row.name.toLowerCase();
+            const isUsed: boolean = usedNames.has(name);
+            usedNames.add(name);
+            return !isUsed;
+        })
+
+        cachedRows = rows;
     } else {
-        console.log("Using cache to get row data.")
+        console.log("Using cache to get rows!")
     }
     return cachedRows
 }
 
 async function getFamilies(): Promise<Family[]> {
     const rows: Row[] = await getRows();
+
     return rows.map(r => {
         return {
             name: r.name,
@@ -218,7 +235,6 @@ export default async function handler(
     //Get all families from sheets
     const families: Family[] = await getFamilies();
 
-    //TODO: Coalesce like familes
     const homeFamilies = families.filter(f => f.kids.includes(name));
     const advisingFamilies = families.filter(f => f.parents.includes(name));
 
@@ -226,37 +242,3 @@ export default async function handler(
         focusName: name, advisingFamilies, homeFamilies
     })
 }
-
-
-// ;(async () => {
-//     const auth = new google.auth.JWT({
-//         email: SERVICE_ACCOUNT_EMAIL,
-//         key: SERVICE_ACCOUNT_PRIVATE_KEY,
-//         scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"]
-//     })
-//     const sheet = google.sheets("v4")
-//     const sheetsResponse = await sheet.spreadsheets.get({
-//         spreadsheetId: SHEET_ID,
-//         ranges: ["Responses!A:H"],
-//         includeGridData: true,
-//         auth: auth,
-//     });
-//     const rowData: Array<any> = sheetsResponse.data.sheets[0].data[0].rowData as Array<any> ;
-//
-//     rowData.shift() // Removes headers
-//     rowData.forEach(r => {
-//         const values: Array<string | undefined> = r.values.map(v => v.formattedValue) as Array<string | undefined>;
-//         const row: Row = {
-//             timestamp: values[0],
-//             email: values[1],
-//             name: values[2],
-//             netid: values[3],
-//             college: values[4],
-//             parents: values[5],
-//             siblings: values[6],
-//             kids: values[7],
-//         }
-//
-//         console.log("netid:\t"+row.netid);
-//     })
-// })()
