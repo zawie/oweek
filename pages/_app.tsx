@@ -2,7 +2,7 @@ import 'antd/dist/antd.css';
 import '../styles/globals.css'
 
 import type { AppProps } from 'next/app'
-import { Typography, Button } from 'antd'
+import { Typography, Button, Empty} from 'antd'
 import { UserAddOutlined } from "@ant-design/icons";
 
 

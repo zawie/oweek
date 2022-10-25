@@ -5,11 +5,9 @@ import { Scope } from "../components/FamilyTree"
 
 import { Family, SearchResult } from './api/getFamily'
 
-import  { Input, Typography } from 'antd';
-import { UserOutlined} from "@ant-design/icons";
+import  { Input, Typography, Spin, Empty, Button} from 'antd';
 import { useState, useEffect} from "react";
-import { LoadingOutlined } from '@ant-design/icons';
-import { Spin } from 'antd';
+import { UserOutlined, LoadingOutlined, UserAddOutlined } from '@ant-design/icons';
 import React from 'react';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 64 }} spin />;
@@ -67,8 +65,8 @@ const Home: NextPage = () => {
             prefix={<UserOutlined />}
         />
         {<>
-             <Text strong style={{fontSize: 48}}>
-                 {(searchResult == undefined || searchResult.homeFamilies.length == 0)? "Unknown Family" : searchResult.homeFamilies.map(f => f.name).join(", ")}
+             <Text strong style={{fontSize: 32}}>
+                {searchResult != undefined &&  searchResult.homeFamilies.map(f => f.name).join(", ")}
              </Text>
              <Text style={{fontSize: 24}}>
                  {searchResult != undefined && searchResult.homeFamilies.map(f => [f.college, "College", f.year].join(" ")).join(", ")}
@@ -101,6 +99,27 @@ const Home: NextPage = () => {
         kids = kids.concat(family.kids);
     })
 
+    if (siblings.length + parents.length + kids.length == 0) {
+        return <div>
+        {getTop()}
+            <br/>
+            <br/>
+            <Empty
+            description={
+                <span>
+                    Your search "{searchResult.focusName}" did not match any known students.
+                </span>
+            }>
+                <Button type="link"
+                    href="https://forms.gle/hUfXkadg8Z8L5Bt98"
+                    size="large"
+                    style={{
+                        fontSize: 16,
+                        minWidth: 128,
+                }}> <UserAddOutlined/> Add a Family </Button>
+            </Empty>
+        </div>
+    }
     const scope: Scope = {
         kids: kids,
         siblings:siblings,
