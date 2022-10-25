@@ -2,11 +2,10 @@ import 'antd/dist/antd.css';
 import '../styles/globals.css'
 
 import type { AppProps } from 'next/app'
-import { Typography, Button, Empty} from 'antd'
+import { Typography, Button} from 'antd'
 import { UserAddOutlined } from "@ant-design/icons";
 
-
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 function MyApp({ Component, pageProps }: AppProps) {
     return <div style={{backgroundColor: "whitesmoke", minHeight:"100vh"}}>
@@ -38,6 +37,16 @@ function MyApp({ Component, pageProps }: AppProps) {
         </div>
         <br/>
         <Component {...pageProps}/>
+        <div  style={{
+            width: "100vw",
+            paddingTop: 32,
+            paddingBottom: 32,
+            display:"flex",
+            alignItems: "center",
+            justifyContent: "center"
+        }}>
+            <Text> Made with love by the best college, <a href="browncollege.org">Brown College</a>. BSWB! {"🚀"} </Text>
+        </div>
   </div>
 }
 
