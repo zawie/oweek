@@ -48,10 +48,11 @@ export function StudentCard(student: string, doSearch: any, focus: boolean = fal
         hoverable
         type="inner"
         style={{
-            width: 90,
+            width: focus ? 120 : 85,
             margin: 5,
             padding: 1,
-            borderWidth: focus ? 7 : 0,
+            borderWidth: focus ? 3 : 0,
+            backgroundColor: focus ? "lightyellow" : "white",
             borderColor: "gold"
         }}
         bodyStyle={{
@@ -63,8 +64,8 @@ export function StudentCard(student: string, doSearch: any, focus: boolean = fal
         cover={<Image
             src={owls[hash(student) % owls.length]}
             alt="Owl (Woo! Woo!)"
-            height="100"
-            width="100"
+            height="120"
+            width="120"
         />}>
         <Text
             style={{fontSize: 10}}
