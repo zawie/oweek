@@ -34,7 +34,7 @@ type Row = {
 
 let cachedRows: Row[]
 let lastUpdate: number = 0
-const timeToLive = 60*1000 //1 minute
+const timeToLive = 5*60*1000 //1 minute
 
 async function getRows(): Promise<Array<any>> {
     const t = new Date().getTime();
