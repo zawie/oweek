@@ -107,7 +107,7 @@ const Home: NextPage = () => {
             <Empty
             description={
                 <span>
-                    Your search "{searchResult.focusName}" did not match any known students.
+                    Your search {'"'}{searchResult.focusName}{'"'} did not match any known students.
                 </span>
             }>
                 <Button type="link"
