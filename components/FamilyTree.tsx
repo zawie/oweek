@@ -16,17 +16,23 @@ export type Scope = {
 
 function FamilyTree(props: FamilyTreeProps) {
     const { scope, doSearch} = props;
+
+    let elements: string[] = [];
+    elements = elements.concat(scope.siblings);
+    elements.push(scope.focus);
+    elements.sort();
+
     return <div style={{
             overflowY:"auto"
         }}>
         <Tree label={StudentCardGroup(scope.parents, doSearch, false, "Advisors")}>
-            <TreeNode key={scope.focus} label={StudentCardGroup([scope.focus], doSearch, true)}>
-                {scope.kids.map(kid =>
-                    <TreeNode key={kid} label={StudentCardGroup([kid], doSearch, false)}/>
-                )}
-            </TreeNode>
-            {scope.siblings.map(sibling =>
-                <TreeNode key={sibling} label={StudentCardGroup([sibling], doSearch, false)}/>
+            {elements.map((e:string) => (e != scope.focus) 
+                ? <TreeNode key={e} label={StudentCardGroup([e], doSearch, false)}/>
+                : <TreeNode key={e} label={StudentCardGroup([e], doSearch, true)}>
+                    {e == scope.focus && scope.kids.map(kid =>
+                        <TreeNode key={kid} label={StudentCardGroup([kid], doSearch, false)}/>
+                    )}
+                </TreeNode>
             )}
         </Tree>
     </div>

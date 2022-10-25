@@ -5,6 +5,7 @@ const { Text } = Typography;
 
 
 export function StudentCardGroup(students: string[], doSearch: any, focus: boolean = false, sectionName?: String) {
+    students.sort();
     return <>
     {sectionName && <Text type="secondary"> {sectionName} </Text>}
     <div style = {{display: "flex", justifyContent: "center", alignContent:"space-around"}} >
