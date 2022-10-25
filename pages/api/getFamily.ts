@@ -78,7 +78,6 @@ async function getRows(): Promise<Array<any>> {
         rows = rows.reverse().filter((row: Row) => {
             const name = row.name.toLowerCase();
             let isUsed: boolean = usedNames.has(name);
-            console.log(name, isUsed)
             if (!isUsed) {
                 //@ts-ignore
                 for (const u of usedNames.values()) {
@@ -228,8 +227,8 @@ async function getClosestName(query: string): Promise<string> {
         })
     );
 
-    console.log(best, bestMatch, query)
-    if (best > 2)
+    // console.log(best, bestMatch, query)
+    if (best > 3)
         return query
     return bestMatch;
 }
