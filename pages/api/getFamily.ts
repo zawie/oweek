@@ -112,8 +112,8 @@ async function getFamilies(): Promise<Family[]> {
         return {
             name: r.name,
             year: r.year,
-            parents: r.parents.split(/,+/).map(s=> s.trim()),
-            kids: r.kids.split(/,+/).map(s=> s.trim()),
+            parents: r.parents.split(/,+/).map(s=> s.trim()).filter(s => s.length > 0),
+            kids: r.kids.split(/,+/).map(s=> s.trim()).filter(s => s.length > 0),
             college: r.college,
         };
     })
@@ -250,7 +250,7 @@ export default async function handler(
 
     //Get all families from sheets
     const families: Family[] = await getFamilies();
-
+    console.log("Families", families)
     const homeFamilies = families.filter(f => f.kids.includes(name));
     const advisingFamilies = families.filter(f => f.parents.includes(name));
 
