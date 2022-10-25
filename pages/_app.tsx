@@ -45,7 +45,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             alignItems: "center",
             justifyContent: "center"
         }}>
-            <Text> Made with love by the best college, <a href="browncollege.org">Brown College</a>. BSWB! {"🚀"} </Text>
+            <Text> Made with love by the best college, <a href="https://www.browncollege.org">Brown College</a>. BSWB! {"🚀"} </Text>
         </div>
   </div>
 }
