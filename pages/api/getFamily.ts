@@ -35,7 +35,7 @@ type Row = {
 
 let cachedFamilies: Family[]
 let lastUpdate: number = 0
-const timeToLive = 1 // 3 minutes
+const timeToLive = 3*60*1000 //3 minutes
 
 async function getFamilies(): Promise<Array<Family>> {
     const t = new Date().getTime();
