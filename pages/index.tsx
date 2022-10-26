@@ -8,7 +8,7 @@ import { Family } from '../helper/family'
 
 import  { Input, Typography, Spin, Empty, Button, Card} from 'antd';
 import { useState } from "react";
-import { UserOutlined, LoadingOutlined, UserAddOutlined } from '@ant-design/icons';
+import { UserOutlined, LoadingOutlined, UserAddOutlined, SyncOutlined } from '@ant-design/icons';
 import React from 'react';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 64 }} spin />;
@@ -26,17 +26,15 @@ const Home: NextPage = () => {
         { ssr: false }
     );
 
-    const doSearch = async (query: string) => {
+    const doSearch = async (query: string | undefined) => {
         setSearching(true);
         setSearchResult(undefined)
-        if (query == undefined) {
-            console.log("empty query");
-            return;
-        }
         try {
             const res = await fetch(
-                `/api/getFamily?query=${query}`
-                );
+                query == undefined 
+                    ? `api/getFamily`
+                    : `/api/getFamily?query=${query}`
+            );
             const data = await res.json() as SearchResult;
             setSearchResult(() => data);
             setSearching(false);
@@ -54,16 +52,28 @@ const Home: NextPage = () => {
          display: "flex",
          flexDirection: "column"
      }}>
-         <Search
-            size="large"
-            placeholder="Student Name..."
-            onSearch={(s)=> doSearch(s)}
-            style ={{
-                width:      "100%",
-                fontSize:   32
-        }}
-            prefix={<UserOutlined />}
-        />
+         <div style={{display:"flex", flexDirection:"row"}}>
+            <Button
+                onClick={() => doSearch(undefined)}
+                size="large"
+                type="primary"
+                style={{
+                    marginRight: 10,
+                    fontSize: 16,
+                    minWidth: 128,
+            }}> <SyncOutlined />Random </Button>  
+            <Search
+                size="large"
+                placeholder="Search student name..."
+                onSearch={(s)=> doSearch(s)}
+                style ={{
+                    width:      "100%",
+                    fontSize:   32
+            }}
+                prefix={<UserOutlined />}
+            />
+        </div>
+
         {<>
              <Text strong style={{fontSize: 32}}>
                 {searchResult != undefined &&  searchResult.homeFamilies.map(f => f.name).join(", ")}
@@ -99,9 +109,9 @@ const Home: NextPage = () => {
                     <br/>
                     <Text style={{fontSize: 16}}> 
                         Explore O-Week families at <a href="https://rice.edu">Rice University</a>. 
-                        Start by <b>searching your name or your friends name above</b>!
+                        Start by <b>searching your name or your friends name above</b> or go to a random person to explore.
                     </Text>
-                    <br/>
+                    <br/>                    
                     <br/>
                     <Text style={{fontSize: 16}}> 
                         See any errors? Want to make a feature request? Email <a href="mailto:zawie@rice.edu"> Adam Zawierucha (zawie@rice.edu)</a>.
@@ -111,14 +121,25 @@ const Home: NextPage = () => {
                     <Text style={{fontSize: 16}}> Be sure to add any O-Week families you were involved in or know of by filling out a form. 
                         The data will be automatically added!
                      </Text>
+                    <br/>
+                    <br/>
                     <div style={{display:"flex", justifyContent:"center"}}>
-                        <Button type="link"
+                        <Button type="primary"
                         href="https://forms.gle/hUfXkadg8Z8L5Bt98"
                         size="large"
                         style={{
+                            margin:5,
                             fontSize: 16,
                             minWidth: 128,
                         }}> <UserAddOutlined/> Add a Family </Button>
+                        <Button type="link"
+                        onClick={() => doSearch(undefined)}
+                        size="large"
+                        style={{
+                            margin:5,
+                            fontSize: 16,
+                            minWidth: 128,
+                        }}> <SyncOutlined /> Go to a Random Person </Button>
                     </div>
                 </Card>
                 <br/>
