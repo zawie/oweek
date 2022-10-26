@@ -12,7 +12,7 @@ import { UserOutlined, LoadingOutlined, UserAddOutlined, SyncOutlined } from '@a
 import React from 'react';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 64 }} spin />;
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
 const { Search } = Input
 
@@ -97,42 +97,23 @@ const Home: NextPage = () => {
 
     if (searchResult == undefined)
             return <div>
-            {getTop()}
-            <div style={{width:"100vw", alignItems:"center", display:"flex", flexDirection:"column"}}>
-                    
+            <div style={{width:"100vw", height: "65vh", alignItems:"center", justifyContent:"center", display:"flex", flexDirection:"column"}}>
+                <Title type="secondary">
+                    Start Exploring
+                </Title>  
+                <Search
+                    size="large"
+                    placeholder="Search student name..."
+                    onSearch={(s)=> doSearch(s)}
+                    style ={{
+                        width:      "80%",
+                        fontSize:   64
+                }}
+                    prefix={<UserOutlined />}
+                />
                 <br/>
-                <Card style={{minWidth: 750, margin:25, maxWidth:"90%"}}>
-                    <Text strong style={{fontSize: 32}}> 
-                        Welcome!
-                    </Text>
-                    <br/>
-                    <br/>
-                    <Text style={{fontSize: 16}}> 
-                        Explore O-Week families at <a href="https://rice.edu">Rice University</a>. 
-                        Start by <b>searching your name or your friends name above</b> or go to a random person to explore.
-                    </Text>
-                    <br/>                    
-                    <br/>
-                    <Text style={{fontSize: 16}}> 
-                        See any errors? Want to make a feature request? Email <a href="mailto:zawie@rice.edu"> Adam Zawierucha (zawie@rice.edu)</a>.
-                    </Text> 
-                    <br/>
-                    <br/>
-                    <Text style={{fontSize: 16}}> Be sure to add any O-Week families you were involved in or know of by filling out a form. 
-                        The data will be automatically added!
-                     </Text>
-                    <br/>
-                    <br/>
-                    <div style={{display:"flex", justifyContent:"center"}}>
+                <div style={{display:"flex", justifyContent:"center"}}>
                         <Button type="primary"
-                        href="https://forms.gle/hUfXkadg8Z8L5Bt98"
-                        size="large"
-                        style={{
-                            margin:5,
-                            fontSize: 16,
-                            minWidth: 128,
-                        }}> <UserAddOutlined/> Add a Family </Button>
-                        <Button type="link"
                         onClick={() => doSearch(undefined)}
                         size="large"
                         style={{
@@ -140,9 +121,15 @@ const Home: NextPage = () => {
                             fontSize: 16,
                             minWidth: 128,
                         }}> <SyncOutlined /> Go to a Random Person </Button>
+                        <Button type="link"
+                        href="https://forms.gle/hUfXkadg8Z8L5Bt98"
+                        size="large"
+                        style={{
+                            margin:5,
+                            fontSize: 16,
+                            minWidth: 128,
+                        }}> <UserAddOutlined/> Add a Family </Button>
                     </div>
-                </Card>
-                <br/>
             </div>
         </div>;
 
