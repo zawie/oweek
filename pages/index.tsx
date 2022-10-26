@@ -129,7 +129,7 @@ const Home: NextPage = () => {
                             margin:5,
                             fontSize: 16,
                             minWidth: 128,
-                        }}> <UserAddOutlined/> Add a Family </Button>
+                        }}> <UserAddOutlined/> Add a family </Button>
                     </div>
             </div>
         </div>;
@@ -165,7 +165,7 @@ const Home: NextPage = () => {
                     style={{
                         fontSize: 16,
                         minWidth: 128,
-                }}> <UserAddOutlined/> Add a Family </Button>
+                }}> <UserAddOutlined/> Add a family </Button>
             </Empty>
         </div>
     }
