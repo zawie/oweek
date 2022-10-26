@@ -5,6 +5,7 @@ import { Scope } from "../components/FamilyTree"
 
 import { SearchResult } from './api/getFamily'
 import { Family } from '../helper/family'
+//@ts-ignore
 import LoadingDelay from 'react-loading-delay';
 
 import  { Input, Typography, Spin, Empty, Button, Divider} from 'antd';
