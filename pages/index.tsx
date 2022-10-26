@@ -88,12 +88,14 @@ const Home: NextPage = () => {
      </>
 
     if (searching)
-        return <LoadingDelay check={searching} delay={1000}>
+        return <LoadingDelay check={searching} delay={2000}>
             {(isLoading: boolean, isDelaying: boolean) =>
                 <div style={{height:"90vh", width:"100vw", justifyContent:"center", alignItems:"center", display:"flex", flexDirection:"column"}}>
-                    <Text type="secondary" style={{opacity: (isLoading && isDelaying) ? 0 : 1}}> Loading... </Text>
-                    <br/>
-                    <Spin style={{opacity: (isLoading && isDelaying) ? 0 : 1}} indicator={antIcon} size="large" />
+                    {isLoading && isDelaying && <>
+                        <Text type="secondary"> Loading... </Text>
+                        <br/>
+                        <Spin indicator={antIcon} size="large" />
+                    </>}
                 </div>
             }
         </LoadingDelay>;
