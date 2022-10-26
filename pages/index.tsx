@@ -41,6 +41,7 @@ const Home: NextPage = () => {
                     ? `api/getFamily`
                     : `/api/getFamily?query=${query}`
             );
+            await new Promise(resolve => setTimeout(resolve, 2000));
             const data = await res.json() as SearchResult;
             setSearchResult(() => data);
             setSearching(false);
@@ -49,7 +50,7 @@ const Home: NextPage = () => {
         }
     };
 
-    const getTop = () => <div style={{
+    const getTop = (disabled:boolean = false) => <div style={{
          width: "100vw",
          padding: 10,
          paddingLeft: 20,
@@ -59,6 +60,7 @@ const Home: NextPage = () => {
          <div style={{display:"flex", flexDirection:"row"}}>
             <Button
                 onClick={() => doSearch(undefined)}
+                disabled={disabled}
                 size="large"
                 type="primary"
                 style={{
@@ -67,6 +69,7 @@ const Home: NextPage = () => {
                     minWidth: 128,
             }}> <SyncOutlined />Random </Button>  
             <Search
+                disabled={disabled}
                 size="large"
                 placeholder="Search student name..."
                 onSearch={(s)=> doSearch(s)}
@@ -80,13 +83,16 @@ const Home: NextPage = () => {
      </div>
 
     if (searching)
-        return <div style={{height:"65vh", width:"100vw", justifyContent:"center", alignItems:"center", display:"flex", flexDirection:"column"}}>
-            {showWheel && <>
-                <Text type="secondary"> Loading... </Text>
-                <br/>
-                <Spin indicator={antIcon} size="large" />
-            </>}
-        </div>
+        return <>
+            {getTop(true)} 
+            <div style={{height:"65vh", width:"100vw", justifyContent:"center", alignItems:"center", display:"flex", flexDirection:"column"}}>
+                {showWheel && <>
+                    <Text type="secondary"> Loading... </Text>
+                    <br/>
+                    <Spin indicator={antIcon} size="large" />
+                </>}
+            </div>
+        </>
 
     if (searchResult == undefined)
             return <div>
