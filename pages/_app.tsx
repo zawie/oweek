@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     style={{
                         fontSize: 16,
                         minWidth: 128,
-                }}> <UserAddOutlined/> Add a Family </Button>
+                }}> <UserAddOutlined/> Add a family </Button>
             </div>
         </div>
         <br/>
