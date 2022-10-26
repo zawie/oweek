@@ -7,7 +7,7 @@ import { SearchResult } from './api/getFamily'
 import { Family } from '../helper/family'
 import LoadingDelay from 'react-loading-delay';
 
-import  { Input, Typography, Spin, Empty, Button, Card} from 'antd';
+import  { Input, Typography, Spin, Empty, Button, Divider} from 'antd';
 import { useState } from "react";
 import { UserOutlined, LoadingOutlined, UserAddOutlined, SyncOutlined } from '@ant-design/icons';
 import React from 'react';
@@ -44,10 +44,8 @@ const Home: NextPage = () => {
         }
     };
 
-    const getTop = () => <> <div style={{
-         position: "absolute",
+    const getTop = () => <div style={{
          width: "100vw",
-         minHeight: 32,
          padding: 10,
          paddingLeft: 20,
          display: "flex",
@@ -74,19 +72,7 @@ const Home: NextPage = () => {
                 prefix={<UserOutlined />}
             />
         </div>
-
-        {<>
-             <Text strong style={{fontSize: 32}}>
-                {searchResult != undefined &&  searchResult.homeFamilies.map(f => f.name).join(", ")}
-             </Text>
-             <Text style={{fontSize: 24}}>
-                 {searchResult != undefined && searchResult.homeFamilies.map(f => [f.college, "College", f.year].join(" ")).join(", ")}
-             </Text>
-         </>}
      </div>
-     <div style={{ height: 90, minWidth:"100vw"}}/>
-     </>
-
     if (searching)
         return <LoadingDelay check={searching} delay={2000}>
             {(isLoading: boolean, isDelaying: boolean) =>
@@ -184,8 +170,22 @@ const Home: NextPage = () => {
     return <div>
         {getTop()}
 
-        <div className="App">
+        <div style={{marginLeft: 15}}>
+            <Divider> 
+                <div style={{display:"flex", flexDirection:"column"}}>
+                    <Text strong style={{fontSize: 28}}>
+                        {searchResult.homeFamilies.map(f => f.name).join(", ")}
+                    </Text>
+                    <Text type="secondary" style={{fontSize: 20}}>
+                        {searchResult.homeFamilies.length > 0 
+                            ? searchResult.homeFamilies.map(f => [f.college, "College -", f.year].join(" ")).join(", ")
+                            : "Unknown Family"
+                            }
+                    </Text>
+                </div>
+            </Divider>
             <FamTree scope={scope} doSearch={doSearch}/>
+            <Divider/>
         </div>
     </div>;
 }
