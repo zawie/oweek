@@ -66,7 +66,7 @@ export async function getFamilies(): Promise<Array<Family>> {
         // Filter out duplicate names (keep first instance)
         const usedNames: Set<string> = new Set<string>();
         rows = rows.reverse().filter((row: Row) => {
-            const name = row.name.toLowerCase();
+            const name = row.name.toLowerCase().replace(/&/, 'and'); 
             let isUsed: boolean = usedNames.has(name);
             if (!isUsed) {
                 //@ts-ignore
