@@ -5,6 +5,7 @@ import { Scope } from "../components/FamilyTree"
 
 import { SearchResult } from './api/getFamily'
 import { Family } from '../helper/family'
+import LoadingDelay from 'react-loading-delay';
 
 import  { Input, Typography, Spin, Empty, Button, Card} from 'antd';
 import { useState } from "react";
@@ -87,13 +88,15 @@ const Home: NextPage = () => {
      </>
 
     if (searching)
-        return <div>
-            <div style={{height:"90vh", width:"100vw", justifyContent:"center", alignItems:"center", display:"flex", flexDirection:"column"}}>
-                <Text type="secondary" > Loading... </Text>
-                <br/>
-                <Spin indicator={antIcon} size="large" />
-            </div>
-        </div>;
+        return <LoadingDelay check={searching} delay={1000}>
+            {(isLoading: boolean, isDelaying: boolean) =>
+                <div style={{height:"90vh", width:"100vw", justifyContent:"center", alignItems:"center", display:"flex", flexDirection:"column"}}>
+                    <Text type="secondary" style={{opacity: (isLoading && isDelaying) ? 0 : 1}}> Loading... </Text>
+                    <br/>
+                    <Spin style={{opacity: (isLoading && isDelaying) ? 0 : 1}} indicator={antIcon} size="large" />
+                </div>
+            }
+        </LoadingDelay>;
 
     if (searchResult == undefined)
             return <div>
