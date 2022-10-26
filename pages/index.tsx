@@ -120,7 +120,7 @@ const Home: NextPage = () => {
                             margin:5,
                             fontSize: 16,
                             minWidth: 128,
-                        }}> <SyncOutlined /> Go to a Random Person </Button>
+                        }}> <SyncOutlined /> Random </Button>
                         <Button type="link"
                         href="https://forms.gle/hUfXkadg8Z8L5Bt98"
                         size="large"
