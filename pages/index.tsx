@@ -6,8 +6,8 @@ import { Scope } from "../components/FamilyTree"
 import { SearchResult } from './api/getFamily'
 import { Family } from '../helper/family'
 
-import  { Input, Typography, Spin, Empty, Button} from 'antd';
-import { useState, useEffect} from "react";
+import  { Input, Typography, Spin, Empty, Button, Card} from 'antd';
+import { useState } from "react";
 import { UserOutlined, LoadingOutlined, UserAddOutlined } from '@ant-design/icons';
 import React from 'react';
 
@@ -19,6 +19,7 @@ const { Search } = Input
 const Home: NextPage = () => {
 
     const [searchResult, setSearchResult] = useState<SearchResult | undefined>(undefined);
+    const [searching, setSearching] = useState<boolean>(false);
 
     const FamTree = dynamic(
         () => import("../components/FamilyTree"),
@@ -26,6 +27,7 @@ const Home: NextPage = () => {
     );
 
     const doSearch = async (query: string) => {
+        setSearching(true);
         setSearchResult(undefined)
         if (query == undefined) {
             console.log("empty query");
@@ -37,14 +39,11 @@ const Home: NextPage = () => {
                 );
             const data = await res.json() as SearchResult;
             setSearchResult(() => data);
+            setSearching(false);
         } catch (err) {
             console.log(err);
         }
     };
-    
-     useEffect(()=> {
-         doSearch("Adam Zawierucha")
-     }, [])
 
     const getTop = () => <> <div style={{
          position: "absolute",
@@ -77,12 +76,52 @@ const Home: NextPage = () => {
      <div style={{ height: 90, minWidth:"100vw"}}/>
      </>
 
-    if (searchResult == undefined)
+    if (searching)
         return <div>
             <div style={{height:"90vh", width:"100vw", justifyContent:"center", alignItems:"center", display:"flex", flexDirection:"column"}}>
                 <Text type="secondary" > Loading... </Text>
                 <br/>
                 <Spin indicator={antIcon} size="large" />
+            </div>
+        </div>;
+
+    if (searchResult == undefined)
+            return <div>
+            {getTop()}
+            <div style={{width:"100vw", alignItems:"center", display:"flex", flexDirection:"column"}}>
+                    
+                <br/>
+                <Card style={{minWidth: 750, margin:25, maxWidth:"90%"}}>
+                    <Text strong style={{fontSize: 32}}> 
+                        Welcome!
+                    </Text>
+                    <br/>
+                    <br/>
+                    <Text style={{fontSize: 16}}> 
+                        Explore O-Week families at <a href="https://rice.edu">Rice University</a>. 
+                        Start by <b>searching your name or your friends name above</b>!
+                    </Text>
+                    <br/>
+                    <br/>
+                    <Text style={{fontSize: 16}}> 
+                        See any errors? Want to make a feature request? Email <a href="mailto:zawie@rice.edu"> Adam Zawierucha (zawie@rice.edu)</a>.
+                    </Text> 
+                    <br/>
+                    <br/>
+                    <Text style={{fontSize: 16}}> Be sure to add any O-Week families you were involved in or know of by filling out a form. 
+                        The data will be automatically added!
+                     </Text>
+                    <div style={{display:"flex", justifyContent:"center"}}>
+                        <Button type="link"
+                        href="https://forms.gle/hUfXkadg8Z8L5Bt98"
+                        size="large"
+                        style={{
+                            fontSize: 16,
+                            minWidth: 128,
+                        }}> <UserAddOutlined/> Add a Family </Button>
+                    </div>
+                </Card>
+                <br/>
             </div>
         </div>;
 
