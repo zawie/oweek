@@ -9,7 +9,7 @@ export function StudentCardGroup(students: string[], doSearch: any, focus: boole
     return <>
     {sectionName && <Text type="secondary"> {sectionName} </Text>}
     <div style = {{display: "flex", justifyContent: "center", alignContent:"space-around"}} >
-        {students.map(s => StudentCard(s, doSearch, focus))}
+        {students.length > 0 ? students.map(s => StudentCard(s, doSearch, focus)) : <Text> Unknown 😔 </Text>}
     </div>
     </>;
 }
