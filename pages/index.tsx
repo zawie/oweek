@@ -3,7 +3,8 @@ import type { NextPage } from 'next'
 import dynamic from "next/dynamic";
 import { Scope } from "../components/FamilyTree"
 
-import { Family, SearchResult } from './api/getFamily'
+import { SearchResult } from './api/getFamily'
+import { Family } from '../helper/family'
 
 import  { Input, Typography, Spin, Empty, Button} from 'antd';
 import { useState, useEffect} from "react";
