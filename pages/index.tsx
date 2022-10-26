@@ -12,6 +12,7 @@ import  { Input, Typography, Spin, Empty, Button, Divider} from 'antd';
 import { useState } from "react";
 import { UserOutlined, LoadingOutlined, UserAddOutlined, SyncOutlined } from '@ant-design/icons';
 import React from 'react';
+import { StyledBadgePoints } from '@nextui-org/react';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 64 }} spin />;
 const { Text, Title } = Typography;
@@ -22,6 +23,7 @@ const Home: NextPage = () => {
 
     const [searchResult, setSearchResult] = useState<SearchResult | undefined>(undefined);
     const [searching, setSearching] = useState<boolean>(false);
+    const [showWheel, setShowWeel] = useState<boolean>(false);
 
     const FamTree = dynamic(
         () => import("../components/FamilyTree"),
@@ -30,7 +32,9 @@ const Home: NextPage = () => {
 
     const doSearch = async (query: string | undefined) => {
         setSearching(true);
-        setSearchResult(undefined)
+        setSearchResult(undefined);
+        setShowWeel(false);
+        setTimeout(()=>{setShowWeel(true); console.log("set show wheel to", searching)}, 250);
         try {
             const res = await fetch(
                 query == undefined 
@@ -74,18 +78,15 @@ const Home: NextPage = () => {
             />
         </div>
      </div>
+
     if (searching)
-        return <LoadingDelay check={searching} delay={2000}>
-            {(isLoading: boolean, isDelaying: boolean) =>
-                <div style={{height:"90vh", width:"100vw", justifyContent:"center", alignItems:"center", display:"flex", flexDirection:"column"}}>
-                    {isLoading && isDelaying && <>
-                        <Text type="secondary"> Loading... </Text>
-                        <br/>
-                        <Spin indicator={antIcon} size="large" />
-                    </>}
-                </div>
-            }
-        </LoadingDelay>;
+        return <div style={{height:"65vh", width:"100vw", justifyContent:"center", alignItems:"center", display:"flex", flexDirection:"column"}}>
+            {showWheel && <>
+                <Text type="secondary"> Loading... </Text>
+                <br/>
+                <Spin indicator={antIcon} size="large" />
+            </>}
+        </div>
 
     if (searchResult == undefined)
             return <div>
