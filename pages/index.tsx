@@ -175,7 +175,7 @@ const Home: NextPage = () => {
         focus: searchResult.focusName,
     } as Scope;
 
-    return <div>
+    return <div style={{width:"100vw"}}>
         {getTop()}
 
         <div>
