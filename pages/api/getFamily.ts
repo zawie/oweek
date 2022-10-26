@@ -8,6 +8,7 @@ type ErrorResponse = {
 }
 
 export type SearchResult = {
+    queryMade: string | undefined,
     focusName: string,
     homeFamilies: Family[],
     advisingFamilies:Family[]
@@ -57,20 +58,22 @@ async function getClosestName(query: string): Promise<string> {
     return bestMatch;
 }
 
+async function getRandomName(): Promise<string> {
+    const families: Family[] = await getFamilies();
+    const randFam = families[Math.floor(Math.random()*families.length)];
+    const people = randFam.kids.concat(randFam.parents);
+    return people[Math.floor(Math.random()*people.length)];
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<SearchResult | ErrorResponse>
 ) {
     const {query}: {query? : string} = req.query
 
-    if (query == undefined) {
-        res.status(400).json({
-            error: "no query not specified"
-        });
-        return;
-    }
-
-    const name:string = await getClosestName(query);
+    const name:string = query != undefined 
+        ? await getClosestName(query)
+        : await getRandomName(); //Select a random student if no query is specified.
 
     //Get all families from sheets
     const families: Family[] = await getFamilies();
@@ -78,6 +81,9 @@ export default async function handler(
     const advisingFamilies = families.filter(f => f.parents.includes(name));
 
     res.status(200).json({
-        focusName: name, advisingFamilies, homeFamilies
+        focusName: name, 
+        queryMade: query,
+        advisingFamilies, 
+        homeFamilies
     })
 }
