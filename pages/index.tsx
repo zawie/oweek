@@ -103,6 +103,7 @@ const Home: NextPage = () => {
                 </Title>  
                 <Search
                     size="large"
+                    enterButton="Search"
                     placeholder="Search student name..."
                     onSearch={(s)=> doSearch(s)}
                     style ={{
@@ -113,14 +114,14 @@ const Home: NextPage = () => {
                 />
                 <br/>
                 <div style={{display:"flex", justifyContent:"center"}}>
-                        <Button type="primary"
+                        <Button type="link"
                         onClick={() => doSearch(undefined)}
                         size="large"
                         style={{
                             margin:5,
                             fontSize: 16,
                             minWidth: 128,
-                        }}> <SyncOutlined /> Random </Button>
+                        }}> <SyncOutlined /> Go to a random person </Button>
                         <Button type="link"
                         href="https://forms.gle/hUfXkadg8Z8L5Bt98"
                         size="large"
