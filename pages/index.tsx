@@ -178,8 +178,8 @@ const Home: NextPage = () => {
     return <div>
         {getTop()}
 
-        <div style={{marginLeft: 15}}>
-            <Divider> 
+        <div>
+            <Divider style={{marginLeft: 15, marginRight: 15}}> 
                 <div style={{display:"flex", flexDirection:"column"}}>
                     <Text strong style={{fontSize: 28}}>
                         {searchResult.homeFamilies.map(f => f.name).join(", ")}
@@ -193,7 +193,7 @@ const Home: NextPage = () => {
                 </div>
             </Divider>
             <FamTree scope={scope} doSearch={doSearch}/>
-            <Divider/>
+            <Divider style={{marginLeft: 15, marginRight: 15}} />
         </div>
     </div>;
 }
