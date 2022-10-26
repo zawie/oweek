@@ -41,7 +41,6 @@ const Home: NextPage = () => {
                     ? `api/getFamily`
                     : `/api/getFamily?query=${query}`
             );
-            await new Promise(resolve => setTimeout(resolve, 2000));
             const data = await res.json() as SearchResult;
             setSearchResult(() => data);
             setSearching(false);
