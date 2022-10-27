@@ -139,7 +139,7 @@ const Home: NextPage = () => {
     })
 
     //TODO: Prompt if conflict, merging families for now...
-    searchResult.advisingFamilies.forEach((family: Family) => {
+    searchResult.parentFamilies.forEach((family: Family) => {
         kids = kids.concat(family.kids);
     })
 
