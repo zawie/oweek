@@ -164,11 +164,27 @@ const Home: NextPage = () => {
             </Empty>
         </div>
     }
+
+    const hasKids = new Map<string, boolean>();
+    const possibleParents = kids.concat(siblings);
+    const possibleRelatedFamilies = searchResult.grandFamilies.concat(searchResult.newphewFamilies);
+    for (const x of possibleParents) {
+        hasKids.set(x, false);
+        for (const f of possibleRelatedFamilies) {
+            console.log(x,f.parents);
+            if (f.parents.includes(x)) {
+                hasKids.set(x, true);
+                break;
+            }
+        }
+    }
+
     const scope: Scope = {
         kids: kids,
-        siblings:siblings,
+        siblings: siblings,
         parents: parents,
         focus: searchResult.focusName,
+        hasKids,
     } as Scope;
 
     return <div style={{width:"100vw"}}>
