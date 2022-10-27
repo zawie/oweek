@@ -10,8 +10,9 @@ export type Scope = {
     focus: string
 
     parents: string[]      //  Parents of this family
-    siblings: string[]    //  Your siblings and their children
+    siblings: string[]     //  Your siblings and their children
     kids: string[]         //  Your siblings and their children
+    hasKids: Map<string, boolean>
 }
 
 function FamilyTree(props: FamilyTreeProps) {
@@ -27,10 +28,19 @@ function FamilyTree(props: FamilyTreeProps) {
         }}>
         <Tree label={StudentCardGroup(scope.parents, doSearch, false, "Advisors")}>
             {elements.map((e:string) => (e != scope.focus) 
-                ? <TreeNode key={e} label={StudentCardGroup([e], doSearch, false)}/>
+                ? ( scope.hasKids.get(e) 
+                    ? <TreeNode key={e} label={StudentCardGroup([e], doSearch, false)}>
+                        <TreeNode key={e+"_kids"} label={""}/>
+                      </TreeNode>
+                    : <TreeNode key={e} label={StudentCardGroup([e], doSearch, false)}/>
+                  )
                 : <TreeNode key={e} label={StudentCardGroup([e], doSearch, true)}>
                     {e == scope.focus && scope.kids.map(kid =>
-                        <TreeNode key={kid} label={StudentCardGroup([kid], doSearch, false)}/>
+                        scope.hasKids.get(kid) 
+                        ? <TreeNode key={kid} label={StudentCardGroup([kid], doSearch, false)}>
+                            <TreeNode key={kid+"_kids"} label={""}/>
+                          </TreeNode>
+                        : <TreeNode key={kid} label={StudentCardGroup([kid], doSearch, false)}/>
                     )}
                 </TreeNode>
             )}

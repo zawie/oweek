@@ -34,17 +34,13 @@ export default async function handler(
     const parentFamilies = families.filter(f => f.parents.includes(name));
 
     let kids: string[] = [];
-    parentFamilies.forEach(family => {
-      kids = kids.concat(family.kids);
-    });
+    parentFamilies.forEach(f => kids = kids.concat(f.kids));
     const grandFamilies = families.filter(f => 
       f.parents.some(p => kids.includes(p))
     );
 
     let siblings: string[] = [];
-    homeFamilies.forEach(family => {
-      kids = kids.concat(family.kids);
-    });
+    homeFamilies.forEach(f => siblings = siblings.concat(f.kids));
     const newphewFamilies = families.filter(f => 
       f.parents.some(p => siblings.includes(p))
     );
