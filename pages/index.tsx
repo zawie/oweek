@@ -3,7 +3,7 @@ import type { NextPage } from 'next'
 import dynamic from "next/dynamic";
 import { Scope } from "../components/FamilyTree"
 
-import { SearchResult } from './api/getFamily'
+import { SearchResult } from './api/search'
 import { Family } from '../helper/family'
 
 import  { Input, Typography, Spin, Empty, Button, Divider} from 'antd';
@@ -35,8 +35,8 @@ const Home: NextPage = () => {
         try {
             const res = await fetch(
                 query == undefined 
-                    ? `api/getFamily`
-                    : `/api/getFamily?query=${query}`
+                    ? `/api/search`
+                    : `/api/search?query=${query}`
             );
             const data = await res.json() as SearchResult;
             setSearchResult(() => data);
