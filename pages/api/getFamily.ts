@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Family, getFamilies } from '../../helper/family';
-import { getClosestName, getRandomName} from '../../helper/name';
+import { getBestName, getRandomName} from '../../helper/name';
 
 type ErrorResponse = {
   error: string
@@ -24,7 +24,7 @@ export default async function handler(
 
     //Find closest name to query
     const name = query != undefined 
-        ? await getClosestName(query, families)
+        ? await getBestName(query, families)
         : await getRandomName(families); //Select a random student if no query is specified.
 
     //Find all families associated with this name

@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { stringSimilarity } from './similarity';
-import { Family, getFamilies } from './family';
+import { Family } from './family';
 
-export async function getClosestName(query: string, families: Family[]): Promise<string> {
+export async function getBestName(query: string, families: Family[]): Promise<string> {
     let bestMatch: string = query;
     let best: number = 0;
 
