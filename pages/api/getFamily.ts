@@ -11,7 +11,7 @@ export type SearchResult = {
     queryMade: string | undefined,
     focusName: string,
     homeFamilies: Family[],
-    advisingFamilies:Family[],
+    advisingFamilies: Family[],
 }
 
 export default async function handler(
