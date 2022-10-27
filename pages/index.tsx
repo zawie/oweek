@@ -5,14 +5,11 @@ import { Scope } from "../components/FamilyTree"
 
 import { SearchResult } from './api/getFamily'
 import { Family } from '../helper/family'
-//@ts-ignore
-import LoadingDelay from 'react-loading-delay';
 
 import  { Input, Typography, Spin, Empty, Button, Divider} from 'antd';
 import { useState } from "react";
 import { UserOutlined, LoadingOutlined, UserAddOutlined, SyncOutlined } from '@ant-design/icons';
 import React from 'react';
-import { StyledBadgePoints } from '@nextui-org/react';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 64 }} spin />;
 const { Text, Title } = Typography;
