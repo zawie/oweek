@@ -2,7 +2,7 @@
 import { stringSimilarity } from './similarity';
 import { Family, getFamilies } from './family';
 
-export async function getClosestName(query: string): Promise<string> {
+export async function getClosestName(query: string, families: Family[]): Promise<string> {
     let bestMatch: string = query;
     let best: number = 0;
 
@@ -10,8 +10,6 @@ export async function getClosestName(query: string): Promise<string> {
 
     if (q == "zawie") 
         return "Adam Zawierucha"
-
-    const families: Family[] = await getFamilies();
 
     families.forEach(f =>
         f.kids.concat(f.parents).forEach((name: string) => {
@@ -45,8 +43,7 @@ export async function getClosestName(query: string): Promise<string> {
     return bestMatch;
 }
 
-export async function getRandomName(): Promise<string> {
-    const families: Family[] = await getFamilies();
+export async function getRandomName(families: Family[]): Promise<string> {
     const randFam = families[Math.floor(Math.random()*families.length)];
     const people = randFam.kids.concat(randFam.parents);
     return people[Math.floor(Math.random()*people.length)];

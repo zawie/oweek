@@ -19,14 +19,15 @@ export default async function handler(
   res: NextApiResponse<SearchResult | ErrorResponse>
 ) {
     const {query}: {query? : string} = req.query
+  
+    const families: Family[] = await getFamilies();
 
     //Find closest name to query
-    const name:string = query != undefined 
-        ? await getClosestName(query)
-        : await getRandomName(); //Select a random student if no query is specified.
+    const name = query != undefined 
+        ? await getClosestName(query, families)
+        : await getRandomName(families); //Select a random student if no query is specified.
 
     //Find all families associated with this name
-    const families: Family[] = await getFamilies();
     const homeFamilies = families.filter(f => f.kids.includes(name));
     const advisingFamilies = families.filter(f => f.parents.includes(name));
 
