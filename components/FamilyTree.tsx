@@ -24,7 +24,8 @@ function FamilyTree(props: FamilyTreeProps) {
     elements.sort();
 
     return <div style={{
-            overflowY:"auto"
+            overflowY:"auto",
+            padding: 25   
         }}>
         <Tree label={StudentCardGroup(scope.parents, doSearch, false, "Advisors")}>
             {elements.map((e:string) => (e != scope.focus) 
