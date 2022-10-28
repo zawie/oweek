@@ -1,5 +1,6 @@
 import { Tree, TreeNode } from 'react-organizational-chart';
 import { StudentCardGroup } from './StudentCardGroup'
+import { Button } from 'antd';
 
 type FamilyTreeProps = {
     scope: Scope
@@ -31,7 +32,9 @@ function FamilyTree(props: FamilyTreeProps) {
             {elements.map((e:string) => (e != scope.focus) 
                 ? ( scope.hasKids.get(e) 
                     ? <TreeNode key={e} label={StudentCardGroup([e], doSearch, false)}>
-                        <TreeNode key={e+"_kids"} label={""}/>
+                        <TreeNode key={e+"_kids"} label=
+                            {<Button onClick={()=> doSearch(e)} size="large" type="link">...</Button>}
+                        />
                       </TreeNode>
                     : <TreeNode key={e} label={StudentCardGroup([e], doSearch, false)}/>
                   )
@@ -39,7 +42,9 @@ function FamilyTree(props: FamilyTreeProps) {
                     {e == scope.focus && scope.kids.map(kid =>
                         scope.hasKids.get(kid) 
                         ? <TreeNode key={kid} label={StudentCardGroup([kid], doSearch, false)}>
-                            <TreeNode key={kid+"_kids"} label={""}/>
+                            <TreeNode key={kid+"_kids"} label=
+                                {<Button onClick={()=> doSearch(kid)} size="large" type="link">...</Button>}
+                            />
                           </TreeNode>
                         : <TreeNode key={kid} label={StudentCardGroup([kid], doSearch, false)}/>
                     )}
