@@ -86,14 +86,6 @@ const Home: NextPage = () => {
                 <br/>
                 <div style={{display:"flex", justifyContent:"center"}}>
                         <Button type="link"
-                        onClick={() => doSearch(undefined)}
-                        size="large"
-                        style={{
-                            margin:5,
-                            fontSize: 16,
-                            minWidth: 128,
-                        }}> <SyncOutlined /> Go to a random person </Button>
-                        <Button type="link"
                         href="https://forms.gle/hUfXkadg8Z8L5Bt98"
                         size="large"
                         style={{
