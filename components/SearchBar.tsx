@@ -2,7 +2,6 @@ import { Button, Input, Dropdown, Menu, Spin, Typography} from 'antd';
 import { SyncOutlined, UserOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useState } from "react";
 import { CompleteNameResult } from '../pages/api/completeName';
-import { resolve } from 'path';
 
 const { Text } = Typography;
 const { Search } = Input;
@@ -79,15 +78,16 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
         > 
             <SyncOutlined />Random 
         </Button>  
-        <Dropdown overlay={menu} open={showSuggestions}>
+        {/* <Dropdown overlay={menu} open={showSuggestions}> */}
             <Search
                 disabled={disabled}
                 size="large"
                 placeholder="Search student name..."
                 onSearch={(s)=> {
-                    console.log(s.toLowerCase(), optionsMap.has(s.toLowerCase()));
-                    if (optionsMap.has(s.toLowerCase())) {
-                        doSearch((optionsMap.get(s.toLowerCase()) as string[])[0])
+                    const str = s.toLowerCase();
+                    console.log(str, optionsMap.has(str));
+                    if (optionsMap.has(str)) {
+                        doSearch((optionsMap.get(str) as string[])[0])
                     } else {
                         doSearch(s)
                     }
@@ -104,7 +104,7 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
                 }}
                 prefix={<UserOutlined />}
             />
-        </Dropdown>
+        {/* </Dropdown> */}
     </div>
 }
   
