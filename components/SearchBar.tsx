@@ -33,8 +33,7 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
             const data = await res.json();
 
             setOptionsMap((map) => {
-                map.set(partial, data.names);
-                return map;
+                return new Map(map.set(partial, data.names));
             });
             setOptionsReady(true)
         } catch (err) {
