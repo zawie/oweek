@@ -16,12 +16,10 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
 
     const [optionsMap, setOptionsMap] = useState<Map<string,string[]>>(new Map<string,string[]>());
     const [currInput, setCurrInput] = useState<string>("");
-    const [optionsReady, setOptionsReady] = useState<boolean>(false);
 
     const autoComplete = async (partial: string) => {
-        setOptionsReady(false)
+        console.log(partial, optionsMap.get(partial));
         if (optionsMap.has(partial) || partial.length < 1) {
-            setOptionsReady(true)
             return;
         }
 
@@ -29,8 +27,9 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
             const res = await fetch(
                `/api/completeName?partial_name=${partial}`
             );
-            setOptionsReady(true)
             const data = await res.json() as CompleteNameResult;
+            console.log("Fetched!", partial, data)
+
             setOptionsMap((map) => {
                 return new Map(map.set(partial, data.names));
             });
@@ -38,8 +37,6 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
             console.log(err);
         }
     };
-
-    const showDropdown = !(currInput == "") && (!optionsReady || ((optionsMap).get(currInput) || []).length > 0);
 
     return  <div style={{display:"flex", flexDirection:"row"}}>
         <Button
@@ -82,19 +79,14 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
                 }}
                 prefix={<UserOutlined />}
             />
-            {showDropdown && <div className="Dropdown">
-                {optionsMap.has(currInput) 
-                    ? (optionsMap.get(currInput) || []).map((n) => 
-                    <a className='DropdownEntry' key={n+"_key"}>
-                        {n.toLowerCase()
-                            .split(' ')
-                            .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-                            .join(' ')}
-                    </a>)
-                    : <div style={{color:"gray", marginLeft: 5, padding:5}}>
-                        <Spin style={{color:"gray", marginRight: 10}} indicator={antIcon} size="small" />
-                        Loading...
-                    </div>}
+            {optionsMap.has(currInput) && (optionsMap.get(currInput) || []).length > 0 && <div className="Dropdown">
+                {(optionsMap.get(currInput) || []).map((n) => 
+                <a key={n+"_dropdownentry"} className='DropdownEntry' onClick={()=> doSearch(n)}>
+                    {n.toLowerCase()
+                        .split(' ')
+                        .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+                        .join(' ')}
+                </a>)}
             </div>}
         </div>
     </div>
