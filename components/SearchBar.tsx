@@ -78,7 +78,7 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
         > 
             <SyncOutlined />Random 
         </Button>  
-        <Dropdown overlay={menu} open={showSuggestions}>
+        {/* <Dropdown overlay={menu}> */}
             <Search
                 disabled={disabled}
                 size="large"
@@ -104,7 +104,7 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
                 }}
                 prefix={<UserOutlined />}
             />
-        </Dropdown>
+        {/* </Dropdown> */}
     </div>
 }
   
