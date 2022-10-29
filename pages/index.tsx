@@ -73,7 +73,14 @@ const Home: NextPage = () => {
                 <Title type="secondary">
                     Start Exploring
                 </Title>  
-                <div style={{maxWidth: 1000, display:"flex", flexDirection:"column" }}>
+                <div style={{
+                    width: "90vw",
+                    maxWidth: 1000,
+                    padding: 10,
+                    paddingLeft: 20,
+                    display: "flex",
+                    flexDirection: "column"
+                }}>
                     <SearchBar doSearch={doSearch} disabled={searching}/>
                 </div>
                 <br/>
