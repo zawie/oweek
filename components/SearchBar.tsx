@@ -1,7 +1,7 @@
 import { Button, Input, Dropdown, Menu, Spin, Typography} from 'antd';
 import { SyncOutlined, UserOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useState } from "react";
-import { CompleteNameResult, minPartialLength } from '../pages/api/completeName';
+import { CompleteNameResult } from '../pages/api/completeName';
 
 const { Text } = Typography;
 const { Search } = Input;
@@ -21,7 +21,7 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
 
     const autoComplete = async (partial: string) => {
         setOptionsReady(false)
-        if (optionsMap.has(partial) || partial.length < minPartialLength) {
+        if (optionsMap.has(partial) || partial.length < 1) {
             setOptionsReady(true)
             return;
         }
