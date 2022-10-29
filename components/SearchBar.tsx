@@ -2,6 +2,7 @@ import { Button, Input, Spin} from 'antd';
 import { SyncOutlined, UserOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useState } from "react";
 import { CompleteNameResult } from '../pages/api/completeName';
+import { Trie } from '../helper/trie'
 
 const { Search } = Input;
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
@@ -14,14 +15,18 @@ type SearchBarProps = {
 
 export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
 
-    const [optionsMap, setOptionsMap] = useState<Map<string,string[]>>(new Map<string,string[]>());
+    const [queriesMade, setQueriesMade] = useState<Set<string>>(new Set<string>());
     const [currInput, setCurrInput] = useState<string>("");
+    const [[_, trie], setTrie] = useState<[number, Trie]>([0, new Trie()]);
 
     const autoComplete = async (partial: string) => {
-        console.log(partial, optionsMap.get(partial));
-        if (optionsMap.has(partial) || partial.length < 1) {
+        if (queriesMade.has(partial) || partial.length < 1) {
             return;
         }
+
+        setQueriesMade((set) => {
+            return new Set<string>(set.add(partial))
+        })
 
         try {
             const res = await fetch(
@@ -29,14 +34,19 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
             );
             const data = await res.json() as CompleteNameResult;
             console.log("Fetched!", partial, data)
+            setTrie(([count, trie]): [number, Trie]=> {
+                data.names.forEach(n => {
+                    trie.add(n);
+                })  
+                return [count + 1, trie]          
+            })
 
-            setOptionsMap((map) => {
-                return new Map(map.set(partial, data.names));
-            });
         } catch (err) {
             console.log(err);
         }
     };
+
+    const autocomplete = trie.query(currInput);
 
     return  <div style={{display:"flex", flexDirection:"row"}}>
         <Button
@@ -79,8 +89,8 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
                 }}
                 prefix={<UserOutlined />}
             />
-            {optionsMap.has(currInput) && (optionsMap.get(currInput) || []).length > 0 && <div className="Dropdown">
-                {(optionsMap.get(currInput) || []).map((n) => 
+            {autocomplete.length > 0 && <div className="Dropdown">
+                {autocomplete.splice(0,5).map((n) => 
                 <a key={n+"_dropdownentry"} className='DropdownEntry' onClick={()=> doSearch(n)}>
                     {n.toLowerCase()
                         .split(' ')

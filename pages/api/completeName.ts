@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Family, getFamilies } from '../../helper/family';
 import { Trie } from '../../helper/trie';
+import { getBestName } from '../../helper/name'
 
 type ErrorResponse = {
   error: string
@@ -42,6 +43,6 @@ export default async function handler(
 
     res.status(200).json({
         partial_name,
-        names: completeByPrefix.splice(0,5)
+        names: completeByPrefix.splice(0,5).sort()
     });
 }
