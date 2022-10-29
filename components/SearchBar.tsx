@@ -88,7 +88,7 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
                 }}
                 prefix={<UserOutlined />}
             />
-            {currInput.length > 1 && autocomplete.length > 0 && <div className="Dropdown">
+            {currInput.length > 0 && autocomplete.length > 0 && <div className="Dropdown">
                 {autocomplete.splice(0,5).map((n) => 
                 <a key={n+"_dropdownentry"} className='DropdownEntry' onClick={()=> doSearch(n)}>
                     {n.toLowerCase()
