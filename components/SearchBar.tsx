@@ -57,9 +57,13 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
                 })
             }
         />
-        : <Menu style={{padding: 10}}>
-                <Spin indicator={antIcon} size="small" />
-                <Text type='secondary'> Loading... </Text>
+        : <Menu>
+                <Menu.Item>
+                    <div style={{padding: 10}}>
+                        <Spin indicator={antIcon} size="small" />
+                        <Text type='secondary'> Loading... </Text>
+                    </div>
+                </Menu.Item>
          </Menu>
 
     const showSuggestions = !(currInput == "") && (!optionsReady || ((optionsMap).get(currInput) || []).length > 0);
@@ -78,7 +82,7 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
         > 
             <SyncOutlined />Random 
         </Button>  
-        {/* <Dropdown overlay={menu} open={showSuggestions}> */}
+        <Dropdown overlay={menu} open={showSuggestions}>
             <Search
                 disabled={disabled}
                 size="large"
@@ -104,7 +108,7 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
                 }}
                 prefix={<UserOutlined />}
             />
-        {/* </Dropdown> */}
+        </Dropdown>
     </div>
 }
   
