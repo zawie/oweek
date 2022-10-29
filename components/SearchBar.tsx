@@ -1,11 +1,10 @@
-import { Button, Input, Spin} from 'antd';
-import { SyncOutlined, UserOutlined, LoadingOutlined } from '@ant-design/icons'
+import { Button, Input } from 'antd';
+import { SyncOutlined, UserOutlined } from '@ant-design/icons'
 import { useState } from "react";
 import { CompleteNameResult } from '../pages/api/completeName';
 import { Trie } from '../helper/trie'
 
 const { Search } = Input;
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 type SearchBarProps = {
     disabled:boolean
@@ -70,9 +69,9 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
                 placeholder="Search student name..."
                 onSearch={(s)=> {
                     const str = s.toLowerCase();
-                    console.log(str, optionsMap.has(str));
-                    if (optionsMap.has(str)) {
-                        doSearch((optionsMap.get(str) as string[])[0])
+                    const local = trie.query(str)
+                    if (local.length > 0) {
+                        doSearch(local[0])
                     } else {
                         doSearch(s)
                     }
@@ -89,7 +88,7 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
                 }}
                 prefix={<UserOutlined />}
             />
-            {autocomplete.length > 0 && <div className="Dropdown">
+            {currInput.length > 1 && autocomplete.length > 0 && <div className="Dropdown">
                 {autocomplete.splice(0,5).map((n) => 
                 <a key={n+"_dropdownentry"} className='DropdownEntry' onClick={()=> doSearch(n)}>
                     {n.toLowerCase()
