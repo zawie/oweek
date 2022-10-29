@@ -31,7 +31,9 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
             const res = await fetch(
                `/api/completeName?partial_name=${partial}`
             );
-            const data = await res.json() as CompleteNameResult;
+            const data = await res.json();
+
+            console.log(data);
             setOptionsMap((map) => {
                 map.set(partial, data.names);
                 return map;
