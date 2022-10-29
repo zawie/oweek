@@ -20,7 +20,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<CompleteNameResult | ErrorResponse>
 ) {
-    res.setHeader('Access-Control-Allow-Origin', '*')
     const {partial_name}: {partial_name? : string} = req.query
     
     if (partial_name == undefined || partial_name.length < minPartialLength) {
