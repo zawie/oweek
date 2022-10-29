@@ -6,15 +6,14 @@ import { Scope } from "../components/FamilyTree"
 import { SearchResult } from './api/search'
 import { Family } from '../helper/family'
 
-import  { Input, Typography, Spin, Empty, Button, Divider} from 'antd';
+import  { Typography, Spin, Empty, Button, Divider} from 'antd';
 import { useState } from "react";
-import { UserOutlined, LoadingOutlined, UserAddOutlined, SyncOutlined } from '@ant-design/icons';
+import { LoadingOutlined, UserAddOutlined, SyncOutlined } from '@ant-design/icons';
 import React from 'react';
+import SearchBar from '../components/SearchBar';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 64 }} spin />;
 const { Text, Title } = Typography;
-
-const { Search } = Input
 
 const Home: NextPage = () => {
 
@@ -31,7 +30,7 @@ const Home: NextPage = () => {
         setSearching(true);
         setSearchResult(undefined);
         setShowWeel(false);
-        setTimeout(()=>{setShowWeel(true); console.log("set show wheel to", searching)}, 250);
+        setTimeout(() => setShowWeel(true), 250);
         try {
             const res = await fetch(
                 query == undefined 
@@ -46,42 +45,20 @@ const Home: NextPage = () => {
         }
     };
 
-    const getTop = (disabled:boolean = false) => <div style={{
+    const top = <div style={{
          width: "100vw",
          padding: 10,
          paddingLeft: 20,
          display: "flex",
          flexDirection: "column"
      }}>
-         <div style={{display:"flex", flexDirection:"row"}}>
-            <Button
-                onClick={() => doSearch(undefined)}
-                disabled={disabled}
-                size="large"
-                type="primary"
-                style={{
-                    marginRight: 10,
-                    fontSize: 16,
-                    minWidth: 128,
-            }}> <SyncOutlined />Random </Button>  
-            <Search
-                disabled={disabled}
-                size="large"
-                placeholder="Search student name..."
-                onSearch={(s)=> doSearch(s)}
-                style ={{
-                    width:      "100%",
-                    fontSize:   32
-            }}
-                prefix={<UserOutlined />}
-            />
-        </div>
+         <SearchBar doSearch={doSearch} disabled={searching}/>
      </div>
 
     if (searching)
         return <>
-            {getTop(true)} 
-            <div style={{height:"65vh", width:"100vw", justifyContent:"center", alignItems:"center", display:"flex", flexDirection:"column"}}>
+            {top} 
+            <div style={{height:"65vh", width:"100%", justifyContent:"center", alignItems:"center", display:"flex", flexDirection:"column"}}>
                 {showWheel && <>
                     <Text type="secondary"> Loading... </Text>
                     <br/>
@@ -96,17 +73,9 @@ const Home: NextPage = () => {
                 <Title type="secondary">
                     Start Exploring
                 </Title>  
-                <Search
-                    size="large"
-                    enterButton="Search"
-                    placeholder="Search student name..."
-                    onSearch={(s)=> doSearch(s)}
-                    style ={{
-                        width:      "80%",
-                        fontSize:   64
-                }}
-                    prefix={<UserOutlined />}
-                />
+                <div style={{maxWidth: 1000, display:"flex", flexDirection:"column" }}>
+                    <SearchBar doSearch={doSearch} disabled={searching}/>
+                </div>
                 <br/>
                 <div style={{display:"flex", justifyContent:"center"}}>
                         <Button type="link"
@@ -145,7 +114,7 @@ const Home: NextPage = () => {
 
     if (siblings.length + parents.length + kids.length == 0) {
         return <div>
-        {getTop()}
+            {top}
             <br/>
             <br/>
             <Empty
@@ -171,7 +140,6 @@ const Home: NextPage = () => {
     for (const x of possibleParents) {
         hasKids.set(x, false);
         for (const f of possibleRelatedFamilies) {
-            console.log(x,f.parents);
             if (f.parents.includes(x)) {
                 hasKids.set(x, true);
                 break;
@@ -188,7 +156,7 @@ const Home: NextPage = () => {
     } as Scope;
 
     return <div style={{width:"100vw"}}>
-        {getTop()}
+        {top}
 
         <div>
             <Divider style={{marginLeft: 15, marginRight: 15}}> 
