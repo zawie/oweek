@@ -48,6 +48,7 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
             size="large"
             type="primary"
             style={{
+                flex: 1,
                 marginRight: 10,
                 fontSize: 16,
                 minWidth: 128,
@@ -55,7 +56,7 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
         > 
             <SyncOutlined />Random 
         </Button>  
-        <div className='SearchBar'>
+        <div className='SearchBar' style={{flex: 9}}>
             <Search
                 disabled={disabled}
                 size="large"
