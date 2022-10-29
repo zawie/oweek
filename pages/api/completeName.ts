@@ -14,7 +14,7 @@ export type CompleteNameResult = {
 
 
 let cachedNames: Trie | undefined = undefined;
-const minPartialLength = 1;
+export const minPartialLength = 1;
 
 export default async function handler(
   req: NextApiRequest,
@@ -22,7 +22,7 @@ export default async function handler(
 ) {
     const {partial_name}: {partial_name? : string} = req.query
     
-    if (partial_name == undefined || partial_name.length <= minPartialLength) {
+    if (partial_name == undefined || partial_name.length < minPartialLength) {
         res.status(200).json({
             partial_name,
             names: []

@@ -1,7 +1,7 @@
 import { Button, Input, Dropdown, Menu, Spin, Typography} from 'antd';
 import { SyncOutlined, UserOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useState } from "react";
-import { CompleteNameResult } from '../pages/api/completeName';
+import { CompleteNameResult, minPartialLength } from '../pages/api/completeName';
 
 const { Text } = Typography;
 const { Search } = Input;
@@ -12,7 +12,6 @@ type SearchBarProps = {
     doSearch: any
 }
 
-const minPartialLength = 1;
 
 export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
 
@@ -22,7 +21,7 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
 
     const autoComplete = async (partial: string) => {
         setOptionsReady(false)
-        if (partial == "" || optionsMap.has(partial) || partial.length <= minPartialLength) {
+        if (optionsMap.has(partial) || partial.length < minPartialLength) {
             setOptionsReady(true)
             return;
         }
@@ -33,7 +32,6 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
             );
             const data = await res.json();
 
-            console.log(data);
             setOptionsMap((map) => {
                 map.set(partial, data.names);
                 return map;
@@ -84,7 +82,7 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
         > 
             <SyncOutlined />Random 
         </Button>  
-        <Dropdown overlay={menu} open={showSuggestions}>
+        {/* <Dropdown overlay={menu} open={showSuggestions}> */}
             <Search
                 disabled={disabled}
                 size="large"
@@ -110,7 +108,7 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
                 }}
                 prefix={<UserOutlined />}
             />
-        </Dropdown>
+        {/* </Dropdown> */}
     </div>
 }
   
