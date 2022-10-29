@@ -1,9 +1,8 @@
-import { Button, Input, Dropdown, Menu, Spin, Typography} from 'antd';
+import { Button, Input, Spin} from 'antd';
 import { SyncOutlined, UserOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useState } from "react";
 import { CompleteNameResult } from '../pages/api/completeName';
 
-const { Text } = Typography;
 const { Search } = Input;
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
@@ -30,42 +29,17 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
             const res = await fetch(
                `/api/completeName?partial_name=${partial}`
             );
-            const data = await res.json();
-
+            setOptionsReady(true)
+            const data = await res.json() as CompleteNameResult;
             setOptionsMap((map) => {
                 return new Map(map.set(partial, data.names));
             });
-            setOptionsReady(true)
         } catch (err) {
             console.log(err);
         }
     };
 
-    const menu = optionsMap.has(currInput)
-        ? <Menu
-            onClick={(e) => doSearch(e.key)}
-            items={
-                optionsMap.get(currInput)?.map((name) => { 
-                    return {
-                        label: name.toLowerCase()
-                            .split(' ')
-                            .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-                            .join(' '), 
-                        key: name
-                    }
-                })
-            }
-        />
-        : <Menu>
-                <Menu.Item>
-                    <div style={{padding: 10}}>
-                        <Spin indicator={antIcon} size="small" />
-                        <Text type='secondary'> Loading... </Text>
-                    </div>
-                </Menu.Item>
-         </Menu>
-
-    const showSuggestions = !(currInput == "") && (!optionsReady || ((optionsMap).get(currInput) || []).length > 0);
+    const showDropdown = !(currInput == "") && (!optionsReady || ((optionsMap).get(currInput) || []).length > 0);
 
     return  <div style={{display:"flex", flexDirection:"row"}}>
         <Button
@@ -81,7 +55,7 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
         > 
             <SyncOutlined />Random 
         </Button>  
-        {/* <Dropdown overlay={menu} open={showSuggestions}> */}
+        <div className='SearchBar'>
             <Search
                 disabled={disabled}
                 size="large"
@@ -107,7 +81,21 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
                 }}
                 prefix={<UserOutlined />}
             />
-        {/* </Dropdown> */}
+            {showDropdown && <div className="Dropdown">
+                {optionsMap.has(currInput) 
+                    ? (optionsMap.get(currInput) || []).map((n) => 
+                    <a className='DropdownEntry' key={n+"_key"}>
+                        {n.toLowerCase()
+                            .split(' ')
+                            .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+                            .join(' ')}
+                    </a>)
+                    : <div style={{color:"gray", marginLeft: 5, padding:5}}>
+                        <Spin style={{color:"gray", marginRight: 10}} indicator={antIcon} size="small" />
+                        Loading...
+                    </div>}
+            </div>}
+        </div>
     </div>
 }
   
