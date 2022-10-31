@@ -9,7 +9,7 @@ import { Analytics } from '@vercel/analytics/react';
 const { Title, Text } = Typography;
 
 function MyApp({ Component, pageProps }: AppProps) {
-    return <div style={{backgroundColor: "whitesmoke", minHeight:"100vh"}}>
+    return <div style={{backgroundColor: "whitesmoke", minHeight:"100vh", minWidth:"100vw"}}>
         <div style={{
             backgroundColor: "white",
             width: "100vw",
