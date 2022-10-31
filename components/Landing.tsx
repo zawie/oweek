@@ -1,7 +1,10 @@
 import { Button, Typography } from 'antd';
 import SearchBar from './SearchBar';
-const { Title } = Typography;
+import { useEffect, useState } from "react";
 import { UserAddOutlined } from '@ant-design/icons';
+import { StatsResults } from '../pages/api/stats';
+
+const { Title } = Typography;
 
 type LandingProps = {
     doSearch: (query: string) => void,
@@ -11,10 +14,19 @@ type LandingProps = {
 export default function Landing(props: LandingProps) {
     const {doSearch, searching} = props;
 
+    const [stats, setStats] = useState<StatsResults | undefined>(undefined); 
+    
+    useEffect(() => {
+        fetch(`/api/stats`)
+            .then(res => res.json())
+            .then(data => setStats(data))
+            .catch(err => console.log(err))
+    }, [])
+
     return <div>
     <div style={{width:"100vw", height: "65vh", alignItems:"center", justifyContent:"center", display:"flex", flexDirection:"column"}}>
         <Title type="secondary">
-            Start Exploring
+            {stats != undefined ? `Explore ${stats.num_students} Owls` : "Start Exploring"}
         </Title>  
         <div style={{
             width: "90vw",
