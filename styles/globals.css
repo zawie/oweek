@@ -46,10 +46,11 @@
     width: 100vw;
     padding-top: 32px;
     padding-bottom: 32px;
+    padding-left: 10px;
+    padding-right: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 }
 
 .App {
