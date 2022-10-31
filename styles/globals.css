@@ -24,7 +24,7 @@
     border-bottom-left-radius:  10px;
     padding-top: 5px;
     padding-bottom: 5px;
-    z-index: 100;
+    z-index: 1000;
 }
 
 .DropdownEntry {
