@@ -13,13 +13,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     return <div className="App">
         <Analytics/>
         <PageHeader/>
-        <br/>
-        <Component {...pageProps}/>
+        <Component {...pageProps} style={{width:"100%"}}/>
         <br/>
         <div className='Footer'>
-            <Text> This is an open source project on <a href="https://github.com/zawie/oweek-genealogy"> GitHub <GithubFilled/></a></Text>
-            <br/>
-            <Text> Made with love by the best college, <a href="https://www.browncollege.org">Brown College</a>. BSWB! {"🚀"} </Text>
+            <Text type="secondary"> Made with love by the best college, <a href="https://www.browncollege.org">Brown College</a>.</Text>
+            <Text type="secondary"> This is an open source project on <a href="https://github.com/zawie/oweek-genealogy"> GitHub <GithubFilled/></a></Text>
         </div>
   </div>
 }

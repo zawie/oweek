@@ -2,8 +2,16 @@
 
 .SearchBar {
     position: relative;
-    width: "100%";
+    width: 100%;
     margin-right: 15;
+}
+
+.RandomButton {
+    max-width: 30%;
+    width: 120px;
+    margin-right: 10px;
+    font-size: 100%;
+    overflow: hidden;
 }
 
 .Dropdown {
@@ -31,7 +39,7 @@
 }
 
 .Content {
-    width: 100vw;
+    width: 100%;
     background-color: whitesmoke;
 }
 
@@ -43,11 +51,9 @@
 }
 
 .Footer {
-    width: 100vw;
-    padding-top: 32px;
-    padding-bottom: 32px;
-    padding-left: 10px;
-    padding-right: 10px;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 25px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -66,4 +72,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+html {
+    background-color: whitesmoke;
+    width: 100vw;
 }

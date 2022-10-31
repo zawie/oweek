@@ -53,20 +53,15 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
             disabled={disabled}
             size="large"
             type="primary"
-            style={{
-                flex: 1,
-                marginRight: 10,
-                fontSize: 16,
-                minWidth: 128,
-            }}
+            className="RandomButton"
         > 
             <SyncOutlined />Random 
         </Button>  
-        <div className='SearchBar' style={{flex: 9}}>
+        <div className='SearchBar'>
             <Search
                 disabled={disabled}
                 size="large"
-                placeholder="Search student name..."
+                placeholder="Student name..."
                 onSearch={(s)=> {
                     const str = s.toLowerCase();
                     const local = trie.query(str)
@@ -86,7 +81,6 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
                     width:      "100%",
                     fontSize:   32
                 }}
-                prefix={<UserOutlined />}
             />
             {currInput.length > 0 && autocomplete.length > 0 && <div className="Dropdown">
                 {autocomplete.splice(0,5).map((n) => 
