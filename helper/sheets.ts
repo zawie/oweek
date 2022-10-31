@@ -12,10 +12,7 @@ export type Row = {
 const PRIVATE_KEY = process.env.SERVICE_ACCOUNT_PRIVATE_KEY?.replaceAll(`\\n`, `\n`);
 
 export async function getGoogleSheetsRows(): Promise<Row[]> {
-
-    console.log(process.env.SERVICE_ACCOUNT_PRIVATE_KEY)
-    console.log(PRIVATE_KEY)
-
+    
     const auth = new google.auth.JWT({
         email: process.env.SERVICE_ACCOUNT_EMAIL,
         key: PRIVATE_KEY,
