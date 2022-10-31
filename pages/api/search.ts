@@ -16,10 +16,6 @@ export type SearchResult = {
     grandFamilies: Family[],
 }
 
-export const config = {
-  runtime: 'experimental-edge',
-};
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<SearchResult | ErrorResponse>
