@@ -19,8 +19,6 @@ export default function Landing(props: LandingProps) {
         <div style={{
             width: "90vw",
             maxWidth: 1000,
-            padding: 10,
-            paddingLeft: 20,
             display: "flex",
             flexDirection: "column"
         }}>
