@@ -1,6 +1,5 @@
 @import '~antd/dist/antd.css';
 
-
 .SearchBar {
     position: relative;
     width: "100%";
@@ -29,4 +28,16 @@
 .DropdownEntry:hover {
     color: black;
     background-color: rgb(249, 249, 249);
+}
+
+.Content {
+    width: 100vw;
+    background-color: whitesmoke;
+}
+
+.Top {
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
 }
