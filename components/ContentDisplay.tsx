@@ -56,7 +56,7 @@ export default function ContentDisplay(props: ContentDisplayProps) {
     };
 
     return <div>
-    <Divider style={{marginLeft: 15, marginRight: 15}}> 
+    <Divider style={{paddingLeft: 15, paddingRight: 15}}> 
         <div style={{display:"flex", flexDirection:"column"}}>
             <Text strong style={{fontSize: 28}}>
                 {searchResult.homeFamilies.map(f => f.name).join(", ")}
@@ -70,6 +70,6 @@ export default function ContentDisplay(props: ContentDisplayProps) {
         </div>
     </Divider>
     <FamilyTree scope={scope} doSearch={doSearch}/>
-    <Divider style={{marginLeft: 15, marginRight: 15}} />
+    <Divider style={{paddingLeft: 15, paddingRight: 15}} />
 </div>
 }
