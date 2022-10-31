@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <br/>
         <div className='Footer'>
             <Text type="secondary"> Made with love by the best college, <a href="https://www.browncollege.org">Brown College</a>.</Text>
-            {/* <Text type="secondary"> This is an open source project on <a href="https://github.com/zawie/oweek-genealogy"> GitHub <GithubFilled/></a></Text> */}
+            <Text type="secondary"> This is an open source project on <a href="https://github.com/zawie/oweek.org"> GitHub <GithubFilled/></a></Text>
         </div>
   </div>
 }
