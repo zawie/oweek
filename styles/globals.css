@@ -41,3 +41,28 @@
     display: flex;
     flex-direction: column;
 }
+
+.Footer {
+    width: 100vw;
+    padding-top: 32px;
+    padding-bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.App {
+    background-color: whitesmoke;
+    min-height: 100vh;
+    min-width:  100vw;
+}
+
+.PageHeader {
+    background-color: white;
+    width: 100vw;
+    padding-left: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
