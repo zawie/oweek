@@ -17,9 +17,17 @@ function MyApp({ Component, pageProps }: AppProps) {
                 Rice O-Week Tree
             </title>
             <meta
-            name="description"
-            content="O-Week geneology site for Rice University orientation. Explore advisor and new student relationships in the Rice family tree!"
-            key="desc"
+                name="description"
+                content="O-Week geneology site for Rice University orientation. Explore advisor and new student relationships in the Rice family tree!"
+                key="desc"
+            />
+            <meta 
+                name="author" 
+                content="Adam Zawierucha"
+                key="auth"
+            />
+            <meta name="keywords" 
+                  content="O-Week, Oweek, Rice, Rice University, geneology, family tree"
             />
         </Head>
       
