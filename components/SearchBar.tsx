@@ -1,7 +1,7 @@
 import { Button, Input } from 'antd';
-import { SyncOutlined, UserOutlined } from '@ant-design/icons'
+import { SyncOutlined } from '@ant-design/icons'
 import { useState } from "react";
-import { CompleteNameResult } from '../pages/api/completeName';
+import { SuggestResult } from '../pages/api/suggest';
 import { Trie } from '../helper/trie'
 
 const { Search } = Input;
@@ -15,8 +15,11 @@ type SearchBarProps = {
 export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
 
     const [queriesMade, setQueriesMade] = useState<Set<string>>(new Set<string>());
+
     const [currInput, setCurrInput] = useState<string>("");
-    const [[_, trie], setTrie] = useState<[number, Trie]>([0, new Trie()]);
+
+    const [[_s, trie, suggestions], setData] 
+        = useState<[number, Trie, Map<string, string[]>]>([0, new Trie(), new Map<string, string[]>()]);
 
     const autoComplete = async (partial: string) => {
         if (queriesMade.has(partial) || partial.length < 1) {
@@ -29,23 +32,23 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
 
         try {
             const res = await fetch(
-               `/api/completeName?partial_name=${partial}`
+               `/api/suggest?query=${partial}`
             );
-            const data = await res.json() as CompleteNameResult;
-            console.log("Fetched!", partial, data)
-            setTrie(([count, trie]): [number, Trie]=> {
-                data.names.forEach(n => {
+            const data = await res.json() as SuggestResult;
+
+            setData(([count, trie, map]): [number, Trie,  Map<string, string[]>]=> {
+                map.set(partial, [...data.suggestions]);
+                data.suggestions.forEach(n => {
                     trie.add(n);
                 })  
-                return [count + 1, trie]          
+                return [count + 1, trie, map]          
             })
-
         } catch (err) {
             console.log(err);
         }
     };
 
-    const autocomplete = trie.query(currInput);
+    const completions = suggestions.get(currInput) || trie.query(currInput);
 
     return  <div style={{display:"flex", flexDirection:"row"}}>
         <Button
@@ -63,18 +66,17 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
                 size="large"
                 placeholder="Student name..."
                 onSearch={(s)=> {
-                    const str = s.toLowerCase();
-                    const local = trie.query(str)
-                    if (local.length > 0) {
-                        doSearch(local[0])
+                    if (completions.length > 0) {
+                        doSearch(completions[0])
                     } else {
-                        doSearch(s)
+                        doSearch(s.toLowerCase())
                     }
                 }
             }
                 onChange={(s)=> {
                     const input = s.currentTarget.value.toLowerCase();
-                    autoComplete(input)
+                    if (input.length > 0)
+                        autoComplete(input)
                     setCurrInput(input)
                 }}
                 style ={{
@@ -82,8 +84,8 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
                     fontSize:   32
                 }}
             />
-            {currInput.length > 0 && autocomplete.length > 0 && <div className="Dropdown">
-                {autocomplete.splice(0,5).map((n) => 
+            {currInput.length > 0 && completions.length > 0 && <div className="Dropdown">
+                {completions.slice(0,5).map((n) => 
                 <a key={n+"_dropdownentry"} className='DropdownEntry' onClick={()=> doSearch(n)}>
                     {n.toLowerCase()
                         .split(' ')
