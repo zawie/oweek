@@ -6,11 +6,23 @@ import { Typography } from 'antd'
 import { Analytics } from '@vercel/analytics/react';
 import PageHeader from '../components/PageHeader';
 import { GithubFilled } from '@ant-design/icons';
+import Head from 'next/head';
 
 const { Text } = Typography;
 
 function MyApp({ Component, pageProps }: AppProps) {
     return <div className="App">
+        <Head>
+            <title>
+                Rice O-Week Tree
+            </title>
+            <meta
+            name="description"
+            content="O-Week geneology site for Rice University orientation. Explore advisor and new student relationships in the Rice family tree!"
+            key="desc"
+            />
+        </Head>
+      
         <Analytics/>
         <PageHeader/>
         <Component {...pageProps} style={{width:"100%"}}/>
