@@ -18,7 +18,7 @@ export default async function handler(
     const families: Family[] = await getFamilies();
 
     const students: Set<string> = new Set<string>();
-    families.forEach(f => f.kids.concat(f.parents).forEach(x => students.add(x)))
+    families.forEach(f => f.kids.concat(f.parents).forEach(x => students.add(x.toLowerCase())))
     
     res.status(200).json({
         num_families: families.length,

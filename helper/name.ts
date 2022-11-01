@@ -1,46 +1,53 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { stringSimilarity } from './similarity';
 import { Family } from './family';
+import { topK } from './topk';
 
-export async function getBestName(query: string, families: Family[]): Promise<string> {
-    let bestMatch: string = query;
-    let best: number = 0;
+export function getNameSimilarity(name0: string, name1: string): number {
+      if (name0 == name1)
+        return 1;
 
-    const q = query.toLowerCase();
+      //Compute entire similarity
+      const totalSim = stringSimilarity(name0, name1);
 
-    if (q == "zawie") 
-        return "Adam Zawierucha"
+      //Compute partial similarity
+      const parts0 = name0.split(/ /);
+      const parts1 = name1.split(/ /);
+
+      let partialSim = 0;
+      parts0.forEach(p0 => {
+        parts1.forEach(p1 => {
+            partialSim += stringSimilarity(p0, p1)/(parts0.length+parts1.length)
+        })
+      })
+      
+      return totalSim*0.5 + partialSim*0.5;
+}
+
+export async function getSimilarNames(
+        query: string, 
+        families: Family[], 
+        amount: number = 1
+    ): Promise<string[]> {
+
+    const query_lower = query.toLowerCase();
+    const best: topK<string> = new topK<string>(amount);
+    const observed = new Set<string>();
 
     families.forEach(f =>
         f.kids.concat(f.parents).forEach((name: string) => {
-            const n = name.toLowerCase();
-            if (n == q) {
-                best = 1
-                bestMatch = name
-            } else {
-                //Compute entire similarity
-                const totalSim = stringSimilarity(q, n);
-
-                //Compute partial similarity
-                let partialSim = 0;
-                const parts = n.split(/ /);
-                parts.forEach(p => partialSim += stringSimilarity(p, q)/parts.length);
-                
-                const sim = totalSim*0.5 + partialSim*0.5
-                if (sim > best) {
-                    best = sim;
-                    bestMatch = name;
+            const lower_name = name.toLowerCase();
+            if (!observed.has(lower_name)) {
+                observed.add(lower_name)
+                const sim = getNameSimilarity(lower_name, query_lower);
+                if (sim > 0) {
+                    best.add(name, sim)   
                 }
             }
-            
-                
         })
     );
 
-    // console.log(best, bestMatch, query)
-    if (best < 0.15)
-        return query
-    return bestMatch;
+    return best.retrieve();
 }
 
 export async function getRandomName(families: Family[]): Promise<string> {
