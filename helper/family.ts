@@ -47,7 +47,6 @@ async function fetchFamilies(): Promise<Family[]> {
 
 let cachedFamilies: Family[]
 let fetching = false;
-
 let lastRefresh: number = 0
 const TLT = 3*60*1000 //Time to live: 3 minutes
 let promise: Promise<any> | undefined = undefined;
@@ -66,14 +65,21 @@ export async function getFamilies(): Promise<Family[]> {
             cachedFamilies = await promise;
         }
     } else if (!fetching && lastRefresh + TLT < t) {
+        fetching = true;
         console.log("Family cache out of data. Asynchronously updating (not awaiting).")
         // Cache is out of date, trigger async refresh
-        lastRefresh = t; // Assumes refreshing takes less than TLT
-        fetchFamilies().then(families => {
-            lastRefresh = new Date().getTime();
-            cachedFamilies = families
-            console.log("Family cache refreshed!")
-        });
-    } 
+        fetchFamilies()
+            .then(families => {
+                lastRefresh = new Date().getTime();
+                cachedFamilies = families
+                console.log("Family cache refreshed!")
+                fetching = false;
+            })
+            .catch(err => {
+                console.log(err)
+                lastRefresh = 0;
+                fetching = false;
+            })
+    }
     return cachedFamilies;
 }
