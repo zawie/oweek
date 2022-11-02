@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { stringSimilarity } from './similarity';
 import { Family } from './family';
-import { topK } from './topk';
+import { topK } from './data_structures/topk';
 
 export function getNameSimilarity(name0: string, name1: string): number {
       if (name0 == name1)
