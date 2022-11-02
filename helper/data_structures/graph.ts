@@ -19,13 +19,19 @@ export class Graph<T> {
         return node;
     }
 
-    addEdge(u: T, v: T) {
+    addUndirectedEdge(u: T, v: T) {
         const n1 = this.elementToNode.get(u) || this.addNode(u);
         const n2 = this.elementToNode.get(v) || this.addNode(v);;
         this.nodeToNeighbors[n1].add(n2);
         this.nodeToNeighbors[n2].add(n1);
     }
 
+    addDirectedEdge(u: T, v: T) {
+        const n1 = this.elementToNode.get(u) || this.addNode(u);
+        const n2 = this.elementToNode.get(v) || this.addNode(v);;
+        this.nodeToNeighbors[n1].add(n2);
+    }
+    
     getNeighbors(node: Node): Set<Node> {
         return this.nodeToNeighbors[node];
     }
