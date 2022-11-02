@@ -21,7 +21,7 @@ export class Graph<T> {
 
     addEdge(u: T, v: T) {
         const n1 = this.elementToNode.get(u) || this.addNode(u);
-        const n2 = this.elementToNode.get(v) || this.addNode(u);;
+        const n2 = this.elementToNode.get(v) || this.addNode(v);;
         this.nodeToNeighbors[n1].add(n2);
         this.nodeToNeighbors[n2].add(n1);
     }
