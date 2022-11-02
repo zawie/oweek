@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Family, getFamilies } from '../../helper/family';
-import { Trie } from '../../helper/trie';
+import { Trie } from '../../helper/data_structures/trie';
 import { getSimilarNames } from '../../helper/name'
 
 type ErrorResponse = {

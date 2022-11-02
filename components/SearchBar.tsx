@@ -2,7 +2,7 @@ import { Button, Input } from 'antd';
 import { SyncOutlined } from '@ant-design/icons'
 import { useState } from "react";
 import { SuggestResult } from '../pages/api/suggest';
-import { Trie } from '../helper/trie'
+import { Trie } from '../helper/data_structures/trie'
 
 const { Search } = Input;
 
