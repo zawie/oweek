@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
 
-
-import { SearchResult } from './api/search'
+import { SearchRequest, SearchResult } from './api/search'
 
 import { useState } from "react";
 import React from 'react';
@@ -18,19 +17,24 @@ const Home: NextPage = () => {
     const [searching, setSearching] = useState<boolean>(false);
     const [showWheel, setShowWeel] = useState<boolean>(false);
 
-    const doSearch = async (query: string | undefined) => {
+    const doSearch = async (req: SearchRequest) => {
+        const queries: string[] = Object.entries(req).map(
+            ([k,v]: [string, any]) => `${k}=${v}`
+        )
+        
+        const call = `/api/search${queries.length > 0 ? "?"+queries.join('&') : ""}`
+
         setSearching(true);
-        setSearchResult(undefined);
         setShowWeel(false);
         setTimeout(() => setShowWeel(true), 250);
         try {
-            const res = await fetch(
-                query == undefined 
-                    ? `/api/search`
-                    : `/api/search?query=${query}`
-            );
-            const data = await res.json() as SearchResult;
-            setSearchResult(() => data);
+            const res = await fetch(call);
+            const data = await res.json();
+
+            if (data.error != undefined) {
+                console.log(data.error)
+            }
+            setSearchResult(() => data as SearchResult);
             setSearching(false);
         } catch (err) {
             console.log(err);

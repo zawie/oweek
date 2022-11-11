@@ -1,7 +1,7 @@
 import { Typography, Divider } from 'antd';
 const { Text } = Typography;
 import { LoadingOutlined } from '@ant-design/icons';
-import { SearchResult } from '../pages/api/search';
+import { SearchRequest, SearchResult } from '../pages/api/search';
 import dynamic from 'next/dynamic';
 import { Family } from '../helper/family';
 import { Scope } from './FamilyTree';
@@ -9,7 +9,7 @@ const antIcon = <LoadingOutlined style={{ fontSize: 64 }} spin />;
 
 type ContentDisplayProps = {
     searchResult: SearchResult,
-    doSearch: (query: string) => void
+    doSearch: (query: SearchRequest) => void
 }
 
 export default function ContentDisplay(props: ContentDisplayProps) {

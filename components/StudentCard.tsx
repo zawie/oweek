@@ -24,6 +24,7 @@ import owl20 from "../assets/owl20.png"
 import owl21 from "../assets/owl21.png"
 import owl22 from "../assets/owl22.png"
 import owl23 from "../assets/owl23.png"
+import { SearchRequest } from '../pages/api/search';
 
 const { Text } = Typography;
 const { Meta } = Card;
@@ -43,7 +44,7 @@ const hash = function(str: string): number {
   }
 
 
-export function StudentCard(student: string, doSearch: any, focus: boolean = false) {
+export function StudentCard(student: string, doSearch: (req: SearchRequest) => void, focus: boolean = false) {
     return  <Card
         hoverable
         type="inner"
@@ -59,7 +60,7 @@ export function StudentCard(student: string, doSearch: any, focus: boolean = fal
             padding: 0,
             paddingBottom: 10
         }}
-        onClick={()=>doSearch(student)}
+        onClick={()=>doSearch({query: student, exact: true})}
         size="small"
         cover={<Image
             src={owls[hash(student) % owls.length]}

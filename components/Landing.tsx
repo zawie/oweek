@@ -3,11 +3,12 @@ import SearchBar from './SearchBar';
 import { useEffect, useState } from "react";
 import { UserAddOutlined } from '@ant-design/icons';
 import { StatsResults } from '../pages/api/stats';
+import { SearchRequest } from '../pages/api/search';
 
 const { Title } = Typography;
 
 type LandingProps = {
-    doSearch: (query: string) => void,
+    doSearch: (query: SearchRequest) => void,
     searching: boolean
 }
 

@@ -3,12 +3,13 @@ import { SyncOutlined } from '@ant-design/icons'
 import { useState } from "react";
 import { SuggestResult } from '../pages/api/suggest';
 import { Trie } from '../helper/data_structures/trie'
+import { SearchRequest } from '../pages/api/search';
 
 const { Search } = Input;
 
 type SearchBarProps = {
-    disabled:boolean
-    doSearch: any
+    disabled: boolean
+    doSearch: (req: SearchRequest) => void
 }
 
 
@@ -52,7 +53,7 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
 
     return  <div style={{display:"flex", flexDirection:"row"}}>
         <Button
-            onClick={() => doSearch(undefined)}
+            onClick={() => doSearch({random: true})}
             disabled={disabled}
             size="large"
             type="primary"
@@ -67,9 +68,9 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
                 placeholder="Student name..."
                 onSearch={(s)=> {
                     if (completions.length > 0) {
-                        doSearch(completions[0])
+                        doSearch({query: completions[0], exact: true})
                     } else {
-                        doSearch(s.toLowerCase())
+                        doSearch({query: s, exact: false})
                     }
                 }
             }
@@ -86,7 +87,9 @@ export default function SearchBar({ disabled, doSearch } : SearchBarProps) {
             />
             {currInput.length > 0 && completions.length > 0 && <div className="Dropdown">
                 {completions.slice(0,5).map((n) => 
-                <a key={n+"_dropdownentry"} className='DropdownEntry' onClick={()=> doSearch(n)}>
+                <a  key={n+"_dropdownentry"} className='DropdownEntry' 
+                    onClick={()=> doSearch({query: n, exact: true})}
+                    >
                     {n.toLowerCase()
                         .split(' ')
                         .map((s) => s.charAt(0).toUpperCase() + s.substring(1))

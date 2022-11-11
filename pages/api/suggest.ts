@@ -2,7 +2,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Family, getFamilies } from '../../helper/family';
 import { Trie } from '../../helper/data_structures/trie';
-import { getSimilarNames } from '../../helper/name'
+import { getNameSimilarity, getSimilarNames } from '../../helper/name'
+import { stringSimilarity } from '../../helper/similarity';
 
 type ErrorResponse = {
   error: string
@@ -40,12 +41,12 @@ export default async function handler(
         })
     }
 
-    let suggestions = cachedNames.query((query as string).toLowerCase())
-                        .sort().reverse();
+    let suggestions = cachedNames.query((query as string).toLowerCase()).sort().reverse();
+    
     if (suggestions.length < numSuggestions) {
         const families: Family[] = await getFamilies();
         const simNames = await getSimilarNames(query as string, families, numSuggestions);
-        suggestions = suggestions.concat(simNames.map(x => x.toLowerCase()))
+        suggestions = suggestions.concat(simNames.filter(x => getNameSimilarity(x, query as string) > 0.1).map(x => x.toLowerCase()))
         const used = new Set<string>();
         suggestions = suggestions.filter(x => {
             if (used.has(x))

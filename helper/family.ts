@@ -49,7 +49,7 @@ let cachedFamilies: Family[]
 let fetching = false;
 let lastRefresh: number = 0
 const TLT = 3*60*1000 //Time to live: 3 minutes
-let promise: Promise<any> | undefined = undefined;
+let promise: Promise<Family []> | undefined = undefined;
 
 export async function getFamilies(): Promise<Family[]> {
     const t = new Date().getTime();
