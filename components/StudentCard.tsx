@@ -30,6 +30,8 @@ const { Meta } = Card;
 
 const owls = [owl1, owl2, owl3, owl4, owl5, owl6, owl7, owl8, owl9, owl10, owl11, owl12, owl13, owl14, owl15, owl16, owl17, owl18, owl19, owl20, owl21, owl22, owl23];
 
+export type CardSize = "small" | "medium" | "large"
+
 const hash = function(str: string): number {
     let hash: number = 0;
     let i, chr;
@@ -42,33 +44,36 @@ const hash = function(str: string): number {
     return hash < 0 ? -hash : hash;
   }
 
+export function StudentCard(student: string, doSearch: any, focus: boolean = false, size: CardSize = "medium") {
+    const width = size == "small" ? 16 : size == "medium" ? 64 : 100;
+    const fontSize = size == "small" ? 4 : size == "medium" ? 10 : 14;
 
-export function StudentCard(student: string, doSearch: any, focus: boolean = false) {
     return  <Card
         hoverable
         type="inner"
         style={{
-            width: focus ? 120 : 100,
-            margin: 5,
-            padding: 1,
+            width: width,
+            height: size == "small" ? width : "auto",
+            margin: 2,
             borderWidth: focus ? 3 : 0,
             backgroundColor: focus ? "lightyellow" : "white",
             borderColor: "gold"
         }}
         bodyStyle={{
             padding: 0,
-            paddingBottom: 10
+            paddingBottom: 5
         }}
         onClick={()=>doSearch(student)}
         size="small"
         cover={<Image
             src={owls[hash(student) % owls.length]}
             alt="Owl (Woo! Woo!)"
-            height="120"
-            width="120"
-        />}>
-        <Text
-            style={{fontSize: 10}}
-        > {student} </Text>
+            height={width}
+            width={width}
+        />}
+        >
+        { size != "small"  && <Text
+            style={{fontSize: fontSize, maxHeight: width*1.5}}
+        > {student} </Text> }
     </Card>
 }

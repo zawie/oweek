@@ -22,37 +22,41 @@ export default function ContentDisplay(props: ContentDisplayProps) {
 
     let siblings: string[] = [];
     let parents: string[] = [];
-    let kids: string[] = [];
-
     searchResult.homeFamilies.forEach((family: Family) => {
         siblings = siblings.concat(family.kids).filter(s=> s != searchResult.focusName);
         parents = parents.concat(family.parents);
     })
 
-    //TODO: Prompt if conflict, merging families for now...
+    let kids: string[] = [];
     searchResult.parentFamilies.forEach((family: Family) => {
         kids = kids.concat(family.kids);
     })
     
-    const hasKids = new Map<string, boolean>();
-    const possibleParents = kids.concat(siblings);
-    const possibleRelatedFamilies = searchResult.grandFamilies.concat(searchResult.newphewFamilies);
-    for (const x of possibleParents) {
-        hasKids.set(x, false);
-        for (const f of possibleRelatedFamilies) {
-            if (f.parents.includes(x)) {
-                hasKids.set(x, true);
-                break;
+    let nephews: Map<string,string[]> = new Map<string, string[]>();
+    siblings.forEach(s => nephews.set(s, []));
+    searchResult.newphewFamilies.forEach((family: Family) => {
+        siblings.forEach(sibling => {
+            if (family.parents.includes(sibling)) {
+                //@ts-ignore (Logically can't be undefined)
+                nephews.set(sibling, nephews.get(sibling).concat(family.kids))
             }
-        }
-    }
+        })
+    })
+
+    let grandkids: Map<string,string[]> = new Map<string, string[]>();
+    kids.forEach(k => grandkids.set(k, []));
+    searchResult.grandFamilies.forEach((family: Family) => {
+        kids.forEach(kid => {
+            if (family.parents.includes(kid)) {
+                //@ts-ignore (Logically can't be undefined)
+                grandkids.set(kid, grandkids.get(kid).concat(family.kids))
+            }
+        })
+    })
     
     const scope: Scope = {
-        kids: kids,
-        siblings: siblings,
-        parents: parents,
+        kids, siblings, parents, nephews, grandkids,
         focus: searchResult.focusName,
-        hasKids,
     };
 
     return <div>

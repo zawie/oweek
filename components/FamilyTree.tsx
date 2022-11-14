@@ -8,12 +8,12 @@ type FamilyTreeProps = {
 }
 
 export type Scope = {
-    focus: string
-
-    parents: string[]      //  Parents of this family
-    siblings: string[]     //  Your siblings and their children
-    kids: string[]         //  Your siblings and their children
-    hasKids: Map<string, boolean>
+    focus:      string
+    parents:    string[]
+    siblings:   string[]  
+    kids:       string[]        
+    grandkids:  Map<string,string[]> 
+    nephews:   Map<string,string[]> 
 }
 
 function FamilyTree(props: FamilyTreeProps) {
@@ -26,26 +26,22 @@ function FamilyTree(props: FamilyTreeProps) {
 
     return <div style={{
             overflowY:"auto",
+            paddingBottom: 64,
         }}>
-        <Tree label={StudentCardGroup(scope.parents, doSearch, false, "Advisors")}>
+        <Tree label={StudentCardGroup(scope.parents, doSearch, false, "medium", "Advisors")}>
             {elements.map((e:string) => (e != scope.focus) 
-                ? ( scope.hasKids.get(e) 
-                    ? <TreeNode key={e} label={StudentCardGroup([e], doSearch, false)}>
-                        <TreeNode key={e+"_kids"} label=
-                            {<Button onClick={()=> doSearch(e)} size="large" type="link">...</Button>}
-                        />
-                      </TreeNode>
-                    : <TreeNode key={e} label={StudentCardGroup([e], doSearch, false)}/>
-                  )
-                : <TreeNode key={e} label={StudentCardGroup([e], doSearch, true)}>
-                    {e == scope.focus && scope.kids.map(kid =>
-                        scope.hasKids.get(kid) 
-                        ? <TreeNode key={kid} label={StudentCardGroup([kid], doSearch, false)}>
-                            <TreeNode key={kid+"_kids"} label=
-                                {<Button onClick={()=> doSearch(kid)} size="large" type="link">...</Button>}
-                            />
-                          </TreeNode>
-                        : <TreeNode key={kid} label={StudentCardGroup([kid], doSearch, false)}/>
+                ? <TreeNode key={e} label={StudentCardGroup([e], doSearch, false, "medium")}>
+                        {scope.nephews.get(e)?.map(nephew => 
+                            <TreeNode label={StudentCardGroup([nephew], doSearch, false, "small")} />
+                        )}
+                    </TreeNode>
+                : <TreeNode key={e} label={StudentCardGroup([e], doSearch, true, "large")}>
+                    {scope.kids.map(kid =>
+                        <TreeNode key={kid} label={StudentCardGroup([kid], doSearch, false, "medium")}>
+                            {scope.grandkids.get(kid)?.map(grandkid => 
+                                <TreeNode label={StudentCardGroup([grandkid], doSearch, false, "small")} />
+                            )}
+                        </TreeNode>
                     )}
                 </TreeNode>
             )}
