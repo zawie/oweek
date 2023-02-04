@@ -62,7 +62,7 @@
 .App {
     background-color: whitesmoke;
     min-height: 100vh;
-    min-width:  100vw;
+    width:  100%;
 }
 
 .PageHeader {
@@ -76,5 +76,4 @@
 
 html {
     background-color: whitesmoke;
-    width: 100vw;
 }
