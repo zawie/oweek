@@ -2,44 +2,14 @@ import 'antd/dist/antd.css';
 import '../styles/globals.css'
 
 import type { AppProps } from 'next/app'
-import { Typography } from 'antd'
-import { Analytics } from '@vercel/analytics/react';
-import PageHeader from '../components/PageHeader';
-import { GithubFilled } from '@ant-design/icons';
-import Head from 'next/head';
+import dynamic from 'next/dynamic';
 
-const { Text } = Typography;
+const LoadableApp = dynamic(() =>
+  import("../components/LoadableApp").then((m) => m.LoadableApp),
+);
 
-function MyApp({ Component, pageProps }: AppProps) {
-    return <div className="App">
-        <Head>
-            <title>
-                Rice O-Week Tree
-            </title>
-            <meta
-                name="description"
-                content="O-Week geneology site for Rice University orientation. Explore advisor and new student relationships in the Rice family tree!"
-                key="desc"
-            />
-            <meta 
-                name="author" 
-                content="Adam Zawierucha"
-                key="auth"
-            />
-            <meta name="keywords" 
-                  content="O-Week, Oweek, Rice, Rice University, geneology, family tree"
-            />
-        </Head>
-      
-        <Analytics/>
-        <PageHeader/>
-        <Component {...pageProps} style={{width:"100%"}}/>
-        <br/>
-        <div className='Footer'>
-            <Text type="secondary"> Made with love by the best college, <a href="https://www.browncollege.org">Brown College</a>.</Text>
-            <Text type="secondary"> This is an open source project on <a href="https://github.com/zawie/oweek.org"> GitHub <GithubFilled/></a></Text>
-        </div>
-  </div>
+function MyApp(props: AppProps) {
+    return  <LoadableApp {... props}/>
 }
 
 export default MyApp
