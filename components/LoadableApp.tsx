@@ -33,7 +33,7 @@ export const LoadableApp = ({ Component, pageProps }: AppProps) => {
     <Component {...pageProps} style={{width:"100%"}}/>
     <br/>
     <div className='Footer'>
-        <Text type="secondary"> Made with love by the best college, <a href="https://www.browncollege.org">Brown College</a>.</Text>
+        <Text type="secondary"> Made by <a href="https://www.zawie.io">Adam Zawierucha</a>.</Text>
         <Text type="secondary"> This is an open source project on <a href="https://github.com/zawie/oweek.org"> GitHub <GithubFilled/></a></Text>
     </div>
 </div>
