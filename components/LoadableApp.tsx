@@ -34,7 +34,7 @@ export const LoadableApp = ({ Component, pageProps }: AppProps) => {
     <br/>
     <div className='Footer'>
         <Text type="secondary"> Made by <a href="https://www.zawie.io">Adam Zawierucha</a>.</Text>
-        <Text type="secondary"> This is an open source project on <a href="https://github.com/zawie/oweek.org"> GitHub <GithubFilled/></a></Text>
+        <Text type="secondary"> This is an open source project on <a href="https://github.com/zawie/oweek"> GitHub <GithubFilled/></a></Text>
     </div>
 </div>
 }
