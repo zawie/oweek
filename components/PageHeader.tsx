@@ -10,7 +10,7 @@ export default function PageHeader(props: PageHeaderProps) {
         <div style={{paddingTop:10}} >
             <Title style={{
                 fontSize: 32,
-            }}> <a style={{color:"black"}}href="https://oweek.zawie.io">🌳 oweek.zawie.io </a></Title>
+            }}> <a style={{color:"black"}}href="https://oweek.zawie.io">🌳 oweek </a></Title>
         </div>
         <div style={{
             height:"100%",
