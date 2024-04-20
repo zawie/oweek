@@ -69,6 +69,7 @@ export default function ContentDisplay(props: ContentDisplayProps) {
                         <Image
                             src={`/assets/emblems/${f.college.toLowerCase()}.png`}
                             alt="?"
+                            key={f.toString()}
                             height="17"
                             width="17"
                         />
