@@ -5,6 +5,8 @@ import { SearchResult } from '../pages/api/search';
 import dynamic from 'next/dynamic';
 import { Family } from '../helper/family';
 import { Scope } from './FamilyTree';
+import Image from 'next/image'
+
 const antIcon = <LoadingOutlined style={{ fontSize: 64 }} spin />;
 
 type ContentDisplayProps = {
@@ -62,8 +64,18 @@ export default function ContentDisplay(props: ContentDisplayProps) {
                 {searchResult.homeFamilies.map(f => f.name).join(", ")}
             </Text>
             <Text type="secondary" style={{fontSize: 20}}>
+                {
+                    searchResult.homeFamilies.map(f => 
+                        <Image
+                            src={`/assets/emblems/${f.college.toLowerCase()}.png`}
+                            alt="?"
+                            height="17"
+                            width="17"
+                        />
+                    )
+                }
                 {searchResult.homeFamilies.length > 0 
-                    ? searchResult.homeFamilies.map(f => [f.college, "College -", f.year].join(" ")).join(", ")
+                    ? searchResult.homeFamilies.map(f => [" ", f.college, "College -", f.year].join(" ")).join(", ")
                     : "Unknown Family"
                     }
             </Text>
