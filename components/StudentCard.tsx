@@ -2,20 +2,13 @@ import { Card, Typography} from 'antd';
 import Image from 'next/image'
 import { TopologyResult } from '../pages/api/topology';
 import { useState } from 'react';
+import md5 from 'md5';
 
 const { Text } = Typography;
 
 const hash = function(str: string): number {
-    let hash: number = 0;
-    let i, chr;
-    if (str.length === 0) return hash;
-    for (i = 0; i < str.length; i++) {
-      chr = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + chr;
-      hash |= 0; // Convert to 32bit integer
-    }
-    return hash < 0 ? -hash : hash;
-  }
+    return md5(str, {asBytes: true}).reduce((a, b) => a + b, 0)
+}
 
 
 export function StudentCard(student: string, doSearch: any, focus: boolean = false) {
