@@ -51,8 +51,11 @@ function getOwl(student: string) {
     } else if (student.toLowerCase() == "anya gu") {
         src = `/assets/owls/queen.jpg`
     } else if (student.toLowerCase() == "daanish sheikh") {
-        src = `/assets/owls/doctor.jpg`
+        src = `/assets/owls/president.jpg`
+    } else if (student.toLowerCase() == "kai hung") {
+        src = `/assets/owls/science.jpg`
     }
+
     return <Image
         src={src}
         alt="Owl (Woo! Woo!)"
