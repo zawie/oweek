@@ -56,7 +56,7 @@ export function StudentCard(student: string, doSearch: any, focus: boolean = fal
     </Card>
 }
 
-function getOwl(student: string) {
+export function getOwl(student: string) {
     let src = `/assets/owls/owl${hash(student) % 30}.jpg`
     if (student.toLowerCase() == "adam zawierucha") {
         src = `/assets/owls/engineer.jpg`
