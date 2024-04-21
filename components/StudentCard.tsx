@@ -7,7 +7,7 @@ import md5 from 'md5';
 const { Text } = Typography;
 
 const hash = function(str: string): number {
-    return md5(str, {asBytes: true}).reduce((a, b) => a + b, 0)
+    return md5(str, {asBytes: true}).reduce((a, b) => a ^ b, 0)
 }
 
 
