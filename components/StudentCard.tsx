@@ -52,6 +52,8 @@ function getOwl(student: string) {
         src = `/assets/owls/queen.jpg`
     } else if (student.toLowerCase() == "daanish sheikh") {
         src = `/assets/owls/president.jpg`
+    } else if (student.toLowerCase() == "kevin huynh") {
+        src = `/assets/owls/nyc.jpg`
     } else if (student.toLowerCase() == "kai hung") {
         src = `/assets/owls/science.jpg`
     }
