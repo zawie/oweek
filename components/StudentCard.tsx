@@ -35,7 +35,7 @@ export function StudentCard(student: string, doSearch: any, focus: boolean = fal
         onClick={()=>doSearch(student)}
         size="small"
         cover={<Image
-            src={`/assets/owls/owl${hash(student) % 25}.jpg`}
+            src={`/assets/owls/owl${hash(student) % 30}.jpg`}
             alt="Owl (Woo! Woo!)"
             height="120"
             width="120"
