@@ -1,5 +1,7 @@
 import { Card, Typography} from 'antd';
 import Image from 'next/image'
+import { TopologyResult } from '../pages/api/topology';
+import { useState } from 'react';
 
 const { Text } = Typography;
 
@@ -17,6 +19,12 @@ const hash = function(str: string): number {
 
 
 export function StudentCard(student: string, doSearch: any, focus: boolean = false) {
+    
+    const [offspring, setOffspring] = useState(NaN)
+
+    if (focus) {
+        getDescendants(student).then(setOffspring)
+    }
 
     return  <Card
         hoverable
@@ -39,12 +47,16 @@ export function StudentCard(student: string, doSearch: any, focus: boolean = fal
         <Text
             style={{fontSize: 10}}
         > {student} </Text>
+        {offspring > 0 && <>
+            <br/>
+            <Text
+            style={{fontSize: 9, color: "gray"}}
+            > {`Descendants: ${offspring}`} </Text>
+        </>}
     </Card>
 }
 
 function getOwl(student: string) {
-
-
     let src = `/assets/owls/owl${hash(student) % 30}.jpg`
     if (student.toLowerCase() == "adam zawierucha") {
         src = `/assets/owls/engineer.jpg`
@@ -64,4 +76,10 @@ function getOwl(student: string) {
         height="120"
         width="120"
     />
+}
+
+async function getDescendants(student: string): Promise<number> {
+    return fetch(`/api/topology?name=${student}`)
+    .then(res => res.json())
+    .then(data => (data as TopologyResult).descendantCount)
 }
