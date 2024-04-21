@@ -53,7 +53,7 @@ const Leaderboard: NextPage = () => {
                 medal = '🏅'
             }
 
-            return <Card style={{margin: '15px'}}>
+            return <Card style={{margin: '15px'}} key={rank}>
                 <div style={{display: 'flex', flexDirection: 'row'}}>
                     {getOwl(student)}
                     <div style={{display: 'flex', flexDirection: 'column', marginLeft: '15px'}}>
