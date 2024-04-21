@@ -1,6 +1,7 @@
 import { Typography, Button } from 'antd';
 const { Title } = Typography;
 import { TrophyOutlined, UserAddOutlined } from '@ant-design/icons';
+import Link from 'next/link';
 
 type PageHeaderProps = {
 }
@@ -10,7 +11,7 @@ export default function PageHeader(props: PageHeaderProps) {
         <div style={{paddingTop:10}} >
             <Title style={{
                 fontSize: 32,
-            }}> <a style={{color:"black"}}href="/">🌳 oweek </a></Title>
+            }}> <Link passHref legacyBehavior href="/"><a style={{color: 'black'}}>🌳 oweek </a></Link></Title>
         </div>
         <div style={{
             height:"100%",
