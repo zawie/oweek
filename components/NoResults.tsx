@@ -1,4 +1,4 @@
-import { UserAddOutlined } from '@ant-design/icons';
+import { UsergroupAddOutlined } from '@ant-design/icons';
 import { Button, Empty } from 'antd';
 
 type NoResultsProps = {
@@ -18,12 +18,12 @@ export default function NoResults(props: NoResultsProps) {
             </span>
         }>
             <Button type="link"
-                href="https://forms.gle/hUfXkadg8Z8L5Bt98"
+                href="/create"
                 size="large"
                 style={{
                     fontSize: 16,
                     minWidth: 128,
-            }}> <UserAddOutlined/> Add a family </Button>
+            }}> <UsergroupAddOutlined Family/> Add Family </Button>
         </Empty>
     </div>
 }

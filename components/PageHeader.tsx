@@ -1,6 +1,6 @@
 import { Typography, Button } from 'antd';
 const { Title } = Typography;
-import { TrophyOutlined, UserAddOutlined } from '@ant-design/icons';
+import { TrophyOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 
 type PageHeaderProps = {
@@ -25,12 +25,12 @@ export default function PageHeader(props: PageHeaderProps) {
                     minWidth: 128,
             }}> <TrophyOutlined />Leaderboard </Button>
             <Button type="link"
-                href="https://forms.gle/hUfXkadg8Z8L5Bt98"
+                href="/create"
                 size="large"
                 style={{
                     fontSize: 16,
                     minWidth: 128,
-            }}> <UserAddOutlined/> Add a family </Button>
+            }}> <UsergroupAddOutlined Family/> Add Family </Button>
         </div>
     </div>
 }
