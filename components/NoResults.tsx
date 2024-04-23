@@ -23,7 +23,7 @@ export default function NoResults(props: NoResultsProps) {
                 style={{
                     fontSize: 16,
                     minWidth: 128,
-            }}> <UsergroupAddOutlined Family/> Add Family </Button>
+            }}> <UsergroupAddOutlined/> Add Family </Button>
         </Empty>
     </div>
 }
