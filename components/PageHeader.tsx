@@ -30,7 +30,7 @@ export default function PageHeader(props: PageHeaderProps) {
                 style={{
                     fontSize: 16,
                     minWidth: 128,
-            }}> <UsergroupAddOutlined Family/> Add Family </Button>
+            }}> <UsergroupAddOutlined/> Add Family </Button>
         </div>
     </div>
 }
