@@ -1,7 +1,7 @@
 import { Button, Typography } from 'antd';
 import SearchBar from './SearchBar';
 import { useEffect, useState } from "react";
-import { UserAddOutlined } from '@ant-design/icons';
+import { UsergroupAddOutlined } from '@ant-design/icons';
 import { StatsResults } from '../pages/api/stats';
 
 const { Title } = Typography;
@@ -39,13 +39,13 @@ export default function Landing(props: LandingProps) {
         <br/>
         <div style={{display:"flex", justifyContent:"center"}}>
                 <Button type="link"
-                href="https://forms.gle/hUfXkadg8Z8L5Bt98"
+                href="/create"
                 size="large"
                 style={{
                     margin:5,
                     fontSize: 16,
                     minWidth: 128,
-                }}> <UserAddOutlined/> Add a family </Button>
+                }}> <UsergroupAddOutlined/> Add Family </Button>
             </div>
     </div>
 </div>
