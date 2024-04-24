@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "download-sheets": "tsx scripts/download-sheets.ts"
+    "download-sheets": "tsx scripts/download-sheets.ts",
+    "nuke-kv": "cli-confirm \"Do you really want to nuke kv?\" && tsx scripts/nuke-kv.ts"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
@@ -29,6 +30,7 @@
     "@types/node": "^18.11.3",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
+    "cli-confirm": "^1.0.1",
     "dotenv": "^16.4.5",
     "eslint": "8.26.0",
     "eslint-config-next": "12.3.1",
