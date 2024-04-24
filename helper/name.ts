@@ -26,7 +26,7 @@ export function getNameSimilarity(name0: string, name1: string): number {
 
 export async function getSimilarNames(
         query: string, 
-        families: Family[], 
+        names: string[], 
         amount: number = 1
     ): Promise<string[]> {
 
@@ -34,24 +34,16 @@ export async function getSimilarNames(
     const best: topK<string> = new topK<string>(amount);
     const observed = new Set<string>();
 
-    families.forEach(f =>
-        f.kids.concat(f.parents).forEach((name: string) => {
-            const lower_name = name.toLowerCase();
-            if (!observed.has(lower_name)) {
-                observed.add(lower_name)
-                const sim = getNameSimilarity(lower_name, query_lower);
-                if (sim > 0) {
-                    best.add(name, sim)   
-                }
+    names.forEach((name: string) => {
+        const lower_name = name.toLowerCase();
+        if (!observed.has(lower_name)) {
+            observed.add(lower_name)
+            const sim = getNameSimilarity(lower_name, query_lower);
+            if (sim > 0) {
+                best.add(name, sim)   
             }
-        })
-    );
+        }
+    });
 
     return best.retrieve();
-}
-
-export async function getRandomName(families: Family[]): Promise<string> {
-    const randFam = families[Math.floor(Math.random()*families.length)];
-    const people = randFam.kids.concat(randFam.parents);
-    return people[Math.floor(Math.random()*people.length)];
 }

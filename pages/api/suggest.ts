@@ -1,8 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Family, getFamilies } from '../../helper/family';
+import { Family } from '../../helper/family';
 import { Trie } from '../../helper/data_structures/trie';
 import { getSimilarNames } from '../../helper/name'
+import { getPeople } from '../../helper/db';
 
 type ErrorResponse = {
   error: string
@@ -15,6 +16,7 @@ export type SuggestResult = {
 
 
 let cachedNames: Trie | undefined = undefined;
+let people: string[] | undefined = undefined;
 export const minQueyLength = 1;
 const numSuggestions = 5;
 
@@ -32,19 +34,21 @@ export default async function handler(
 
     if (cachedNames == undefined) {
         cachedNames = new Trie();
-        const families: Family[] = await getFamilies();
-        families.forEach(f => {
-            f.kids.concat(f.parents).forEach(p => {
-                cachedNames?.add(p.toLowerCase());
-            })
+        if (people == undefined) {
+            people = await getPeople();
+        }
+        people.forEach(p => {
+            cachedNames?.add(p.toLowerCase());
         })
     }
 
     let suggestions = cachedNames.query((query as string).toLowerCase())
                         .sort().reverse();
     if (suggestions.length < numSuggestions) {
-        const families: Family[] = await getFamilies();
-        const simNames = await getSimilarNames(query as string, families, numSuggestions);
+        if (people == undefined) {
+            people = await getPeople();
+        }
+        const simNames = await getSimilarNames(query as string, people, numSuggestions);
         suggestions = suggestions.concat(simNames.map(x => x.toLowerCase()))
         const used = new Set<string>();
         suggestions = suggestions.filter(x => {

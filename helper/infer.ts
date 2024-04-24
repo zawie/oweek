@@ -1,7 +1,10 @@
+import { getAssociatedFamilies } from "./db";
 import { Family } from "./family";
 
 
-export function inferCollege(name: string, families: Family[]): string {
+export async function inferCollege(name: string): Promise<string> {
+    const families = await getAssociatedFamilies(name);
+
     for (const f of families) {
         if (f.kids.map(k => k.toLowerCase()).includes(name.toLowerCase())) {
             return f.college
@@ -17,7 +20,9 @@ export function inferCollege(name: string, families: Family[]): string {
     return ""
 }
 
-export function inferYear(name: string, families: Family[]): string {
+export async function inferYear(name: string): Promise<string> {
+    const families = await getAssociatedFamilies(name);
+
     for (const f of families) {
         if (f.kids.map(k => k.toLowerCase()).includes(name.toLowerCase())) {
             return f.year
