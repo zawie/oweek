@@ -26,13 +26,14 @@ export default async function handler(
 ) {  
     const people: string[] = await getPeople();
 
-    let ranking = await Promise.all(people.map(async student => {
-        return {
+    let ranking = [] 
+    for (const student of people) {
+        ranking.push({
             student: student, 
             firstInCollege: false,
             descendentCount: (await computeTopology(student)).descendants.size
-        } as LeaderbaordEntry
-    }))
+        } as LeaderbaordEntry)
+    }   
 
     ranking = ranking.filter(e => e.descendentCount > 100)
     ranking.sort((a, b) => b.descendentCount - a.descendentCount)
