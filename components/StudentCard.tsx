@@ -54,7 +54,7 @@ export function getOwl(student: string) {
     if (student.toLowerCase() == "adam zawierucha") {
         src = `/assets/owls/engineer.jpg`
     } else if (student.toLowerCase() == "anya gu") {
-        src = `/assets/owls/skate.jpg`
+        src = `/assets/owls/queen.jpg`
     } else if (student.toLowerCase() == "daanish sheikh") {
         src = `/assets/owls/president.jpg`
     } else if (student.toLowerCase() == "kevin huynh") {
