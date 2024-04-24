@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Family, getFamilies } from '../../helper/family';
+import { Family } from '../../helper/family';
 import { getSimilarNames } from '../../helper/name';
 import { getAssociatedFamilies, getPeople, getRandomPerson } from '../../helper/db';
 

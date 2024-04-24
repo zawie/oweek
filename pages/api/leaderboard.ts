@@ -1,6 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Family, getFamilies } from '../../helper/family';
 import { computeTopology } from '../../helper/topology';
 import { inferCollege, inferYear } from '../../helper/infer';
 import { getPeople } from '../../helper/db';
