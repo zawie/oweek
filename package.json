@@ -12,6 +12,7 @@
     "@ant-design/icons": "^4.7.0",
     "@next/bundle-analyzer": "^13.4.19",
     "@vercel/analytics": "^0.1.1",
+    "@vercel/kv": "^1.0.1",
     "antd": "^4.23.6",
     "googleapis": "^108.0.0",
     "md5": "^2.3.0",

@@ -21,7 +21,7 @@ export default async function handler(
   
     const families: Family[] = await getFamilies();
     
-    const t = computeTopology(name || "", families)
+    const t = await computeTopology(name || "")
     res.status(200).json({
         root: name || "",
         generationsAfter: t.generationsAfter,

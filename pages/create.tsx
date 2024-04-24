@@ -32,6 +32,13 @@ const formItemLayout = {
 
 const onFinish: FormProps<FamilyType>['onFinish'] = (values) => {
     console.log('Success:', values);
+    fetch('/api/insert', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(values)
+    })
   };
   
 const onFinishFailed: FormProps<FamilyType>['onFinishFailed'] = (errorInfo) => {
