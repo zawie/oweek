@@ -1,6 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Family, getFamilies } from '../../helper/family';
 import { computeTopology } from '../../helper/topology';
 
 type ErrorResponse = {
@@ -18,9 +17,7 @@ export default async function handler(
   res: NextApiResponse<TopologyResult | ErrorResponse>
 ) {
     const {name}: {name? : string} = req.query
-  
-    const families: Family[] = await getFamilies();
-    
+      
     const t = await computeTopology(name || "")
     res.status(200).json({
         root: name || "",
