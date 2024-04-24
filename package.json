@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "download-sheets": "tsx scripts/download-sheets.ts",
+    "upload-to-kv": "tsx scripts/upload-to-kv.ts",
     "nuke-kv": "cli-confirm \"Do you really want to nuke kv?\" && tsx scripts/nuke-kv.ts"
   },
   "dependencies": {
