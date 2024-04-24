@@ -9,13 +9,15 @@ export type Row = {
     college: string
 }
 
-const PRIVATE_KEY = process.env.SERVICE_ACCOUNT_PRIVATE_KEY?.replaceAll(`"`,``).replaceAll(`\\n`, `\n`);
-
 export async function getGoogleSheetsRows(): Promise<Row[]> {
-
+    const private_key = process.env.SERVICE_ACCOUNT_PRIVATE_KEY?.replaceAll(`"`,``).replaceAll(`\\n`, `\n`);
+    if (private_key == undefined) {
+        throw new Error("No private key for Google ssheets found in environment variables.")
+    }
+    
     const auth = new google.auth.JWT({
         email: process.env.SERVICE_ACCOUNT_EMAIL,
-        key: PRIVATE_KEY,
+        key: private_key,
         scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"]
     })
 
