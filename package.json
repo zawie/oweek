@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "download-sheets": "tsx scripts/downloadFromSheets.ts"
+    "download-sheets": "tsx scripts/download-sheets.ts"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
