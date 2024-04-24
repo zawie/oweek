@@ -6,10 +6,11 @@ export type Family = {
     parents: string[],
     kids: string[],
     year: string,
-    college: string
+    college: string,
+    createdAt: Date,
 }
 
-async function fetchFamilies(): Promise<Family[]> {
+export async function fetchFamilies(): Promise<Family[]> {
     let rows: Row[] = await getGoogleSheetsRows();
 
     // Filter out duplicate names (keep first instance)
@@ -41,6 +42,7 @@ async function fetchFamilies(): Promise<Family[]> {
             parents: r.parents.split(/,+/).map(s=> s.trim()).filter(s => s.length > 0),
             kids: r.kids.split(/,+/).map(s=> s.trim()).filter(s => s.length > 0),
             college: r.college,
+            createdAt: r.timestamp,
         };
     })
 }

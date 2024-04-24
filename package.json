@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "download-sheets": "tsx scripts/downloadFromSheets.ts"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
@@ -28,8 +29,10 @@
     "@types/node": "^18.11.3",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
+    "dotenv": "^16.4.5",
     "eslint": "8.26.0",
     "eslint-config-next": "12.3.1",
+    "tsx": "^4.7.2",
     "typescript": "^4.8.4"
   }
 }
