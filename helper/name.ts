@@ -51,3 +51,13 @@ export async function getSimilarNames(
 export function normalize(str: string): string {
     return str.toLowerCase().trim()
 }
+
+
+export function denormalizeFromFamilies(name: string, families: Family[]): string {
+    return denormalize(name, families.map(f => f.kids.concat(f.parents)).flat())
+}
+
+export function denormalize(name: string, candidates: string[]): string {
+    const candidateNames = candidates.filter(x => normalize(x) == normalize(name))
+    return candidateNames.length > 0 && candidateNames[0] || name
+}
