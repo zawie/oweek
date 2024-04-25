@@ -1,5 +1,6 @@
 import { createClient, VercelKV } from '@vercel/kv';
 import { Family } from './family';
+import { normalize } from './name';
 
 export function getClient(readOnly=true): VercelKV {
     return createClient({
@@ -11,16 +12,17 @@ export function getClient(readOnly=true): VercelKV {
 }
 
 export async function insertFamily(family: Family, kv=getClient(false)){
-    const people = family.kids.concat(family.parents).map(p => p.trim())
+    const people = family.kids.concat(family.parents).map(normalize)
 
     // >>>>>>>> Start of transaction >>>>>>>>
     const transaction = kv.multi();
+    const normalFamilyName = normalize(family.name)
 
-    transaction.lpush(`_FAMILY:${family.name}`, JSON.stringify(family));
-    transaction.sadd(`_FAMILIES`, family.name);
+    transaction.lpush(`_FAMILY:${normalFamilyName}`, JSON.stringify(family));
+    transaction.sadd(`_FAMILIES`, normalFamilyName);
 
     people.forEach(p => {
-        transaction.sadd(`_PERSON:${p}`, family.name)
+        transaction.sadd(`_PERSON:${p}`, normalFamilyName)
     })
     transaction.sadd(`_PEOPLE`, ...people);
 
@@ -29,7 +31,7 @@ export async function insertFamily(family: Family, kv=getClient(false)){
 }
 
 export async function getAssociatedFamilies(person: string, kv=getClient(true)): Promise<Family[]> {
-    const familyNames = kv.smembers(`_PERSON:${person}`)
+    const familyNames = kv.smembers(`_PERSON:${normalize(person)}`)
 
     const families = familyNames.then(res => 
         res.map(async (name) => 

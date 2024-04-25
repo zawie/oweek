@@ -1,3 +1,4 @@
+import { normalize } from "./name";
 import { colleges } from "./rice";
 import { Row, getGoogleSheetsRows } from "./sheets";
 import { stringSimilarity } from './similarity';
@@ -18,7 +19,7 @@ export async function fetchFamilies(): Promise<Family[]> {
     // Filter out duplicate names (keep first instance)
     const usedNames: Set<string> = new Set<string>();
     rows = rows.reverse().filter((row: Row) => {
-        const name = row.name.toLowerCase().replace(/&/, 'and'); 
+        const name = normalize(row.name).replace(/&/, 'and'); 
         let isUsed: boolean = usedNames.has(name);
         if (!isUsed) {
             //@ts-ignore
