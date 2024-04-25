@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 import { Family } from "../helper/family";
 import {parseNJson} from '../helper/njson'
 
-dotenv.config({path:'.env.local'})
+dotenv.config({path:'.env'})
 
 import * as fs from 'fs';
 import { insertFamily } from '../helper/db';
