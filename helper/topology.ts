@@ -17,15 +17,17 @@ export async function computeTopology(name: string): Promise<Topology> {
         generationsAfter: 0,
     }
 
-    await getAssociatedFamilies(name).then(families => 
+    const children = await getAssociatedFamilies(name).then(families => 
         families.filter(f => f.parents.includes(name))
             .map(f => f.kids)
             .flat()
-    ).then(children => children.map(async k => {
+    )
+    
+    for (let k of children) {
         const t = await computeTopology(k);
         topo.generationsAfter = Math.max(topo.generationsAfter, t.generationsAfter + 1);
         topo.descendants = new Set([...Array.from(topo.descendants), ...Array.from(t.descendants), k]);
-    })).then(res => Promise.all(res));
+    }
 
     cachedTopology.set(name, topo)
     return topo;
