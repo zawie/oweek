@@ -1,3 +1,4 @@
+import { colleges } from "./rice";
 import { Row, getGoogleSheetsRows } from "./sheets";
 import { stringSimilarity } from './similarity';
 
@@ -8,6 +9,7 @@ export type Family = {
     year: string,
     college: string,
     createdAt: Date,
+    uuid?: string,
 }
 
 export async function fetchFamilies(): Promise<Family[]> {
@@ -45,4 +47,40 @@ export async function fetchFamilies(): Promise<Family[]> {
             createdAt: r.timestamp,
         };
     })
+}
+
+
+type ValidateResponse = {
+    valid: boolean,
+    errors: string[]
+}
+
+export function validate(family: Family): ValidateResponse {
+
+    let valid = true
+    let errors: string[] = []
+
+    if (!colleges.includes(family.college)) {
+        valid = false
+        errors.push("Invalid college")
+     }
+
+     if (family.name.length == 0) {
+        valid = false
+        errors.push("Family must have a name")
+     }
+
+     if (family.parents.length == 0) {
+        valid = false
+        errors.push("Family must have at least one parent")
+     }
+
+     if (family.kids.length == 0) {
+        valid = false
+        errors.push("Family must have at least one kid")
+     }
+
+     return {
+        valid, errors
+     }
 }
