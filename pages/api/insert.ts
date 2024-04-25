@@ -24,8 +24,6 @@ export default async function handler(
       return
     }
 
-    //TODO: Validate family object, return 400 on error
-
     const v = validate(family)
     if (!v.valid) {
       console.log("Invalid family provided: ", family, v.errors)

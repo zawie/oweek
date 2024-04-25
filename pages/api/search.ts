@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Family } from '../../helper/family';
-import { getSimilarNames } from '../../helper/name';
+import { getSimilarNames, normalize } from '../../helper/name';
 import { getAssociatedFamilies, getPeople, getRandomPerson } from '../../helper/db';
 
 type ErrorResponse = {
@@ -40,13 +40,16 @@ export default async function handler(
 
     const associatedFamiles = await getAssociatedFamilies(name);
 
+    console.log(associatedFamiles)
     //Find all families associated with this name
-    const homeFamilies = associatedFamiles.filter(f => f.kids.includes(name));
-    const parentFamilies = associatedFamiles.filter(f => f.parents.includes(name));
+    const homeFamilies = associatedFamiles.filter(f => f.kids.map(normalize).includes(normalize(name)));
+    const parentFamilies = associatedFamiles.filter(f => f.parents.map(normalize).includes(normalize(name)));
 
+    const candidateNames = associatedFamiles.map(f => f.kids.concat(f.parents)).flat().filter(x => normalize(x) == normalize(name))
+    const denormalizedName = candidateNames.length > 0 && candidateNames[0] || name;
     
     res.status(200).json({
-        focusName: name, 
+        focusName: denormalizedName, 
         queryMade: query,
         homeFamilies,
         parentFamilies, 

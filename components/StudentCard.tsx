@@ -14,8 +14,9 @@ const hash = function(str: string): number {
 export function StudentCard(student: string, doSearch: any, focus: boolean = false) {
     
     const [offspring, setOffspring] = useState(NaN)
-
-    if (focus) {
+    const [fetching, setFetching] = useState(false)
+    if (!fetching && focus) {
+        setFetching(true)
         getDescendants(student).then(setOffspring)
     }
 

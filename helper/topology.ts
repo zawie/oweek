@@ -1,4 +1,5 @@
 import { Family } from "./family";
+import { normalize } from "./name";
 
 type Topology = {
     descendants: Set<string>,
@@ -17,7 +18,7 @@ export function computeTopology(name: string, families: Family[]): Topology {
     }
 
 
-     families.filter(f => f.parents.includes(name))
+     families.filter(f => f.parents.map(normalize).includes(normalize(name)))
             .map(f => f.kids)
             .flat()
             .forEach(k => {
