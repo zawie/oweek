@@ -30,7 +30,7 @@ export default async function handler(
     
     const ranking = people.map(student => {
         return {
-            student: denormalize(student, people), 
+            student: denormalize(student, families), 
             firstInCollege: false,
             descendentCount: (computeTopology(student, families)).descendants.size
         } as LeaderbaordEntry
