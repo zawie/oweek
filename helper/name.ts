@@ -53,11 +53,7 @@ export function normalize(str: string): string {
 }
 
 
-export function denormalizeFromFamilies(name: string, families: Family[]): string {
-    return denormalize(name, families.map(f => f.kids.concat(f.parents)).flat())
-}
-
-export function denormalize(name: string, candidates: string[]): string {
-    const candidateNames = candidates.filter(x => normalize(x) == normalize(name))
-    return candidateNames.length > 0 && candidateNames[0] || name
+export function denormalize(name: string, families: Family[]): string {
+    const candidateNames = families.map(f => f.kids.concat(f.parents)).flat().filter(x => normalize(x) == normalize(name))
+    return candidateNames.length > 0 && candidateNames[0] || name;
 }
