@@ -2,10 +2,8 @@ import type { NextPage } from 'next'
 import React, { useState } from 'react';
 import Image from 'next/image';
 
-import { Typography, Button, Checkbox, Form, Input, Divider, InputNumber, Spin, Alert} from 'antd';
-import { CrownTwoTone, DeleteColumnOutlined, DeleteFilled, DeleteOutlined, DeleteRowOutlined, DeleteTwoTone, ExclamationCircleOutlined, ExclamationCircleTwoTone, ExclamationOutlined, InfoCircleTwoTone, LoadingOutlined, MinusCircleOutlined, PlusOutlined, QuestionCircleTwoTone, UserAddOutlined, UserOutlined, UsergroupAddOutlined } from '@ant-design/icons';
-import Radio, { RadioGroupOptionType } from 'antd/lib/radio';
-import { time } from 'console';
+import { Typography, Button, Form, Input, Divider, InputNumber, Spin} from 'antd';
+import { CrownTwoTone, LoadingOutlined, MinusCircleOutlined, PlusOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 const { Text, Title } = Typography;
 
 import type { FormProps } from 'antd';
@@ -49,7 +47,7 @@ const Create: NextPage = () => {
 
         setCanSubmit(false);
         setSubmitting(false);
-        alert(res.status == 200 ? "Success!" : `Failed to submit family. Please try again.\n\n${res.status}: ${res.statusText}`)
+        alert(res.status == 201 ? "Success!" : `Failed to submit family. Please try again.\n\n${res.status}: ${res.statusText}`)
         setCanSubmit(true);
       };
   
