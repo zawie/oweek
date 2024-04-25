@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { TopologyResult } from '../pages/api/topology';
 import { useState } from 'react';
 import md5 from 'md5';
+import { normalize } from '../helper/name';
 
 const { Text } = Typography;
 
@@ -51,7 +52,7 @@ export function StudentCard(student: string, doSearch: any, focus: boolean = fal
 }
 
 export function getOwl(student: string) {
-    let src = `/assets/owls/owl${hash(student) % 30}.jpg`
+    let src = `/assets/owls/owl${hash(normalize(student)) % 30}.jpg`
     if (student.toLowerCase() == "adam zawierucha") {
         src = `/assets/owls/engineer.jpg`
     } else if (student.toLowerCase() == "anya gu") {
