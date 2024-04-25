@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { computeTopology } from '../../helper/topology';
 import { inferCollege, inferYear } from '../../helper/infer';
 import { getAllFamilies, getPeople } from '../../helper/db';
+import { denormalize } from '../../helper/name';
 
 type ErrorResponse = {
   error: string
@@ -29,7 +30,7 @@ export default async function handler(
     
     const ranking = people.map(student => {
         return {
-            student: student, 
+            student: denormalize(student, people), 
             firstInCollege: false,
             descendentCount: (computeTopology(student, families)).descendants.size
         } as LeaderbaordEntry
