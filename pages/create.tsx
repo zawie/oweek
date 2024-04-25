@@ -2,8 +2,8 @@ import type { NextPage } from 'next'
 import React, { useState } from 'react';
 import Image from 'next/image';
 
-import { Typography, Button, Checkbox, Form, Input, Divider, InputNumber} from 'antd';
-import { CrownTwoTone, DeleteColumnOutlined, DeleteFilled, DeleteOutlined, DeleteRowOutlined, DeleteTwoTone, ExclamationCircleOutlined, ExclamationCircleTwoTone, ExclamationOutlined, InfoCircleTwoTone, MinusCircleOutlined, PlusOutlined, QuestionCircleTwoTone, UserAddOutlined, UserOutlined, UsergroupAddOutlined } from '@ant-design/icons';
+import { Typography, Button, Checkbox, Form, Input, Divider, InputNumber, Spin, Alert} from 'antd';
+import { CrownTwoTone, DeleteColumnOutlined, DeleteFilled, DeleteOutlined, DeleteRowOutlined, DeleteTwoTone, ExclamationCircleOutlined, ExclamationCircleTwoTone, ExclamationOutlined, InfoCircleTwoTone, LoadingOutlined, MinusCircleOutlined, PlusOutlined, QuestionCircleTwoTone, UserAddOutlined, UserOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 import Radio, { RadioGroupOptionType } from 'antd/lib/radio';
 import { time } from 'console';
 const { Text, Title } = Typography;
@@ -30,23 +30,34 @@ const formItemLayout = {
     },
 };
 
-const onFinish: FormProps<FamilyType>['onFinish'] = (values) => {
-    console.log('Success:', values);
-    fetch('/api/insert', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(values)
-    })
-  };
-  
-const onFinishFailed: FormProps<FamilyType>['onFinishFailed'] = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-};
-
-  
 const Create: NextPage = () => {
+
+    const [canSubmit, setCanSubmit] = useState<boolean>(true);
+    const [submitting, setSubmitting] = useState<boolean>(false);
+
+    const onFinish: FormProps<FamilyType>['onFinish'] = async (values) => {
+        setSubmitting(true);
+        
+        console.log('Success:', values);
+        const res = await fetch('/api/insert', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(values)
+        })
+
+        setCanSubmit(false);
+        setSubmitting(false);
+        alert(res.status == 200 ? "Success!" : `Failed to submit family. Please try again.\n\n${res.status}: ${res.statusText}`)
+        setCanSubmit(true);
+      };
+  
+      
+    const onFinishFailed: FormProps<FamilyType>['onFinishFailed'] = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+        setCanSubmit(false);
+    };
 
     return <div style={{display: "flex", justifyContent: "center"}}>
         <Form
@@ -56,6 +67,7 @@ const Create: NextPage = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
+            onChange={() => setCanSubmit(true)}
         >
             <Title level={2}> <UsergroupAddOutlined/> Add or Edit Family </Title>
             <Divider style={{maxWidth: 1500, minWidth: 400}}/>
@@ -113,8 +125,9 @@ const Create: NextPage = () => {
             <Divider/>
 
             <Form.Item<FamilyType>>
-                <Button type="primary" htmlType="submit">
-                    Submit
+                <Button type="primary" htmlType="submit" disabled={!canSubmit || submitting}>
+                    {submitting ? "Submitting... " : "Submit"}
+                    {submitting && <Spin indicator={<LoadingOutlined style={{marginLeft: 17, fontSize: 15 }} spin />} />}
                 </Button>
             </Form.Item>
         </Form>
@@ -153,7 +166,7 @@ function createFormList(label: string, variable: string) {
                         validateTrigger={['onChange', 'onBlur']}
                         rules={[
                         {
-                            required: true,
+                            required: index == 0,
                             whitespace: true,
                             message: `Please input a name or delete this field.`,
                         },
