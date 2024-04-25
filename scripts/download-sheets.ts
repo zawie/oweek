@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 import { fetchFamilies } from "../helper/family";
 
-dotenv.config({path:'.env.local'})
+dotenv.config({path:'.env.'})
 
 import * as fs from 'fs';
 
