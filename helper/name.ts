@@ -47,3 +47,7 @@ export async function getSimilarNames(
 
     return best.retrieve();
 }
+
+export function normalize(str: string): string {
+    return str.toLowerCase().trim()
+}
