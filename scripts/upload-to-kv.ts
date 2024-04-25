@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 import { Family } from "../helper/family";
 import {parseNJson} from '../helper/njson'
 
-dotenv.config({path:'.env.local'})
+dotenv.config({path:'.env'})
 
 import * as fs from 'fs';
 import { insertFamily } from '../helper/db';
@@ -14,6 +14,8 @@ const inputFile = args[0]
 // Clear file
 const families = parseNJson<Family>(fs.readFileSync(inputFile, 'utf8'))
 
-families.map(f => insertFamily(f))
+for (let f of families) {
+    await insertFamily(f)
+}
 
 console.log(`Uploaded families from ${inputFile} to KV! ⬆️`)
