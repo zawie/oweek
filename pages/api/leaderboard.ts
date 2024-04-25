@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { computeTopology } from '../../helper/topology';
 import { inferCollege, inferYear } from '../../helper/infer';
-import { getPeople } from '../../helper/db';
+import { getAllFamilies, getPeople } from '../../helper/db';
 
 type ErrorResponse = {
   error: string
@@ -25,17 +25,16 @@ export default async function handler(
   res: NextApiResponse<LeaderboardResult | ErrorResponse>
 ) {  
     const people: string[] = await getPeople();
-
-    let ranking = [] 
-    for (const student of people) {
-        ranking.push({
+    const families = await getAllFamilies();
+    
+    const ranking = people.map(student => {
+        return {
             student: student, 
             firstInCollege: false,
-            descendentCount: (await computeTopology(student)).descendants.size
-        } as LeaderbaordEntry)
-    }   
-
-    ranking = ranking.filter(e => e.descendentCount > 100)
+            descendentCount: (computeTopology(student, families)).descendants.size
+        } as LeaderbaordEntry
+    }).filter(e => e.descendentCount > 100)
+    
     ranking.sort((a, b) => b.descendentCount - a.descendentCount)
 
     let colleges = new Set<string>()

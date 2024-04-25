@@ -40,6 +40,14 @@ export async function getAssociatedFamilies(person: string, kv=getClient(true)):
     return families
 }
 
+export async function getAllFamilies(kv=getClient(true)): Promise<Family[]> {
+    return getFamilyNames(kv).then(res => 
+        res.map(async (name) => 
+            await kv.lindex(`_FAMILY:${name}`, 0) as Family
+        )
+    ).then(res => Promise.all(res))
+}   
+
 export async function getPeople(kv=getClient(true)): Promise<string[]> {
     return kv.smembers('_PEOPLE')
 }
