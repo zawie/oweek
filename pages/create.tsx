@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 
 import { useRouter } from 'next/router';
-import { Typography, Button, Form, Input, Divider, InputNumber, Spin, Radio} from 'antd';
+import { Typography, Button, Form, Input, Divider, InputNumber, Spin, Radio, Tooltip} from 'antd';
 import { CrownTwoTone, LoadingOutlined, MinusCircleOutlined, PlusOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 const { Text, Title } = Typography;
 
@@ -118,7 +118,14 @@ const Create: NextPage = () => {
                                 style={{marginRight: "5px"}}
                             />
                             {c}
-                            {c == 'Brown' && <>{' '} <CrownTwoTone/></>} {/* BSWB! */}
+                            {c == 'Brown' && 
+                                <>
+                                    {' '} 
+                                    <Tooltip title="BSWB!">
+                                        <CrownTwoTone/>
+                                    </Tooltip>
+                                </>
+                            }
                             </Radio>
                         )}
                 </Radio.Group>
