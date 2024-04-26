@@ -38,7 +38,7 @@ export default function ContentDisplay(props: ContentDisplayProps) {
     
     const hasKids = new Map<string, boolean>();
     const possibleParents = kids.concat(siblings);
-    const possibleRelatedFamilies: Family[] = [] //searchResult.grandFamilies.concat(searchResult.newphewFamilies);
+    const possibleRelatedFamilies: Family[] = searchResult.grandFamilies.concat(searchResult.newphewFamilies);
     for (const x of possibleParents) {
         hasKids.set(x, false);
         for (const f of possibleRelatedFamilies) {
