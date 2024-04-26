@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
-
-
 import { SearchResult } from './api/search'
+import { useSearchParams } from 'next/navigation'
 
 import { useState } from "react";
 import React from 'react';
@@ -13,6 +12,7 @@ import ContentDisplay from '../components/ContentDisplay';
 import NoResults from '../components/NoResults';
 
 const Home: NextPage = () => {
+    const searchParams = useSearchParams()
 
     const [searchResult, setSearchResult] = useState<SearchResult | undefined>(undefined);
     const [searching, setSearching] = useState<boolean>(false);
@@ -36,6 +36,13 @@ const Home: NextPage = () => {
             console.log(err);
         }
     };
+
+    if (!searching && searchResult == undefined) {
+        const query: string | null = searchParams.get('query')
+        if (query != null) {
+            doSearch(query)
+        }
+    }
 
     const showLanding = searchResult == undefined 
     const noResults = searchResult == undefined || searchResult.homeFamilies.length + searchResult.parentFamilies.length == 0;
