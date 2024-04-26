@@ -13,6 +13,8 @@ export type SearchResult = {
     focusName: string,
     homeFamilies: Family[],
     parentFamilies: Family[],
+    newphewFamilies: Family[],
+    grandFamilies: Family[],
 }
 
 export default async function handler(
@@ -40,15 +42,29 @@ export default async function handler(
 
     const associatedFamiles = await getAssociatedFamilies(name);
 
-    console.log(associatedFamiles)
     //Find all families associated with this name
     const homeFamilies = associatedFamiles.filter(f => f.kids.map(normalize).includes(normalize(name)));
     const parentFamilies = associatedFamiles.filter(f => f.parents.map(normalize).includes(normalize(name)));
 
+    const siblings = homeFamilies.map(f => f.kids).flat().filter(k => normalize(k) != normalize(name));
+    const newphewFamiliesPromise = Promise.all(siblings.map(async k => {
+      const f = await getAssociatedFamilies(k)
+      return f.filter(f => f.parents.map(normalize).includes(normalize(k)))
+    })).then(r => r.flat())
+
+    const kids = parentFamilies.map(f => f.kids).flat()
+    const grandFamiliesPromise = Promise.all(kids.map(async k => {
+      const f = await getAssociatedFamilies(k)
+      return f.filter(f => f.parents.map(normalize).includes(normalize(k)))
+    })).then(r => r.flat())
+
+    const [newphewFamilies, grandFamilies] = await Promise.all([newphewFamiliesPromise, grandFamiliesPromise])
     res.status(200).json({
         focusName: denormalize(name, associatedFamiles), 
         queryMade: query,
         homeFamilies,
         parentFamilies, 
+        newphewFamilies,
+        grandFamilies
     })
 }
