@@ -30,6 +30,36 @@ export async function insertFamily(family: Family, kv=getClient(false)){
     // <<<<<<<<< End transaction <<<<<<<<<
 }
 
+export async function deleteFamily(familyName: string, kv=getClient(false), checkExistence=true) {
+
+    const family = await getFamily(familyName);
+    if (checkExistence && family == null) {
+        throw new Error("Can't delete a non-existent family not found!")
+    }
+
+    const people = family?.kids.concat(family?.parents).map(normalize) || []
+    // >>>>>>>> Start of transaction >>>>>>>>
+    const transaction = kv.multi();
+    const normalFamilyName = normalize(familyName)
+
+    transaction.del(`_FAMILY:${normalFamilyName}`)
+    transaction.srem(`_FAMILIES`, normalFamilyName);
+
+    people.forEach(p => {
+        transaction.srem(`_PERSON:${p}`, normalFamilyName)
+    })
+
+    await transaction.exec()
+    // <<<<<<<<< End transaction <<<<<<<<<
+
+    people.filter(async p => kv.smembers(`_PERSON:${p}`).then(res => res.length == 0))
+          .map(p => kv.srem(`_PEOPLE`, p))
+}
+
+export async function getFamily(familyName: string, kv=getClient(false)): Promise<Family | null> {
+    return kv.lindex(`_FAMILY:${familyName}`, 0)
+}
+
 export async function getAssociatedFamilies(person: string, kv=getClient(true)): Promise<Family[]> {
     const familyNames = kv.smembers(`_PERSON:${normalize(person)}`)
 
