@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import React, { useState } from 'react';
 import Image from 'next/image';
 
+import { useRouter } from 'next/router';
 import { Typography, Button, Form, Input, Divider, InputNumber, Spin, Radio} from 'antd';
 import { CrownTwoTone, LoadingOutlined, MinusCircleOutlined, PlusOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 const { Text, Title } = Typography;
@@ -29,6 +30,7 @@ const formItemLayout = {
 };
 
 const Create: NextPage = () => {
+    const router = useRouter();
 
     const [canSubmit, setCanSubmit] = useState<boolean>(true);
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -42,13 +44,19 @@ const Create: NextPage = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
+            redirect: 'follow',
             body: JSON.stringify(values)
         })
 
-        setCanSubmit(false);
-        setSubmitting(false);
-        alert(res.status == 201 ? "Success!" : `Failed to submit family. Please try again.\n\n${res.status}: ${res.statusText}`)
-        setCanSubmit(true);
+        if (res.status == 201) {
+            if (values.kids != undefined) {
+                router.push(`/?query=${values.kids[0] || ''}`)
+            }
+        } else {
+            setCanSubmit(false);
+            setSubmitting(false);
+            alert(`Failed to submit family. Please try again.\n\n${res.status}: ${res.statusText}`)
+        }
       };
   
       
