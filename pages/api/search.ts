@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { Family } from '../../helper/family';
 import { getSimilarNames, normalize, denormalize} from '../../helper/name';
 import { getAssociatedFamilies, getPeople, getRandomPerson } from '../../helper/db';
+import { track } from '@vercel/analytics/server';
 
 type ErrorResponse = {
   error: string
@@ -29,7 +30,6 @@ export default async function handler(
     let name: string;
     if (query == undefined) {
       name = await getRandomPerson();
-      console.log("RANDOM", name)
     } else {
       const simNames = await getSimilarNames(query, people);
       if (simNames.length > 0) {
@@ -37,8 +37,8 @@ export default async function handler(
       } else {
         name = query;
       }
-      console.log("SELECTED", name)
     }
+    const analyticsPromise = track("Search", {random: query == undefined, query: query || "", name: name})
 
     const associatedFamiles = await getAssociatedFamilies(name);
 
@@ -58,7 +58,7 @@ export default async function handler(
       return f.filter(f => f.parents.map(normalize).includes(normalize(k)))
     })).then(r => r.flat())
 
-    const [newphewFamilies, grandFamilies] = await Promise.all([newphewFamiliesPromise, grandFamiliesPromise])
+    const [newphewFamilies, grandFamilies] = await Promise.all([newphewFamiliesPromise, grandFamiliesPromise, analyticsPromise])
     res.status(200).json({
         focusName: denormalize(name, associatedFamiles), 
         queryMade: query,
