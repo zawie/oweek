@@ -4,6 +4,7 @@ import { computeTopology } from '../../helper/topology';
 import { inferCollege, inferYear } from '../../helper/infer';
 import { getAllFamilies, getPeople } from '../../helper/db';
 import { denormalize } from '../../helper/name';
+import { track } from '@vercel/analytics/server';
 
 type ErrorResponse = {
   error: string
@@ -27,7 +28,8 @@ export default async function handler(
 ) {  
     const people: string[] = await getPeople();
     const families = await getAllFamilies();
-    
+    const analyticsPromise = track("Leaderboard")
+
     const ranking = people.map(student => {
         return {
             student: denormalize(student, families), 
@@ -49,6 +51,8 @@ export default async function handler(
         return e
     }))
 
+    await analyticsPromise
+    
     res.status(200).json({
        ranking
     })
