@@ -36,17 +36,17 @@ export default function ContentDisplay(props: ContentDisplayProps) {
         kids = kids.concat(family.kids);
     })
     
-    const hasKids = new Map<string, boolean>();
+    const personToSubFamilies = new Map<string, Array<Family>>();
     const possibleParents = kids.concat(siblings);
     const possibleRelatedFamilies: Family[] = searchResult.grandFamilies.concat(searchResult.newphewFamilies);
     for (const x of possibleParents) {
-        hasKids.set(x, false);
+        personToSubFamilies.set(x, new Array<Family>());
         for (const f of possibleRelatedFamilies) {
             if (f.parents.includes(x)) {
-                hasKids.set(x, true);
-                break;
+                personToSubFamilies.get(x)?.push(f);
             }
         }
+        personToSubFamilies.get(x)?.sort((a, b) => a.year.localeCompare(b.name))
     }
     
     const scope: Scope = {
@@ -54,7 +54,7 @@ export default function ContentDisplay(props: ContentDisplayProps) {
         siblings: siblings,
         parents: parents,
         focus: searchResult.focusName,
-        hasKids,
+        personToSubFamilies,
     };
 
     return <div>

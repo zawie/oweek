@@ -1,9 +1,10 @@
-import { Card, Typography} from 'antd';
+import { Avatar, Card, Typography} from 'antd';
 import Image from 'next/image'
 import { TopologyResult } from '../pages/api/topology';
 import { useState } from 'react';
 import md5 from 'md5';
 import { normalize } from '../helper/name';
+import Meta from 'antd/lib/card/Meta';
 
 const { Text } = Typography;
 
@@ -12,7 +13,12 @@ const hash = function(str: string): number {
 }
 
 
-export function StudentCard(student: string, doSearch: any, focus: boolean = false) {
+export enum CardType {
+    MAJOR = "major",
+    MINOR = "minor",
+}
+
+export function StudentCard(student: string, doSearch: any, focus: boolean = false, type: CardType = CardType.MAJOR) {
     
     const [offspring, setOffspring] = useState(NaN)
     const [fetching, setFetching] = useState(false)
@@ -23,9 +29,9 @@ export function StudentCard(student: string, doSearch: any, focus: boolean = fal
 
     return  <Card
         hoverable
-        type="inner"
         style={{
-            width: focus ? 120 : 100,
+            width: type == CardType.MAJOR ? (focus ? 120 : 100) : undefined,
+            minWidth: (focus ? 120 : 100),
             margin: 5,
             padding: 1,
             borderWidth: focus ? 3 : 0,
@@ -33,23 +39,56 @@ export function StudentCard(student: string, doSearch: any, focus: boolean = fal
             borderColor: "gold"
         }}
         bodyStyle={{
-            padding: 0,
-            paddingBottom: 10
+            padding: 5
         }}
         onClick={()=>doSearch(student)}
         size="small"
-        cover={getOwl(student)}>
-        <Text
-            style={{fontSize: 10}}
-        > {student} </Text>
-        {offspring > 0 && <>
-            <br/>
+        cover={type == CardType.MAJOR && getOwl(student)}>
+        
+        {type == CardType.MAJOR && <>
             <Text
-            style={{fontSize: 9, color: "gray"}}
-            > {`Descendants: ${offspring}`} </Text>
+                style={{fontSize: 10}}
+            > 
+                {student} 
+            </Text>
+            {offspring > 0 && <>
+                <br/>
+                <Text
+                style={{fontSize: 9, color: "gray"}}
+                > {`Descendants: ${offspring}`} </Text>
+            </>}
         </>}
+        {type == CardType.MINOR && <Meta
+            avatar={<Avatar src={getOwl(student)} size="large" shape="square"/>}
+            description={student}
+        />}
+        
     </Card>
 }
+
+// style={{
+//     width: CardType.MAJOR ? (focus ? 120 : 100) : undefined,
+//     margin: 5,
+//     padding: -15,
+//     borderWidth: focus ? 3 : 0,
+//     backgroundColor: focus ? "lightyellow" : "white",
+//     borderColor: "gold"
+// }}
+// // bodyStyle={{
+// //     padding: 0,
+// //     paddingBottom: 10
+// // }}
+// onClick={()=>doSearch(student)}
+// size="small"
+// cover={type == CardType.MAJOR ? getOwl(student) : undefined}
+// >
+{/* <Meta
+    avatar={type == CardType.MINOR ? <Avatar src={getOwl(student)} size="large" shape="square"/> : undefined}
+    // title={student}
+    description={student}
+    // description={offspring > 0 ? `Descendants: ${offspring}` : undefined}
+/> */}
+
 
 export function getOwl(student: string) {
     let src = `/assets/owls/owl${hash(normalize(student)) % 30}.jpg`
