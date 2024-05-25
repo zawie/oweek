@@ -59,7 +59,7 @@ export function StudentCard(student: string, doSearch: any, focus: boolean = fal
             </>}
         </>}
         {type == CardType.MINOR && <Meta
-            avatar={<Avatar src={getOwl(student)} size="large" shape="square"/>}
+            avatar={<Avatar src={getOwl(student)} size="large" shape="circle"/>}
             description={student}
         />}
         
