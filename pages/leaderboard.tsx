@@ -30,6 +30,9 @@ const Leaderboard: NextPage = () => {
             setResult(() => data);
             setLoading(false);
         } catch (err) {
+            alert('Failed to fetch leaderboard :( Maybe try refreshing the page?')
+            setShowWeel(false)
+            setLoading(false)
             console.log(err);
         }
     };
