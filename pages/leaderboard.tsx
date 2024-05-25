@@ -30,9 +30,9 @@ const Leaderboard: NextPage = () => {
             setResult(() => data);
             setLoading(false);
         } catch (err) {
-            alert('☹️ Failed to generate leaderboard. Please try again later.')
             setShowWeel(false)
             setLoading(false)
+            alert('☹️ Failed to generate leaderboard. Please try again later.')
             console.log(err);
         }
     };
