@@ -66,30 +66,6 @@ export function StudentCard(student: string, doSearch: any, focus: boolean = fal
     </Card>
 }
 
-// style={{
-//     width: CardType.MAJOR ? (focus ? 120 : 100) : undefined,
-//     margin: 5,
-//     padding: -15,
-//     borderWidth: focus ? 3 : 0,
-//     backgroundColor: focus ? "lightyellow" : "white",
-//     borderColor: "gold"
-// }}
-// // bodyStyle={{
-// //     padding: 0,
-// //     paddingBottom: 10
-// // }}
-// onClick={()=>doSearch(student)}
-// size="small"
-// cover={type == CardType.MAJOR ? getOwl(student) : undefined}
-// >
-{/* <Meta
-    avatar={type == CardType.MINOR ? <Avatar src={getOwl(student)} size="large" shape="square"/> : undefined}
-    // title={student}
-    description={student}
-    // description={offspring > 0 ? `Descendants: ${offspring}` : undefined}
-/> */}
-
-
 export function getOwl(student: string) {
     let src = `/assets/owls/owl${hash(normalize(student)) % 30}.jpg`
     if (student.toLowerCase() == "adam zawierucha") {
