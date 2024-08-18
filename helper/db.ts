@@ -28,6 +28,7 @@ export async function insertFamily(family: Family, kv=getClient(false)){
 
     await transaction.exec()
     // <<<<<<<<< End transaction <<<<<<<<<
+    allFamiliesCache = undefined
 }
 
 export async function deleteFamily(familyName: string, kv=getClient(false), checkExistence=true) {
@@ -51,6 +52,7 @@ export async function deleteFamily(familyName: string, kv=getClient(false), chec
 
     await transaction.exec()
     // <<<<<<<<< End transaction <<<<<<<<<
+    allFamiliesCache = undefined
 
     people.filter(async p => kv.smembers(`_PERSON:${p}`).then(res => res.length == 0))
           .map(p => kv.srem(`_PEOPLE`, p))
@@ -72,8 +74,12 @@ export async function getAssociatedFamilies(person: string, kv=getClient(true)):
     return families
 }
 
+let allFamiliesCache: Promise<Family[]> | undefined
 export async function getAllFamilies(kv=getClient(true)): Promise<Family[]> {
-    return getFamilyNames(kv).then(res => 
+    if (allFamiliesCache != undefined){
+        return allFamiliesCache
+    }
+    return allFamiliesCache = getFamilyNames(kv).then(res => 
         res.map(async (name) => 
             await kv.lindex(`_FAMILY:${name}`, 0) as Family
         )
