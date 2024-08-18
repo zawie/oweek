@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { computeTopology } from '../../helper/topology';
+import { computeTopology, personToKids } from '../../helper/topology';
 import { getAllFamilies } from '../../helper/db';
 import { normalize } from '../../helper/name';
 
@@ -21,7 +21,7 @@ export default async function handler(
     const {name}: {name? : string} = req.query
     const families = await getAllFamilies()
 
-    const t = computeTopology(normalize(name || ""), families)
+    const t = await computeTopology(normalize(name || ""), personToKids(families))
     res.status(200).json({
         root: name || "",
         generationsAfter: t.generationsAfter,

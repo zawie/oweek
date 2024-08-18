@@ -3,16 +3,14 @@ import { Family } from "./family";
 import { normalize } from "./name";
 
 
-export async function inferCollege(name: string): Promise<string> {
-    const families = await getAssociatedFamilies(name);
-
-    for (const f of families) {
+export function inferCollege(name: string, candidateFamiles: Family[]): string {
+    for (const f of candidateFamiles) {
         if (f.kids.map(normalize).includes(normalize(name))) {
             return f.college
         }
     }
 
-    for (const f of families) {
+    for (const f of candidateFamiles) {
         if (f.parents.map(normalize).includes(normalize(name))) {
             return f.college
         }
@@ -21,20 +19,30 @@ export async function inferCollege(name: string): Promise<string> {
     return ""
 }
 
-export async function inferYear(name: string): Promise<string> {
-    const families = await getAssociatedFamilies(name);
-
-    for (const f of families) {
+export function inferYear(name: string, candidateFamiles: Family[]): string {
+    for (const f of candidateFamiles) {
         if (f.kids.map(normalize).includes(normalize(name))) {
             return f.year
        }
     }
 
-    for (const f of families) {
+    for (const f of candidateFamiles) {
         if (f.parents.map(normalize).includes(normalize(name))) {
             return String(Number(f.year) + 1)
         }
      }
  
     return ""
+}
+
+export function createdAssociatedFamiliesIndex(families: Family[]): Map<string, Family[]> {
+    const nameToFamilies = new Map<string, Family[]>()
+    families.forEach(f => [f.parents, f.kids].flat().map(normalize).map(x => {
+        if (nameToFamilies.get(x) == undefined) {
+            nameToFamilies.set(x, [f])
+        } else {
+            nameToFamilies.get(x)?.push(f)
+        }
+     }))
+    return nameToFamilies
 }
