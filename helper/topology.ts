@@ -5,28 +5,35 @@ type Topology = {
     descendants: Set<string>,
     generationsAfter: number,
 }
-let cachedTopology: Map<string, Topology> = new Map<string, Topology>();
+let cachedTopology = new Map<string, Promise<Topology>>();
 
-export function computeTopology(name: string, families: Family[]): Topology {
+export async function computeTopology(name: string, nameToKids: Map<string, string[]>): Promise<Topology> {
     if (cachedTopology.has(name)) {
-        return cachedTopology.get(name) as Topology;
+        return cachedTopology.get(name) as Promise<Topology>;
     }
-
-    const topo: Topology = {
-        descendants: new Set<string>(),
-        generationsAfter: 0,
-    }
-
-
-     families.filter(f => f.parents.map(normalize).includes(normalize(name)))
-            .map(f => f.kids)
-            .flat()
-            .forEach(k => {
-                const t = computeTopology(k, families);
+    return cachedTopology.set(name, new Promise<Topology>(async (resolve) => {
+        const topo: Topology = {
+            descendants: new Set<string>(),
+            generationsAfter: 0,
+        }
+        
+        const kids = nameToKids.get(normalize(name)) || []
+        await Promise.all(kids.map(k => {
+            computeTopology(k, nameToKids).then(t => {
                 topo.generationsAfter = Math.max(topo.generationsAfter, t.generationsAfter + 1);
                 topo.descendants = new Set([...Array.from(topo.descendants), ...Array.from(t.descendants), k]);
             })
+        }))
+          
+        resolve(topo);
+    })).get(name) as Promise<Topology>
+}
 
-    cachedTopology.set(name, topo)
-    return topo;
+export function personToKids(families: Family[]): Map<string, string[]> {
+    const nameToKids = new Map<string, string[]>();
+    families.forEach(f => f.parents.map(normalize).map(p => {
+        nameToKids.set(p, f.kids.map(normalize).concat(nameToKids.get(p) || []))
+     })
+    )
+    return nameToKids
 }
