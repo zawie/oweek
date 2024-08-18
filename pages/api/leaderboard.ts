@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { computeTopology, personToKids } from '../../helper/topology';
 import { createdAssociatedFamiliesIndex, inferCollege, inferYear } from '../../helper/infer';
 import { getAllFamilies, getPeople } from '../../helper/db';
-import { denormalize } from '../../helper/name';
+import { denormalize, normalize } from '../../helper/name';
 import { track } from '@vercel/analytics/server';
 
 type ErrorResponse = {
@@ -36,11 +36,12 @@ export default async function handler(
     let ranking: LeaderbaordEntry[] = []
     let rankingMaxLength = 100
     const nameToKids = personToKids(families)
+    const associatedFamilies = createdAssociatedFamiliesIndex(families)
     for (let i = 0; i < people.length; i += chunkSize) {
         const batch = people.slice(i, i + chunkSize);
         let partialRanking = await Promise.all(batch.map(async student => {
             return {
-                student: denormalize(student, families), 
+                student: denormalize(student, associatedFamilies.get(student) || []), 
                 firstInCollege: false,
                 descendentCount: (await computeTopology(student, nameToKids)).descendants.size
             } as LeaderbaordEntry
@@ -55,11 +56,10 @@ export default async function handler(
 
     console.log("rankings", ranking.length)
     let colleges = new Set<string>()
-    const index = createdAssociatedFamiliesIndex(families)
     for (let i = 0; i < ranking.length; i++) {
         const e = ranking[i]
-        e.college = inferCollege(e.student, index.get(e.student) || [])
-        e.year = inferYear(e.student, index.get(e.student) || [])
+        e.college = inferCollege(e.student, associatedFamilies.get(normalize(e.student)) || [])
+        e.year = inferYear(e.student, associatedFamilies.get(normalize(e.student)) || [])
         if (!colleges.has(e.college)) {
             e.firstInCollege = true
             colleges.add(e.college)
