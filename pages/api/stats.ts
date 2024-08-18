@@ -1,7 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getClient, getFamilyNames, getPeople } from '../../helper/db'
-import { normalize } from '../../helper/name'
+import { getClient, getAllFamilies, getPeople } from '../../helper/db'
 
 type ErrorResponse = {
   error: string
@@ -17,7 +16,7 @@ export default async function handler(
   res: NextApiResponse<StatsResults | ErrorResponse>
 ) {  
     const kv = getClient(true)
-    const [families, students] = await Promise.all([getFamilyNames(kv), getPeople(kv)]) 
+    const [families, students] = await Promise.all([getAllFamilies(kv), getPeople(kv)]) 
 
     res.status(200).json({
         num_families: families.length,
