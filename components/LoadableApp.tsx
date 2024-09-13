@@ -33,7 +33,7 @@ export const LoadableApp = ({ Component, pageProps }: AppProps) => {
     <Component {...pageProps} style={{width:"100%"}}/>
     <br/>
     <div className='Footer'>
-        <Text type="secondary"> Contact us at <a href="mailto:contact@oweek.org ">contact@oweek.org</a>.</Text>
+        <Text type="secondary"> Contact us at <a href="mailto:contact@oweek.org">contact@oweek.org</a>. Read our <a href="/privacy.txt">privacy policy</a>.</Text>
         <Text type="secondary"> This is an open source project on <a href="https://github.com/zawie/oweek"> GitHub <GithubFilled/></a> by <a href="https://www.zawie.io">Adam Zawierucha</a>.</Text>
     </div>
 </div>
