@@ -4,7 +4,7 @@ Effective Date: 2024-09-13 (ISO 8601 Date)
 
 Thank you for visiting oweek.org ("we," "our," or "us"). This Privacy Policy explains how we collect, use, store, and disclose personal information submitted to our website.
 
-NOTE: All data to this website WILL BE MADE PUBLICALLY AVAILABLE
+CRUCIAL: All data to this website WILL BE MADE PUBLICALLY AVAILABLE
 
 1. Information We Collect
 We collect and display names submitted by users on our website. By submitting a name, you acknowledge and agree that this information may be displayed publicly on our platform.
