@@ -39,7 +39,7 @@ function FamilyTree(props: FamilyTreeProps) {
                                 f.kids, 
                                 doSearch, 
                                 false, 
-                                f.year,
+                                f.year.toString(),
                                 f.college,
                                 Orientation.VERTICAL, 
                                 CardType.MINOR)}                           />
@@ -57,7 +57,7 @@ function FamilyTree(props: FamilyTreeProps) {
                                     f.kids, 
                                     doSearch, 
                                     false, 
-                                    f.year,
+                                    f.year.toString(),
                                     f.college,
                                     Orientation.VERTICAL, 
                                     CardType.MINOR)}

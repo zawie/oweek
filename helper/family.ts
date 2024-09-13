@@ -7,7 +7,7 @@ export type Family = {
     name: string,
     parents: string[],
     kids: string[],
-    year: string,
+    year: string | number,
     college: string,
     createdAt: Date,
     uuid?: string,
