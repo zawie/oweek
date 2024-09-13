@@ -22,7 +22,7 @@ export function inferCollege(name: string, candidateFamiles: Family[]): string {
 export function inferYear(name: string, candidateFamiles: Family[]): string {
     for (const f of candidateFamiles) {
         if (f.kids.map(normalize).includes(normalize(name))) {
-            return f.year
+            return f.year.toString()
        }
     }
 

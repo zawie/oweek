@@ -46,7 +46,7 @@ export default function ContentDisplay(props: ContentDisplayProps) {
                 personToSubFamilies.get(x)?.push(f);
             }
         }
-        personToSubFamilies.get(x)?.sort((a, b) => a.year.localeCompare(b.name))
+        personToSubFamilies.get(x)?.sort((a, b) => a.year.toString().localeCompare(b.name))
     }
     
     const scope: Scope = {
@@ -76,7 +76,7 @@ export default function ContentDisplay(props: ContentDisplayProps) {
                     )
                 }
                 {searchResult.homeFamilies.length > 0 
-                    ? searchResult.homeFamilies.map(f => [" ", f.college, "College -", f.year].join(" ")).join(", ")
+                    ? searchResult.homeFamilies.map(f => [" ", f.college, "College -", f.year.toString()].join(" ")).join(", ")
                     : "Unknown Family"
                     }
             </Text>
