@@ -47,13 +47,13 @@ export default async function handler(
     const parentFamilies = associatedFamiles.filter(f => f.parents.map(normalize).includes(normalize(name)));
 
     const siblings = homeFamilies.map(f => f.kids).flat().filter(k => normalize(k) != normalize(name));
-    const newphewFamiliesPromise = Promise.all(siblings.map(async k => {
+    const newphewFamiliesPromise = Promise.all(siblings.map(normalize).map(async k => {
       const f = await getAssociatedFamilies(k)
       return f.filter(f => f.parents.map(normalize).includes(normalize(k)))
     })).then(r => r.flat())
 
     const kids = parentFamilies.map(f => f.kids).flat()
-    const grandFamiliesPromise = Promise.all(kids.map(async k => {
+    const grandFamiliesPromise = Promise.all(kids.map(normalize).map(async k => {
       const f = await getAssociatedFamilies(k)
       return f.filter(f => f.parents.map(normalize).includes(normalize(k)))
     })).then(r => r.flat())
