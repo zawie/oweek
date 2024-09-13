@@ -25,6 +25,11 @@ export default async function handler(
       return
     }
 
+    console.log("Consent: ", req.body.consent)
+    if (!req.body.consent) {
+      res.status(451).send({ error: 'Consent of oweek.org/privacy.txt is required' })
+    }
+
     const v = validate(family)
     if (!v.valid) {
       console.log("Invalid family provided: ", family, v.errors)
