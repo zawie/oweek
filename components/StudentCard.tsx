@@ -78,6 +78,8 @@ export function getOwl(student: string) {
         src = `/assets/owls/nyc.jpg`
     } else if (student.toLowerCase() == "kai hung") {
         src = `/assets/owls/science.jpg`
+    } else if (student.toLowerCase() == "angela zhang") {
+        src =`/assets/owls/boba.jpg`
     }
 
     return <Image
