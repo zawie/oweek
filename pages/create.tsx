@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 
 import { useRouter } from 'next/router';
-import { Typography, Button, Form, Input, Divider, InputNumber, Spin, Radio, Tooltip} from 'antd';
+import { Typography, Button, Form, Input, Divider, InputNumber, Spin, Radio, Tooltip, Checkbox} from 'antd';
 import { CrownTwoTone, LoadingOutlined, MinusCircleOutlined, PlusOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 const { Text, Title } = Typography;
 
@@ -16,6 +16,7 @@ type FamilyType = {
   college?: string;
   parents?: string[];
   kids?: string[];
+  consent?: boolean;
 };
 
 const formItemLayout = {
@@ -136,6 +137,20 @@ const Create: NextPage = () => {
             <Divider/>
             {createFormList("New Student", "kids")}
             <Divider/>
+            
+            <Form.Item<FamilyType>
+                name="consent"
+                valuePropName="checked"
+                rules={[
+                    {
+                        validator: (_, value) =>
+                          value ? Promise.resolve() : Promise.reject(new Error('You must agree to the terms outlined at oweek.org/privacy.txt')),
+                    }
+                ]}
+                >
+                <Checkbox>Check this box if you have read and agreed to the <a href="/privacy.txt">Privacy Policy</a> outlined at <a href="/privacy.txt">oweek.org/privacy.txt</a>.</Checkbox>
+            </Form.Item>
+
 
             <Form.Item<FamilyType>>
                 <Button type="primary" htmlType="submit" disabled={!canSubmit || submitting}>
