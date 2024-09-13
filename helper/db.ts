@@ -1,6 +1,7 @@
 import { createClient, VercelKV } from '@vercel/kv';
 import { Family } from './family';
 import { normalize } from './name';
+import { createdAssociatedFamiliesIndex } from './infer';
 
 export function getClient(readOnly=true): VercelKV {
     return createClient({
@@ -29,6 +30,7 @@ export async function insertFamily(family: Family, kv=getClient(false)){
     await transaction.exec()
     // <<<<<<<<< End transaction <<<<<<<<<
     allFamiliesCache = undefined
+    associatedFamiliesIndex = undefined
 }
 
 export async function deleteFamily(familyName: string, kv=getClient(false), checkExistence=true) {
@@ -53,6 +55,7 @@ export async function deleteFamily(familyName: string, kv=getClient(false), chec
     await transaction.exec()
     // <<<<<<<<< End transaction <<<<<<<<<
     allFamiliesCache = undefined
+    associatedFamiliesIndex = undefined
 
     people.filter(async p => kv.smembers(`_PERSON:${p}`).then(res => res.length == 0))
           .map(p => kv.srem(`_PEOPLE`, p))
@@ -62,16 +65,12 @@ export async function getFamily(familyName: string, kv=getClient(false)): Promis
     return kv.lindex(`_FAMILY:${familyName}`, 0)
 }
 
+let associatedFamiliesIndex: Promise<Map<string, Family[]>> | undefined
 export async function getAssociatedFamilies(person: string, kv=getClient(true)): Promise<Family[]> {
-    const familyNames = kv.smembers(`_PERSON:${normalize(person)}`)
-
-    const families = familyNames.then(res => 
-        res.map(async (name) => 
-            await kv.lindex(`_FAMILY:${name}`, 0) as Family
-        )
-    ).then(res => Promise.all(res))
-
-    return families
+    if (associatedFamiliesIndex == undefined) {
+        associatedFamiliesIndex = getAllFamilies(kv=kv).then(createdAssociatedFamiliesIndex)
+    }
+    return await associatedFamiliesIndex.then(idx => idx.get(person) || [])
 }
 
 let allFamiliesCache: Promise<Family[]> | undefined

@@ -1,4 +1,3 @@
-import { getAssociatedFamilies } from "./db";
 import { Family } from "./family";
 import { normalize } from "./name";
 
