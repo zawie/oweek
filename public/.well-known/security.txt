@@ -1,5 +1,5 @@
 # Please report any security vulnerabilities via email
-Contact: security@zawie.io
+Contact: contact@oweek.org
 Expires: 3000-01-01T00:00:00z
 
 # About: https://www.cisa.gov/news-events/news/securitytxt-simple-file-big-value
