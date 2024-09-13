@@ -2,8 +2,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Family } from '../../helper/family';
 import { getSimilarNames, normalize, denormalize} from '../../helper/name';
-import { getAssociatedFamilies, getPeople, getRandomPerson } from '../../helper/db';
+import { getAllFamilies, getPeople, getRandomPerson } from '../../helper/db';
 import { track } from '@vercel/analytics/server';
+import { createdAssociatedFamiliesIndex } from '../../helper/infer';
 
 type ErrorResponse = {
   error: string
@@ -40,23 +41,26 @@ export default async function handler(
     }
     const analyticsPromise = track("Search", {random: query == undefined, query: query || "", name: name})
 
-    const associatedFamiles = await getAssociatedFamilies(name);
+    const families = await getAllFamilies();
+    const associatedFamiliesIndex = createdAssociatedFamiliesIndex(families)
+    const associatedFamiles = associatedFamiliesIndex.get(name) || []
 
     //Find all families associated with this name
     const homeFamilies = associatedFamiles.filter(f => f.kids.map(normalize).includes(normalize(name)));
     const parentFamilies = associatedFamiles.filter(f => f.parents.map(normalize).includes(normalize(name)));
 
     const siblings = homeFamilies.map(f => f.kids).flat().filter(k => normalize(k) != normalize(name));
-    const newphewFamiliesPromise = Promise.all(siblings.map(async k => {
-      const f = await getAssociatedFamilies(k)
-      return f.filter(f => f.parents.map(normalize).includes(normalize(k)))
-    })).then(r => r.flat())
+    const newphewFamiliesPromise = siblings.map(normalize).map(k => {
+      const f = associatedFamiliesIndex.get(k) || []
+      return f.filter(f => f.parents.map(normalize).includes(k))
+    }).flat()
+
 
     const kids = parentFamilies.map(f => f.kids).flat()
-    const grandFamiliesPromise = Promise.all(kids.map(async k => {
-      const f = await getAssociatedFamilies(k)
-      return f.filter(f => f.parents.map(normalize).includes(normalize(k)))
-    })).then(r => r.flat())
+    const grandFamiliesPromise = kids.map(normalize).map(k => {
+      const f = associatedFamiliesIndex.get(k) || []
+      return f.filter(f => f.parents.map(normalize).includes(k))
+    }).flat()
 
     const [newphewFamilies, grandFamilies] = await Promise.all([newphewFamiliesPromise, grandFamiliesPromise, analyticsPromise])
     res.status(200).json({
