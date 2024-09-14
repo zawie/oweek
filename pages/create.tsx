@@ -148,7 +148,7 @@ const Create: NextPage = () => {
                     }
                 ]}
                 >
-                <Checkbox>Check this box if you have read and agreed to the <a href="/privacy.txt">Privacy Policy</a> outlined at <a href="/privacy.txt">oweek.org/privacy.txt</a>.</Checkbox>
+                <Checkbox>Check this box if you have read and agreed to the <a href="/privacy.txt">privacy policy</a>.</Checkbox>
             </Form.Item>
 
 
