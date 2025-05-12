@@ -70,8 +70,6 @@ export function getOwl(student: string) {
     let src = `/assets/owls/owl${hash(normalize(student)) % 30}.jpg`
     if (student.toLowerCase() == "adam zawierucha") {
         src = `/assets/owls/engineer.jpg`
-    } else if (student.toLowerCase() == "anya gu") {
-        src = `/assets/owls/queen.jpg`
     } else if (student.toLowerCase() == "daanish sheikh") {
         src = `/assets/owls/president.jpg`
     } else if (student.toLowerCase() == "kevin huynh") {
