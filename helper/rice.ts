@@ -9,7 +9,8 @@ export const colleges = [
     'Sid Rich', 
     'Martel', 
     'McMurtry',
-    'Duncan'
+    'Duncan',
+    'Chao'
 ]
 
 export function getPresident(index: number): string {
