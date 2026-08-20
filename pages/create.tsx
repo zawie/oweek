@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { useRouter } from 'next/router';
 import { Typography, Button, Form, Input, Divider, InputNumber, Spin, Radio, Tooltip, Checkbox} from 'antd';
@@ -148,7 +149,7 @@ const Create: NextPage = () => {
                     }
                 ]}
                 >
-                <Checkbox>Check this box if you have read and agreed to the <a href="/privacy">privacy policy</a>.</Checkbox>
+                <Checkbox>Check this box if you have read and agreed to the <Link href="/privacy">privacy policy</Link>.</Checkbox>
             </Form.Item>
 
 
