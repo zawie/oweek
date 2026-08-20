@@ -144,11 +144,11 @@ const Create: NextPage = () => {
                 rules={[
                     {
                         validator: (_, value) =>
-                          value ? Promise.resolve() : Promise.reject(new Error('You must agree to the terms outlined at oweek.org/privacy.txt')),
+                          value ? Promise.resolve() : Promise.reject(new Error('You must agree to the terms outlined at oweek.org/privacy')),
                     }
                 ]}
                 >
-                <Checkbox>Check this box if you have read and agreed to the <a href="/privacy.txt">privacy policy</a>.</Checkbox>
+                <Checkbox>Check this box if you have read and agreed to the <a href="/privacy">privacy policy</a>.</Checkbox>
             </Form.Item>
 
 
